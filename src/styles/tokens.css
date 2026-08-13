@@ -1,0 +1,117 @@
+/**
+ * Tokens semánticos de Tripflow, generados desde .specify/memory/design-system.md.
+ * Fuente de verdad: Figma (ver el catálogo para node-ids). No hardcodear estos
+ * valores en componentes — consumir siempre las variables definidas acá.
+ */
+
+:root {
+  /* Color — superficies */
+  --color-surface-background: #f8f8fc;
+  --color-surface-elevated: #ffffff;
+  --color-surface-secondary: #f2f2ff;
+  --color-surface-selected: #e5e5ff;
+
+  /* Color — texto */
+  --color-text-primary: #09091a;
+  --color-text-secondary: #505064;
+  --color-text-brand: #0500fe;
+  --color-text-inverse: #ffffff;
+  --color-text-placeholder: #09091a80;
+
+  /* Color — iconos */
+  --color-icon-brand: #0500fe;
+  --color-icon-secondary: #8a8aa0;
+
+  /* Color — bordes */
+  --color-border-brand: #0500fe;
+
+  /* Color — acción primaria */
+  --color-action-primary-default: #0500fe;
+  --color-action-primary-disabled: #e5e5ff;
+
+  /* Color — estado de éxito */
+  --color-status-success: #16a34a;
+  --color-status-success-subtle: #e1f5ea;
+  --color-status-success-border: #7ccc9a;
+  --color-status-success-strong: #16a34a;
+  --color-status-success-strong-hover: #138b3f;
+  --color-status-success-on-strong: #ffffff;
+
+  /* Color — estado de advertencia */
+  --color-status-warning: #be7500;
+  --color-status-warning-subtle: #fceed9;
+  --color-status-warning-border: #eebc6d;
+  --color-status-warning-strong: #e08a00;
+  --color-status-warning-strong-hover: #be7500;
+  --color-status-warning-on-strong: #ffffff;
+
+  /* Color — estado de error */
+  --color-status-error: #dc2626;
+  --color-status-error-subtle: #fbe4e4;
+  --color-status-error-border: #e45656;
+  --color-status-error-strong: #dc2626;
+  --color-status-error-strong-hover: #bb2020;
+  --color-status-error-on-strong: #ffffff;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 4px 0 #00001012;
+  --shadow-md: 0 2px 12px 0 #00001017;
+  --shadow-brand: 0 2px 12px 0 #0500fe38;
+  --shadow-brand-glow:
+    0 0 0 8px #0500fe12,
+    0 4px 20px 0 #0500fe4d;
+
+  /* Spacing semántico */
+  --space-component-card-padding: 14px;
+  --space-layout-section: 32px;
+
+  /* Radios */
+  --radius-component-button: 12px;
+  --radius-component-input: 12px;
+  --radius-component-card: 14px;
+  --size-full: 999px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-surface-background: #050510;
+    --color-surface-elevated: #09091a;
+    --color-surface-secondary: #272735;
+    --color-surface-selected: #010047;
+
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #8a8aa0;
+    --color-text-brand: #a5a8ff;
+    --color-text-inverse: #ffffff;
+    --color-text-placeholder: #ffffff80;
+
+    --color-icon-brand: #a5a8ff;
+    --color-icon-secondary: #8a8aa0;
+
+    --color-border-brand: #a5a8ff;
+
+    --color-action-primary-default: #4247ff;
+    --color-action-primary-disabled: #272735;
+
+    --color-status-success: #49b772;
+    --color-status-success-subtle: #041d0d;
+    --color-status-success-border: #16a34a;
+    --color-status-success-strong: #16a34a;
+    --color-status-success-strong-hover: #49b772;
+    --color-status-success-on-strong: #ffffff;
+
+    --color-status-warning: #e7a336;
+    --color-status-warning-subtle: #281900;
+    --color-status-warning-border: #e08a00;
+    --color-status-warning-strong: #e08a00;
+    --color-status-warning-strong-hover: #e7a336;
+    --color-status-warning-on-strong: #ffffff;
+
+    --color-status-error: #e45656;
+    --color-status-error-subtle: #280707;
+    --color-status-error-border: #dc2626;
+    --color-status-error-strong: #dc2626;
+    --color-status-error-strong-hover: #e45656;
+    --color-status-error-on-strong: #ffffff;
+  }
+}

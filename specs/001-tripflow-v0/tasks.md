@@ -35,14 +35,14 @@ Proyecto único de frontend (SPA/PWA) en la raíz del repositorio, según "Proje
 
 **Purpose**: Inicializar el proyecto y su tooling. Sin esto no se puede ejecutar nada.
 
-- [ ] T001 Inicializar proyecto Vite + React 18 + TypeScript 5 en la raíz del repositorio: `package.json`, `vite.config.ts`, `tsconfig.json`, `index.html`, `src/main.tsx`, `src/App.tsx`
-- [ ] T002 [P] Configurar Tailwind CSS y su pipeline de PostCSS en `tailwind.config.ts`, `postcss.config.js` y `src/styles/index.css`
-- [ ] T003 [P] Configurar ESLint + Prettier para TypeScript/React en `eslint.config.js` y `.prettierrc`
-- [ ] T004 [P] Configurar Vitest con entorno jsdom en `vitest.config.ts` y `tests/setup.ts`
-- [ ] T005 [P] Configurar Playwright (un solo proyecto, navegador Chromium) en `playwright.config.ts`
-- [ ] T006 [P] Instalar y configurar `vite-plugin-pwa` con el manifest de la app instalable en `vite.config.ts` y `public/manifest.webmanifest`
-- [ ] T007 [P] Definir variables de entorno públicas (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`) en `.env.example` y su lectura tipada en `src/lib/env.ts` — nunca la clave de rol de servicio (Principio V)
-- [ ] T008 [P] Actualizar `.gitignore` para excluir `node_modules/`, `dist/`, `.env.local`, `playwright-report/` y `test-results/`
+- [X] T001 Inicializar proyecto Vite + React 18 + TypeScript 5 en la raíz del repositorio: `package.json`, `vite.config.ts`, `tsconfig.json`, `index.html`, `src/main.tsx`, `src/App.tsx`
+- [X] T002 [P] Configurar Tailwind CSS y su pipeline de PostCSS en `tailwind.config.ts`, `postcss.config.js` y `src/styles/index.css`
+- [X] T003 [P] Configurar ESLint + Prettier para TypeScript/React en `eslint.config.js` y `.prettierrc`
+- [X] T004 [P] Configurar Vitest con entorno jsdom en `vitest.config.ts` y `tests/setup.ts`
+- [X] T005 [P] Configurar Playwright (un solo proyecto, navegador Chromium) en `playwright.config.ts`
+- [X] T006 [P] Instalar y configurar `vite-plugin-pwa` con el manifest de la app instalable en `vite.config.ts` y `public/manifest.webmanifest`
+- [X] T007 [P] Definir variables de entorno públicas (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`) en `.env.example` y su lectura tipada en `src/lib/env.ts` — nunca la clave de rol de servicio (Principio V)
+- [X] T008 [P] Actualizar `.gitignore` para excluir `node_modules/`, `dist/`, `.env.local`, `playwright-report/` y `test-results/`
 
 ---
 
@@ -59,42 +59,42 @@ primera escritura** de US1, o habría que reescribir después cada camino de gua
 
 ### Sistema de diseño (primero, según `plan.md`)
 
-- [ ] T009 Documentar las variantes `Success` y `Error` de Progress Bar en `.specify/memory/design-system.md`, reutilizando los tokens ya existentes `color-status-success-strong` y `color-status-error-strong` (extensión prevista por el Principio VI; requisito previo del indicador de salud)
-- [ ] T010 Generar `src/styles/tokens.css` con todos los tokens semánticos de `.specify/memory/design-system.md` como variables CSS, con soporte Light/Dark vía `prefers-color-scheme`
-- [ ] T011 Exponer los tokens de `src/styles/tokens.css` como escala de Tailwind en `tailwind.config.ts`, de modo que no exista ningún valor de color/espaciado hardcodeado en componentes
+- [X] T009 Documentar las variantes `Success` y `Error` de Progress Bar en `.specify/memory/design-system.md`, reutilizando los tokens ya existentes `color-status-success-strong` y `color-status-error-strong` (extensión prevista por el Principio VI; requisito previo del indicador de salud)
+- [X] T010 Generar `src/styles/tokens.css` con todos los tokens semánticos de `.specify/memory/design-system.md` como variables CSS, con soporte Light/Dark vía `prefers-color-scheme`
+- [X] T011 Exponer los tokens de `src/styles/tokens.css` como escala de Tailwind en `tailwind.config.ts`, de modo que no exista ningún valor de color/espaciado hardcodeado en componentes
 
 ### Componentes del catálogo (mapeo 1:1 con `design-system.md`)
 
-- [ ] T012 [P] Implementar Icon (sistema de iconos) en `src/components/Icon.tsx`
-- [ ] T013 [P] Implementar Button (Style: Primary/Secondary/Danger, Size, estado Loading) en `src/components/Button.tsx`
-- [ ] T014 [P] Implementar Input (Type: Text/Number/Select, Show Label, estado de error) en `src/components/Input.tsx`
-- [ ] T015 [P] Implementar Chip (Default/Selected) en `src/components/Chip.tsx`
-- [ ] T016 [P] Implementar Card (Style: Subtle) en `src/components/Card.tsx`
-- [ ] T017 [P] Implementar List Item en `src/components/ListItem.tsx`
-- [ ] T018 [P] Implementar Progress Bar (Style: Warning/Brand/Success/Error, altura fija 4px, `Fill` topado al 100% sin desbordar) en `src/components/ProgressBar.tsx`
-- [ ] T019 [P] Implementar Nav Item (Layout: Horizontal/Vertical) en `src/components/NavItem.tsx`
-- [ ] T020 [P] Implementar Icon Button (Style: Primary/Secondary, Size: Large) en `src/components/IconButton.tsx`
+- [X] T012 [P] Implementar Icon (sistema de iconos) en `src/components/Icon.tsx`
+- [X] T013 [P] Implementar Button (Style: Primary/Secondary/Danger, Size, estado Loading) en `src/components/Button.tsx`
+- [X] T014 [P] Implementar Input (Type: Text/Number/Select, Show Label, estado de error) en `src/components/Input.tsx`
+- [X] T015 [P] Implementar Chip (Default/Selected) en `src/components/Chip.tsx`
+- [X] T016 [P] Implementar Card (Style: Subtle) en `src/components/Card.tsx`
+- [X] T017 [P] Implementar List Item en `src/components/ListItem.tsx`, documentando en `.specify/memory/design-system.md` los estados interactivos (Pressed/tappable) inferidos para su uso en filas accionables (T070, T076), ya que el catálogo actual solo describe su anatomía base sin esa documentación formal
+- [X] T018 [P] Implementar Progress Bar (Style: Warning/Brand/Success/Error, altura fija 4px, `Fill` topado al 100% sin desbordar) en `src/components/ProgressBar.tsx`
+- [X] T019 [P] Implementar Nav Item (Layout: Horizontal/Vertical) en `src/components/NavItem.tsx`
+- [X] T020 [P] Implementar Icon Button (Style: Primary/Secondary, Size: Large) en `src/components/IconButton.tsx`
 
 ### Utilidades puras de dominio
 
-- [ ] T021 [P] Implementar aritmética de dinero en enteros de unidad mínima (parseo desde input, suma, porcentaje, formateo con `Intl.NumberFormat` por moneda) en `src/lib/money.ts`
-- [ ] T022 [P] Implementar utilidades de fecha calendario sobre `Date` normalizado a medianoche local (días totales, días transcurridos, días restantes inclusive, clave de agrupación por día) en `src/lib/dates.ts`
-- [ ] T023 [P] Definir el catálogo acotado de monedas LATAM + USD + EUR (código ISO 4217, símbolo, dígitos decimales) en `src/lib/currencies.ts`
-- [ ] T024 [P] Escribir pruebas unitarias de dinero (exactitud de suma y porcentaje, sin error de redondeo — SC-008) en `tests/unit/money.test.ts`
-- [ ] T025 [P] Escribir pruebas unitarias de fechas (viaje no comenzado, en curso, último día, terminado, sin división por cero) en `tests/unit/dates.test.ts`
+- [X] T021 [P] Implementar aritmética de dinero en enteros de unidad mínima (parseo desde input, suma, porcentaje, formateo con `Intl.NumberFormat` por moneda) en `src/lib/money.ts`
+- [X] T022 [P] Implementar utilidades de fecha calendario sobre `Date` normalizado a medianoche local (días totales, días transcurridos, días restantes inclusive, clave de agrupación por día) en `src/lib/dates.ts`
+- [X] T023 [P] Definir el catálogo acotado de monedas LATAM + USD + EUR (código ISO 4217, símbolo, dígitos decimales) en `src/lib/currencies.ts`
+- [X] T024 [P] Escribir pruebas unitarias de dinero (exactitud de suma y porcentaje, sin error de redondeo — SC-008) en `tests/unit/money.test.ts`
+- [X] T025 [P] Escribir pruebas unitarias de fechas (viaje no comenzado, en curso, último día, terminado, sin división por cero) en `tests/unit/dates.test.ts`
 
 ### Capa de datos offline-first
 
-- [ ] T026 Definir el esquema local de Dexie/IndexedDB con las tablas `viajes`, `gastos`, `categorias`, `asociaciones_aprendidas` y `cambios_pendientes` según `data-model.md`, con índices por `trip_id`, `fecha` y `categoria_id`, en `src/lib/db.ts`
-- [ ] T027 Crear el cliente de Supabase (auth + Postgres) leyendo la configuración de `src/lib/env.ts` en `src/lib/supabase.ts`
-- [ ] T028 Escribir la migración SQL con las 4 tablas, constraints (`presupuesto_total > 0`, `monto > 0`, `descripcion <> ''`, `UNIQUE (user_id, nombre)`, `UNIQUE (user_id, termino)`), cascadas (`gastos` ON DELETE CASCADE desde `viajes`; `asociaciones_aprendidas` ON DELETE CASCADE desde `categorias`; `gastos.categoria_id` ON DELETE RESTRICT) y políticas RLS `auth.uid() = user_id` de `contracts/data-schema.md` en `supabase/migrations/0001_schema.sql`
-- [ ] T029 Implementar el helper de escritura local transaccional que guarda en IndexedDB y encola el cambio en `cambios_pendientes` (`entidad`, `entidad_id`, `operacion`) en una sola transacción, según `contracts/sync-contract.md` §Empuje, en `src/features/sync/queue.ts`
+- [X] T026 Definir el esquema local de Dexie/IndexedDB con las tablas `viajes`, `gastos`, `categorias`, `asociaciones_aprendidas` y `cambios_pendientes` según `data-model.md`, con índices por `trip_id`, `fecha` y `categoria_id`, en `src/lib/db.ts`
+- [X] T027 Crear el cliente de Supabase (auth + Postgres) leyendo la configuración de `src/lib/env.ts` en `src/lib/supabase.ts`
+- [X] T028 Escribir la migración SQL con las 4 tablas, constraints (`presupuesto_total > 0`, `monto > 0`, `descripcion <> ''`, `UNIQUE (user_id, nombre)`, `UNIQUE (user_id, termino)`), cascadas (`gastos` ON DELETE CASCADE desde `viajes`; `asociaciones_aprendidas` ON DELETE CASCADE desde `categorias`; `gastos.categoria_id` ON DELETE RESTRICT) y políticas RLS `auth.uid() = user_id` de `contracts/data-schema.md` en `supabase/migrations/0001_schema.sql`
+- [X] T029 Implementar el helper de escritura local transaccional que guarda en IndexedDB y encola el cambio en `cambios_pendientes` (`entidad`, `entidad_id`, `operacion`) en una sola transacción, según `contracts/sync-contract.md` §Empuje, en `src/features/sync/queue.ts`
 
 ### Autenticación y navegación
 
-- [ ] T030 Implementar el proveedor de sesión de Supabase (sesión persistida, estado de carga, `signUp`/`signIn`/`signOut`) en `src/features/auth/AuthProvider.tsx`
-- [ ] T031 Definir las rutas de React Router y el guard de rutas privadas (FR-001: sin sesión no hay acceso) en `src/app/routes.tsx`
-- [ ] T032 Implementar el marco de la aplicación con navegación responsiva — Nav Item Horizontal en escritorio, Vertical en móvil (FR-004) — en `src/app/AppShell.tsx`
+- [X] T030 Implementar el proveedor de sesión de Supabase (sesión persistida, estado de carga, `signUp`/`signIn`/`signOut`) en `src/features/auth/AuthProvider.tsx`
+- [X] T031 Definir las rutas de React Router y el guard de rutas privadas (FR-001: sin sesión no hay acceso) en `src/app/routes.tsx`
+- [X] T032 Implementar el marco de la aplicación con navegación responsiva — Nav Item Horizontal en escritorio, Vertical en móvil (FR-004) — en `src/app/AppShell.tsx`
 
 **Checkpoint**: Base lista — las historias de usuario pueden comenzar.
 
@@ -110,15 +110,15 @@ presupuesto en pantalla, sin registrar ningún gasto (quickstart.md, Escenario 1
 
 ### Implementation for User Story 1
 
-- [ ] T033 [US1] Implementar el seed de las 8 categorías generales por cuenta nueva (Alojamiento, Comida, Transporte, Actividades, Compras, Salud, Telecom, Otro con `protegida = true`) en `src/features/categories/seed.ts`
-- [ ] T034 [P] [US1] Construir la pantalla de registro con correo y contraseña, sin pantallas de valor previas (FR-002), en `src/app/auth/RegistroPage.tsx`
-- [ ] T035 [P] [US1] Construir la pantalla de inicio de sesión en `src/app/auth/LoginPage.tsx`
-- [ ] T036 [US1] Construir el onboarding de categorías con grid de Chips todas en estado Selected y botón "Continuar" que avanza sin cambios (FR-003) en `src/app/onboarding/CategoriasOnboardingPage.tsx`
-- [ ] T037 [US1] Implementar la creación de viaje con validación de presupuesto > 0 y moneda del catálogo, escribiendo vía `src/features/sync/queue.ts`, en `src/features/trips/tripRepository.ts`
-- [ ] T038 [US1] Construir el formulario de nuevo viaje (nombre, destino, fecha de salida, fecha de regreso opcional, presupuesto, moneda) con mensajes de error en español y bloqueo de guardado si el presupuesto es 0 o vacío (FR-005 a FR-008) en `src/app/trips/NuevoViajePage.tsx`
-- [ ] T039 [US1] Implementar la selección del viaje mostrado por defecto (el viaje cuyo rango contiene hoy; si no hay, el último creado) como consulta reactiva de Dexie en `src/features/trips/useActiveTrip.ts`
-- [ ] T040 [US1] Construir el panel "viaje activo" del resumen con Card — Style: Subtle mostrando nombre, destino, fechas, presupuesto y moneda del viaje seleccionado en `src/app/dashboard/DashboardPage.tsx`
-- [ ] T041 [US1] Encadenar el flujo registro → categorías → nuevo viaje → resumen sin pantallas intermedias (FR-002) en `src/app/routes.tsx`
+- [X] T033 [US1] Implementar el seed de las 8 categorías generales por cuenta nueva (Alojamiento, Comida, Transporte, Actividades, Compras, Salud, Telecom, Otro con `protegida = true`) en `src/features/categories/seed.ts`
+- [X] T034 [P] [US1] Construir la pantalla de registro con correo y contraseña, sin pantallas de valor previas (FR-002), en `src/app/auth/RegistroPage.tsx`
+- [X] T035 [P] [US1] Construir la pantalla de inicio de sesión en `src/app/auth/LoginPage.tsx`
+- [X] T036 [US1] Construir el onboarding de categorías con grid de Chips todas en estado Selected y botón "Continuar" que avanza sin cambios (FR-003) en `src/app/onboarding/CategoriasOnboardingPage.tsx`
+- [X] T037 [US1] Implementar la creación de viaje con validación de presupuesto > 0 y moneda del catálogo, escribiendo vía `src/features/sync/queue.ts`, en `src/features/trips/tripRepository.ts`
+- [X] T038 [US1] Construir el formulario de nuevo viaje (nombre, destino, fecha de salida, fecha de regreso opcional, presupuesto, moneda) con mensajes de error en español y bloqueo de guardado si el presupuesto es 0 o vacío (FR-005 a FR-008) en `src/app/trips/NuevoViajePage.tsx`
+- [X] T039 [US1] Implementar la selección del viaje mostrado por defecto (el viaje cuyo rango contiene hoy; si no hay, el último creado) como consulta reactiva de Dexie en `src/features/trips/useActiveTrip.ts`
+- [X] T040 [US1] Construir el panel "viaje activo" del resumen con Card — Style: Subtle mostrando nombre, destino, fechas, presupuesto y moneda del viaje seleccionado en `src/app/dashboard/DashboardPage.tsx`
+- [X] T041 [US1] Encadenar el flujo registro → categorías → nuevo viaje → resumen sin pantallas intermedias (FR-002) en `src/app/routes.tsx`
 
 **Checkpoint**: US1 completamente funcional y verificable de forma independiente.
 
@@ -134,11 +134,11 @@ del día correspondiente (quickstart.md, Escenario 2).
 
 ### Implementation for User Story 2
 
-- [ ] T042 [US2] Implementar la creación de gasto con validaciones (`monto > 0`, `descripcion` no vacía, `categoria_id` existente, moneda heredada del viaje sin preguntarla — FR-016) escribiendo vía `src/features/sync/queue.ts`, en `src/features/expenses/expenseRepository.ts`
-- [ ] T043 [US2] Construir la pantalla de gasto — Input Number (monto), Input Text (descripción), grid de Chips de categoría, Input Select (fecha precargada con hoy — FR-015), Button Primary Large "Guardar" y Button Secondary "Cancelar" — como pantalla única reutilizable para crear y editar (FR-018) en `src/app/expenses/GastoFormPage.tsx`
-- [ ] T044 [US2] Agregar el botón flotante de nuevo gasto (Icon Button — Style: Primary, Size: Large) al resumen en `src/app/dashboard/DashboardPage.tsx`
-- [ ] T045 [US2] Implementar la consulta reactiva de gastos del viaje seleccionado, aislada por `trip_id` (FR-012), en `src/features/expenses/useExpenses.ts`
-- [ ] T046 [US2] Construir el listado de gastos del viaje con List Item (descripción, categoría, monto, hora de registro) en `src/app/dashboard/ExpenseList.tsx`
+- [X] T042 [US2] Implementar la creación de gasto con validaciones (`monto > 0`, `descripcion` no vacía, `categoria_id` existente, moneda heredada del viaje sin preguntarla — FR-016) escribiendo vía `src/features/sync/queue.ts`, en `src/features/expenses/expenseRepository.ts`
+- [X] T043 [US2] Construir la pantalla de gasto — Input Number (monto), Input Text (descripción), grid de Chips de categoría, Input Select (fecha precargada con hoy — FR-015), Button Primary Large "Guardar" y Button Secondary "Cancelar" — como pantalla única reutilizable para crear y editar (FR-018) en `src/app/expenses/GastoFormPage.tsx`
+- [X] T044 [US2] Agregar el botón flotante de nuevo gasto (Icon Button — Style: Primary, Size: Large) al resumen en `src/app/dashboard/DashboardPage.tsx`
+- [X] T045 [US2] Implementar la consulta reactiva de gastos del viaje seleccionado, aislada por `trip_id` (FR-012), en `src/features/expenses/useExpenses.ts`
+- [X] T046 [US2] Construir el listado de gastos del viaje con List Item (descripción, categoría, monto, hora de registro) en `src/app/dashboard/ExpenseList.tsx`
 
 **Checkpoint**: US1 y US2 funcionan de forma independiente.
 
@@ -154,11 +154,11 @@ cuatro números coincidan exactamente con los gastos registrados (quickstart.md,
 
 ### Implementation for User Story 3
 
-- [ ] T047 [P] [US3] Implementar el cálculo puro de totales (gastado, disponible, porcentaje consumido) sobre enteros de unidad mínima en `src/features/budget-health/totals.ts`
-- [ ] T048 [P] [US3] Escribir pruebas unitarias de totales con los casos exactos de la spec (presupuesto 45.000 y gastos 18.750 → 42% y 26.250 disponible; 1.000.000 con 800.000 → 80%) y verificación de SC-008 en `tests/unit/totals.test.ts`
-- [ ] T049 [US3] Construir el bloque de resumen con monto gastado, porcentaje, disponible y Progress Bar — Style: Warning en `src/app/dashboard/BudgetSummary.tsx`
-- [ ] T050 [US3] Mostrar días restantes sobre días totales con Progress Bar — Style: Brand, únicamente cuando el viaje tiene fecha de regreso, y omitirlos en viajes abiertos (FR-032, FR-037) en `src/app/dashboard/BudgetSummary.tsx`
-- [ ] T051 [US3] Presentar el presupuesto excedido de forma inequívoca cuando el disponible sea cero o menor, con tratamiento `color-status-error` y texto explicativo en lugar de un número negativo suelto (FR-038) en `src/app/dashboard/BudgetSummary.tsx`
+- [X] T047 [P] [US3] Implementar el cálculo puro de totales (gastado, disponible, porcentaje consumido) sobre enteros de unidad mínima en `src/features/budget-health/totals.ts`
+- [X] T048 [P] [US3] Escribir pruebas unitarias de totales con los casos exactos de la spec (presupuesto 45.000 y gastos 18.750 → 42% y 26.250 disponible; 1.000.000 con 800.000 → 80%) y verificación de SC-008 en `tests/unit/totals.test.ts`
+- [X] T049 [US3] Construir el bloque de resumen con monto gastado, porcentaje, disponible y Progress Bar — Style: Warning en `src/app/dashboard/BudgetSummary.tsx`
+- [X] T050 [US3] Mostrar días restantes sobre días totales con Progress Bar — Style: Brand, únicamente cuando el viaje tiene fecha de regreso, y omitirlos en viajes abiertos (FR-032, FR-037) en `src/app/dashboard/BudgetSummary.tsx`
+- [X] T051 [US3] Presentar el presupuesto excedido de forma inequívoca cuando el disponible sea cero o menor, con tratamiento `color-status-error` y texto explicativo en lugar de un número negativo suelto (FR-038) en `src/app/dashboard/BudgetSummary.tsx`
 
 **Checkpoint**: El ciclo mínimo utilizable (US1 + US2 + US3) está completo — MVP entregable.
 
@@ -175,10 +175,10 @@ Escenario 4).
 
 ### Implementation for User Story 4
 
-- [ ] T052 [P] [US4] Implementar el cálculo puro de salud del presupuesto — diario planeado (presupuesto ÷ días totales), diario restante (disponible ÷ días restantes) y los cuatro estados canónicos con el umbral del 70% (FR-033 a FR-035) — en `src/features/budget-health/health.ts`
-- [ ] T053 [P] [US4] Escribir pruebas unitarias de salud del presupuesto cubriendo los cuatro estados, el caso de la spec (45.000/10 días/3 transcurridos/18.750 gastados → 3.750 vs 4.500 planeados = "Ojo con el ritmo"), viaje no comenzado, viaje abierto, último día y viaje terminado sin división por cero, en `tests/unit/health.test.ts`
-- [ ] T054 [US4] Construir el mensaje de salud en lenguaje natural con el monto disponible por día, usando `color-status-success` / `color-status-warning` / `color-status-error` y Progress Bar Success/Error, con los dos estados intermedios distinguidos por texto y no por color (FR-035, FR-036) en `src/app/dashboard/HealthMessage.tsx`
-- [ ] T055 [US4] Omitir el presupuesto diario y el estado de salud en viajes abiertos, y mostrar el resultado final en lugar de una proyección de ritmo en viajes ya terminados (FR-037, Edge Cases) en `src/app/dashboard/HealthMessage.tsx`
+- [X] T052 [P] [US4] Implementar el cálculo puro de salud del presupuesto — diario planeado (presupuesto ÷ días totales), diario restante (disponible ÷ días restantes) y los cuatro estados canónicos con el umbral del 70% (FR-033 a FR-035) — en `src/features/budget-health/health.ts`
+- [X] T053 [P] [US4] Escribir pruebas unitarias de salud del presupuesto cubriendo los cuatro estados, el caso de la spec (45.000/10 días/3 transcurridos/18.750 gastados → 3.750 vs 4.500 planeados = "Ojo con el ritmo"), viaje no comenzado, viaje abierto, último día y viaje terminado sin división por cero, en `tests/unit/health.test.ts`
+- [X] T054 [US4] Construir el mensaje de salud en lenguaje natural con el monto disponible por día, usando `color-status-success` / `color-status-warning` / `color-status-error` y Progress Bar Success/Error, con los dos estados intermedios distinguidos por texto y no por color (FR-035, FR-036) en `src/app/dashboard/HealthMessage.tsx`
+- [X] T055 [US4] Implementar los tres casos especiales de FR-037: viaje abierto (omitir días restantes, diario y salud), viaje aún no comenzado (mostrar solo el diario planeado, sin estado de salud) y viaje terminado (mostrar el resultado final gastado vs. presupuesto, reutilizando el tratamiento visual "Vas bien"/"Te pasaste del presupuesto" de FR-035/FR-038 en vez de una proyección de ritmo) en `src/app/dashboard/HealthMessage.tsx`
 
 **Checkpoint**: US1–US4 funcionan de forma independiente.
 
@@ -193,11 +193,11 @@ desglose y el listado agrupado reflejen exactamente lo registrado (quickstart.md
 
 ### Implementation for User Story 5
 
-- [ ] T056 [P] [US5] Implementar el cálculo puro de acumulado por categoría ordenado de mayor a menor y la agrupación de gastos por día con subtotal (FR-040, FR-041) en `src/features/expenses/breakdown.ts`
-- [ ] T057 [P] [US5] Escribir pruebas unitarias de desglose y agrupación (orden descendente, subtotales por día, categorías sin gastos excluidas) en `tests/unit/breakdown.test.ts`
-- [ ] T058 [US5] Construir el desglose comparativo por categoría con Progress Bar y monto acumulado por cada una en `src/app/dashboard/CategoryBreakdown.tsx`
-- [ ] T059 [US5] Actualizar el listado de gastos para agruparlo por día con encabezado de fecha y subtotal diario en `src/app/dashboard/ExpenseList.tsx`
-- [ ] T060 [US5] Construir el estado vacío que invita a registrar el primer gasto con Card — Style: Subtle (FR-044) en `src/app/dashboard/EmptyExpenses.tsx`
+- [X] T056 [P] [US5] Implementar el cálculo puro de acumulado por categoría ordenado de mayor a menor y la agrupación de gastos por día con subtotal (FR-040, FR-041) en `src/features/expenses/breakdown.ts`
+- [X] T057 [P] [US5] Escribir pruebas unitarias de desglose y agrupación (orden descendente, subtotales por día, categorías sin gastos excluidas) en `tests/unit/breakdown.test.ts`
+- [X] T058 [US5] Construir el desglose comparativo por categoría con Progress Bar y monto acumulado por cada una en `src/app/dashboard/CategoryBreakdown.tsx`
+- [X] T059 [US5] Actualizar el listado de gastos para agruparlo por día con encabezado de fecha y subtotal diario en `src/app/dashboard/ExpenseList.tsx`
+- [X] T060 [US5] Construir el estado vacío que invita a registrar el primer gasto con Card — Style: Subtle (FR-044) en `src/app/dashboard/EmptyExpenses.tsx`
 
 **Checkpoint**: US1–US5 funcionan de forma independiente.
 
@@ -214,12 +214,12 @@ Escenario 6).
 
 ### Implementation for User Story 6
 
-- [ ] T061 [P] [US6] Construir el diccionario base de palabras clave en español LATAM para las 8 categorías generales (vocabulario habitual de viaje) en `src/features/categorization/dictionary.ts`
-- [ ] T062 [P] [US6] Implementar la normalización de texto (minúsculas, sin tildes, tokenización por palabras) en `src/features/categorization/normalize.ts`
-- [ ] T063 [US6] Implementar la resolución de categoría con el orden de precedencia asociaciones aprendidas → diccionario base → "Otro" (FR-021, FR-023) en `src/features/categorization/suggest.ts`
-- [ ] T064 [US6] Implementar el registro de la corrección como asociación aprendida con upsert por (`user_id`, `termino`), donde la corrección más reciente prevalece (FR-022, Edge Cases), escribiendo vía `src/features/sync/queue.ts`, en `src/features/categorization/learn.ts`
-- [ ] T065 [P] [US6] Escribir pruebas unitarias de categorización ("compré una hamburguesa" → Comida; descripción no interpretable → Otro; asociación aprendida gana sobre el diccionario; corrección más reciente gana) en `tests/unit/categorization.test.ts`
-- [ ] T066 [US6] Integrar la preselección automática en el formulario de gasto y marcar `categoria_elegida_manualmente` al tocar una categoría, deteniendo desde ahí toda actualización automática (FR-024) en `src/app/expenses/GastoFormPage.tsx`
+- [X] T061 [P] [US6] Construir el diccionario base de palabras clave en español LATAM para las 8 categorías generales (vocabulario habitual de viaje) en `src/features/categorization/dictionary.ts`
+- [X] T062 [P] [US6] Implementar la normalización de texto (minúsculas, sin tildes, tokenización por palabras) en `src/features/categorization/normalize.ts`
+- [X] T063 [US6] Implementar la resolución de categoría con el orden de precedencia asociaciones aprendidas → diccionario base → "Otro" (FR-021, FR-023) en `src/features/categorization/suggest.ts`
+- [X] T064 [US6] Implementar el registro de la corrección como asociación aprendida con upsert por (`user_id`, `termino`), donde la corrección más reciente prevalece (FR-022, Edge Cases), escribiendo vía `src/features/sync/queue.ts`, en `src/features/categorization/learn.ts`
+- [X] T065 [P] [US6] Escribir pruebas unitarias de categorización ("compré una hamburguesa" → Comida; descripción no interpretable → Otro; asociación aprendida gana sobre el diccionario; corrección más reciente gana) en `tests/unit/categorization.test.ts`
+- [X] T066 [US6] Integrar la preselección automática en el formulario de gasto y marcar `categoria_elegida_manualmente` al tocar una categoría, deteniendo desde ahí toda actualización automática (FR-024) en `src/app/expenses/GastoFormPage.tsx`
 
 **Checkpoint**: US1–US6 funcionan de forma independiente.
 
@@ -236,10 +236,10 @@ Escenario 7).
 
 ### Implementation for User Story 7
 
-- [ ] T067 [US7] Implementar la actualización y la eliminación permanente de un gasto, encolando los cambios vía `src/features/sync/queue.ts`, en `src/features/expenses/expenseRepository.ts`
-- [ ] T068 [US7] Construir el diálogo de confirmación destructiva reutilizable con Button — Style: Danger y texto de advertencia en `color-status-error` en `src/components/ConfirmDialog.tsx`
-- [ ] T069 [US7] Habilitar el modo edición del formulario de gasto precargando monto, descripción, categoría y fecha guardados, tratando la categoría guardada como elección manual para que editar la descripción no la reemplace (FR-018, FR-024) en `src/app/expenses/GastoFormPage.tsx`
-- [ ] T070 [US7] Conectar la eliminación de gasto desde el listado con `src/components/ConfirmDialog.tsx`, advirtiendo que la acción es permanente (FR-019) en `src/app/dashboard/ExpenseList.tsx`
+- [X] T067 [US7] Implementar la actualización y la eliminación permanente de un gasto, encolando los cambios vía `src/features/sync/queue.ts`, en `src/features/expenses/expenseRepository.ts`
+- [X] T068 [US7] Construir el diálogo de confirmación destructiva reutilizable con Button — Style: Danger y texto de advertencia en `color-status-error` en `src/components/ConfirmDialog.tsx`
+- [X] T069 [US7] Habilitar el modo edición del formulario de gasto precargando monto, descripción, categoría y fecha guardados, tratando la categoría guardada como elección manual para que editar la descripción no la reemplace (FR-018, FR-024) en `src/app/expenses/GastoFormPage.tsx`
+- [X] T070 [US7] Conectar la eliminación de gasto desde el listado con `src/components/ConfirmDialog.tsx`, advirtiendo que la acción es permanente (FR-019) en `src/app/dashboard/ExpenseList.tsx`
 
 **Checkpoint**: US1–US7 funcionan de forma independiente.
 
@@ -254,10 +254,10 @@ verificando que los resultados correspondan.
 
 ### Implementation for User Story 8
 
-- [ ] T071 [US8] Implementar el filtrado puro de gastos por texto (coincidencia contra descripción y nombre de categoría, texto normalizado) y por rango de fechas (FR-042, FR-043) en `src/features/expenses/search.ts`
-- [ ] T072 [P] [US8] Escribir pruebas unitarias de búsqueda y filtro (coincidencia por descripción, por categoría, límites inclusivos del rango de fechas, sin coincidencias) en `tests/unit/search.test.ts`
-- [ ] T073 [US8] Construir la pantalla de búsqueda con Input — Type: Text, Show Label: false e icono Search, dos Input — Type: Select para el rango de fechas, y List Item para los resultados, en `src/app/search/BuscarPage.tsx`
-- [ ] T074 [US8] Agregar el estado vacío de "sin resultados" con Card — Style: Subtle y la acción de limpiar la búsqueda/filtro para volver al listado completo (FR-044) en `src/app/search/BuscarPage.tsx`
+- [X] T071 [US8] Implementar el filtrado puro de gastos por texto (coincidencia contra descripción y nombre de categoría, texto normalizado) y por rango de fechas (FR-042, FR-043) en `src/features/expenses/search.ts`
+- [X] T072 [P] [US8] Escribir pruebas unitarias de búsqueda y filtro (coincidencia por descripción, por categoría, límites inclusivos del rango de fechas, sin coincidencias) en `tests/unit/search.test.ts`
+- [X] T073 [US8] Construir la pantalla de búsqueda con Input — Type: Text, Show Label: false e icono Search, dos Input — Type: Select para el rango de fechas, y List Item para los resultados, en `src/app/search/BuscarPage.tsx`
+- [X] T074 [US8] Agregar el estado vacío de "sin resultados" con Card — Style: Subtle y la acción de limpiar la búsqueda/filtro para volver al listado completo (FR-044) en `src/app/search/BuscarPage.tsx`
 
 **Checkpoint**: US1–US8 funcionan de forma independiente.
 
@@ -272,9 +272,9 @@ intentar eliminar una categoría que ya tiene gastos asociados.
 
 ### Implementation for User Story 9
 
-- [ ] T075 [US9] Implementar crear, renombrar y eliminar categorías con las reglas de bloqueo (rechazar si `protegida = true`, rechazar si existe al menos un gasto asociado, nombre único por usuario) y la eliminación en cascada de sus asociaciones aprendidas, encolando los cambios vía `src/features/sync/queue.ts`, en `src/features/categories/categoryRepository.ts`
-- [ ] T076 [US9] Construir la pantalla de gestión de categorías con List Item (emoji + nombre), Input — Type: Text para crear/renombrar y Icon Button — Style: Secondary (Trash) para eliminar, en `src/app/categories/CategoriasPage.tsx`
-- [ ] T077 [US9] Mostrar el mensaje explicativo del bloqueo cuando la categoría está en uso o es "Otro", y confirmar la eliminación con `src/components/ConfirmDialog.tsx` (FR-028) en `src/app/categories/CategoriasPage.tsx`
+- [X] T075 [US9] Implementar crear, renombrar y eliminar categorías con las reglas de bloqueo (rechazar si `protegida = true`, rechazar si existe al menos un gasto asociado, nombre único por usuario) y la eliminación en cascada de sus asociaciones aprendidas, encolando los cambios vía `src/features/sync/queue.ts`, en `src/features/categories/categoryRepository.ts`
+- [X] T076 [US9] Construir la pantalla de gestión de categorías con List Item (emoji + nombre), Input — Type: Text para crear/renombrar y Icon Button — Style: Secondary (Trash) para eliminar, en `src/app/categories/CategoriasPage.tsx`
+- [X] T077 [US9] Mostrar el mensaje explicativo del bloqueo cuando la categoría está en uso o es "Otro", y confirmar la eliminación con `src/components/ConfirmDialog.tsx` (FR-028) en `src/app/categories/CategoriasPage.tsx`
 
 **Checkpoint**: US1–US9 funcionan de forma independiente.
 
@@ -290,11 +290,11 @@ muestre exclusivamente sus propios gastos y presupuesto (quickstart.md, Escenari
 
 ### Implementation for User Story 10
 
-- [ ] T078 [US10] Implementar el listado de viajes del usuario y la persistencia local del viaje seleccionado en `src/features/trips/useTrips.ts`
-- [ ] T079 [US10] Construir el selector de viaje en el resumen, garantizando que todos los números y gastos correspondan exclusivamente al viaje elegido (FR-013, FR-012) en `src/app/dashboard/TripSwitcher.tsx`
-- [ ] T080 [US10] Construir la edición de viaje (nombre, destino, fechas y presupuesto editables; moneda deshabilitada e inmutable con explicación) que recalcula todas las métricas al guardar (FR-009, FR-010, FR-011) en `src/app/trips/EditarViajePage.tsx`
-- [ ] T081 [US10] Implementar la eliminación de viaje con borrado en cascada de todos sus gastos y sin afectar las categorías de la cuenta (FR-054), encolando los cambios vía `src/features/sync/queue.ts`, en `src/features/trips/tripRepository.ts`
-- [ ] T082 [US10] Conectar la eliminación con una confirmación que indique cuántos gastos se van a perder y advierta que es permanente, y tras completarla reseleccionar el viaje por defecto o mostrar el estado vacío que invita a crear un viaje (FR-053, Edge Cases) en `src/app/dashboard/TripSwitcher.tsx`
+- [X] T078 [US10] Implementar el listado de viajes del usuario y la persistencia local del viaje seleccionado en `src/features/trips/useTrips.ts`
+- [X] T079 [US10] Construir el selector de viaje en el resumen, garantizando que todos los números y gastos correspondan exclusivamente al viaje elegido (FR-013, FR-012) en `src/app/dashboard/TripSwitcher.tsx`
+- [X] T080 [US10] Construir la edición de viaje (nombre, destino, fechas y presupuesto editables; moneda deshabilitada e inmutable con explicación) que recalcula todas las métricas al guardar (FR-009, FR-010, FR-011) en `src/app/trips/EditarViajePage.tsx`
+- [X] T081 [US10] Implementar la eliminación de viaje con borrado en cascada de todos sus gastos y sin afectar las categorías de la cuenta (FR-054), encolando los cambios vía `src/features/sync/queue.ts`, en `src/features/trips/tripRepository.ts`
+- [X] T082 [US10] Conectar la eliminación con una confirmación que indique cuántos gastos se van a perder y advierta que es permanente, y tras completarla reseleccionar el viaje por defecto o mostrar el estado vacío que invita a crear un viaje (FR-053, Edge Cases) en `src/app/dashboard/TripSwitcher.tsx`
 
 **Checkpoint**: Las 10 historias de usuario funcionan de forma independiente.
 
@@ -306,13 +306,13 @@ muestre exclusivamente sus propios gastos y presupuesto (quickstart.md, Escenari
 todas: FR-045 a FR-049 (conectividad) y FR-055/FR-056 (privacidad). Se validan con los Escenarios
 8 y 10 de `quickstart.md`.
 
-- [ ] T083 Implementar el empuje de la cola de cambios pendientes hacia Supabase (`insert`/`update`/`delete` por tabla, eliminación de la fila de la cola solo tras éxito, permanencia en la cola ante fallo — FR-049) en `src/features/sync/push.ts`
-- [ ] T084 Implementar la extracción desde Supabase con reconciliación por comparación de listas completas (lo ausente en el servidor se elimina localmente) y resolución de conflictos por `updated_at` más reciente, según `contracts/sync-contract.md`, en `src/features/sync/pull.ts`
-- [ ] T085 Implementar los disparadores automáticos de sincronización (evento `online` del navegador y apertura de la app con conexión), sin ninguna acción de la persona (FR-047), en `src/features/sync/useSync.ts`
-- [ ] T086 Construir el indicador visible con los tres estados "Todo sincronizado" / "Cambios pendientes" / "Sincronizando", derivados del tamaño de la cola y del intento en curso (FR-048), en `src/features/sync/SyncIndicator.tsx`
-- [ ] T087 Configurar el service worker para precachear la interfaz y permitir abrir la app sin conexión (FR-045), verificando que el resumen se recalcula offline (FR-046), en `vite.config.ts`
-- [ ] T088 Implementar la Edge Function `delete-account` que verifica el JWT de la sesión, borra gastos/viajes/asociaciones/categorías de ese `user_id` y finalmente el usuario de `auth.users` con el cliente de rol de servicio, respondiendo 200/401/500 según `contracts/delete-account-function.md`, en `supabase/functions/delete-account/index.ts`
-- [ ] T089 Construir la pantalla de cuenta con eliminación de cuenta: confirmación explícita de acción permanente e irreversible, invocación de la función, y limpieza completa de IndexedDB más cierre de sesión tras el éxito (FR-055, FR-056) en `src/app/account/CuentaPage.tsx`
+- [X] T083 Implementar el empuje de la cola de cambios pendientes hacia Supabase (`insert`/`update`/`delete` por tabla, eliminación de la fila de la cola solo tras éxito, permanencia en la cola ante fallo — FR-049) en `src/features/sync/push.ts`
+- [X] T084 Implementar la extracción desde Supabase con reconciliación por comparación de listas completas (lo ausente en el servidor se elimina localmente) y resolución de conflictos por `updated_at` más reciente, según `contracts/sync-contract.md`, en `src/features/sync/pull.ts`
+- [X] T085 Implementar los disparadores automáticos de sincronización (evento `online` del navegador y apertura de la app con conexión), sin ninguna acción de la persona (FR-047), en `src/features/sync/useSync.ts`
+- [X] T086 Construir el indicador visible con los tres estados "Todo sincronizado" / "Cambios pendientes" / "Sincronizando", derivados del tamaño de la cola y del intento en curso (FR-048), en `src/features/sync/SyncIndicator.tsx`
+- [X] T087 Configurar el service worker para precachear la interfaz y permitir abrir la app sin conexión (FR-045), verificando que el resumen se recalcula offline (FR-046), en `vite.config.ts`
+- [X] T088 Implementar la Edge Function `delete-account` que verifica el JWT de la sesión, borra gastos/viajes/asociaciones/categorías de ese `user_id` y finalmente el usuario de `auth.users` con el cliente de rol de servicio, respondiendo 200/401/500 según `contracts/delete-account-function.md`, en `supabase/functions/delete-account/index.ts`
+- [X] T089 Construir la pantalla de cuenta con eliminación de cuenta: confirmación explícita de acción permanente e irreversible, invocación de la función, y limpieza completa de IndexedDB más cierre de sesión tras el éxito (FR-055, FR-056) en `src/app/account/CuentaPage.tsx`
 
 **Checkpoint**: La app funciona igual con y sin conexión, y la persona puede borrar su cuenta.
 
@@ -323,11 +323,11 @@ todas: FR-045 a FR-049 (conectividad) y FR-055/FR-056 (privacidad). Se validan c
 **Purpose**: Verificación final del producto completo contra los criterios de éxito y los
 principios de la constitución.
 
-- [ ] T090 [P] Escribir la prueba de humo del camino dorado P1 (crear cuenta → crear viaje → registrar gasto → ver resumen con los números correctos) en `tests/e2e/camino-dorado.spec.ts`
-- [ ] T091 [P] Verificar que las mismas tareas se completan y muestran información idéntica en móvil y escritorio (SC-005) revisando el layout responsivo en `src/app/AppShell.tsx`
-- [ ] T092 [P] Revisar que todo el contenido visible (etiquetas, mensajes de error, estados vacíos, confirmaciones) esté en español LATAM (Principio II) recorriendo `src/app/` y `src/components/`
-- [ ] T093 Auditar que ningún componente use valores de color, espaciado o tipografía fuera de los tokens semánticos (Principio VI) revisando `src/components/` contra `.specify/memory/design-system.md`
-- [ ] T094 [P] Documentar la instalación, las variables de entorno y el despliegue en Vercel (sin ningún secreto en el repositorio — Principio V) en `README.md`
+- [X] T090 [P] Escribir la prueba de humo del camino dorado P1 (crear cuenta → crear viaje → registrar gasto → ver resumen con los números correctos) en `tests/e2e/camino-dorado.spec.ts`
+- [X] T091 [P] Verificar que las mismas tareas se completan y muestran información idéntica en móvil y escritorio (SC-005) revisando el layout responsivo en `src/app/AppShell.tsx`
+- [X] T092 [P] Revisar que todo el contenido visible (etiquetas, mensajes de error, estados vacíos, confirmaciones) esté en español LATAM (Principio II) recorriendo `src/app/` y `src/components/`
+- [X] T093 Auditar que ningún componente use valores de color, espaciado o tipografía fuera de los tokens semánticos (Principio VI) revisando `src/components/` contra `.specify/memory/design-system.md`
+- [X] T094 [P] Documentar la instalación, las variables de entorno y el despliegue en Vercel (sin ningún secreto en el repositorio — Principio V) en `README.md`
 - [ ] T095 Ejecutar de principio a fin los 10 escenarios de validación manual descritos en `specs/001-tripflow-v0/quickstart.md`
 
 ---

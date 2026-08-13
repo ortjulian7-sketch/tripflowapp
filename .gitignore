@@ -13,5 +13,14 @@
 # Dependencies (added ahead of time; harmless if unused yet)
 node_modules/
 
+# Build output
+dist/
+dev-dist/
+
+# Test artifacts
+playwright-report/
+test-results/
+coverage/
+
 # Local Claude Code settings (machine-specific)
 .claude/settings.local.json

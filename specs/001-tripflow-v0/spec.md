@@ -442,7 +442,8 @@ uno muestre exclusivamente sus propios gastos y presupuesto.
   dividido por los días restantes del viaje, recalculándolo cada día.
 - **FR-034**: El sistema DEBE comparar el presupuesto diario restante contra el presupuesto diario
   planeado (presupuesto total dividido por los días totales del viaje) para determinar el estado
-  de salud del viaje.
+  de salud del viaje. Esta comparación solo aplica a un viaje que ya comenzó y cuya fecha de
+  regreso todavía no llegó; FR-037 define el tratamiento para los demás momentos del viaje.
 - **FR-035**: El sistema DEBE distinguir cuatro estados de salud, identificados con estos nombres
   canónicos:
   - **Vas bien**: el presupuesto diario restante es igual o mayor al planeado. Tratamiento visual
@@ -457,8 +458,18 @@ uno muestre exclusivamente sus propios gastos y presupuesto.
   texto del mensaje, no por el color.
 - **FR-036**: El sistema DEBE comunicar el estado de salud con un mensaje en lenguaje natural que
   incluya el monto que la persona puede gastar por día de aquí en adelante.
-- **FR-037**: El sistema DEBE omitir días restantes, presupuesto diario y estado de salud en
-  viajes abiertos, mostrando igualmente gastado, porcentaje y disponible.
+- **FR-037**: El sistema DEBE presentar el resumen de forma distinta según el momento del viaje:
+  - **Viaje abierto** (sin fecha de regreso): omite días restantes, presupuesto diario y estado
+    de salud; muestra igualmente gastado, porcentaje y disponible.
+  - **Viaje que aún no comenzó** (hoy es anterior a la fecha de salida): muestra el presupuesto
+    diario planeado (presupuesto total ÷ días totales) sin evaluar ni mostrar ninguno de los
+    cuatro estados de salud de FR-035, porque no hay ritmo real todavía que comparar contra el
+    plan.
+  - **Viaje ya terminado** (hoy es posterior a la fecha de regreso): omite el presupuesto diario
+    restante y los cuatro estados de salud de FR-035; en su lugar muestra el resultado final del
+    viaje como total gastado frente a presupuesto total, reutilizando el tratamiento visual de
+    éxito de FR-035 ("Vas bien") si terminó dentro del presupuesto, o el tratamiento de exceso de
+    FR-038 si el disponible terminó en cero o menos.
 - **FR-038**: El sistema DEBE comunicar el exceso de presupuesto de forma inequívoca cuando el
   disponible sea cero o menor.
 - **FR-039**: El sistema DEBE presentar el estado del presupuesto de forma tal que una persona
@@ -585,6 +596,11 @@ Las siguientes capacidades quedan explícitamente fuera de Tripflow v0:
 - **Umbral del 70%**: el corte entre "Ojo con el ritmo" y "Vas acelerado" se fija en el 70% del
   presupuesto diario planeado. Es un valor de producto ajustable tras las primeras pruebas con
   usuarios.
+- **Alcance de "distintas monedas" (Principio II de la constitución)**: la constitución exige
+  permitir monedas distintas porque un viaje puede implicar una moneda distinta a la de origen de
+  la persona. Esto se satisface con una moneda fija por viaje, elegida al crearlo (FR-008), no con
+  múltiples monedas dentro de un mismo viaje: registrar gastos en una moneda distinta a la del
+  viaje queda explícitamente fuera de alcance (ver Out of Scope).
 - **Días restantes**: se cuentan desde hoy hasta la fecha de regreso inclusive.
 - **Hora del gasto**: se registra automáticamente al momento de guardar y se muestra en el
   listado; la persona edita la fecha, no la hora.

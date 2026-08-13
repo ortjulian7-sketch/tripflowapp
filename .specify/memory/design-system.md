@@ -157,7 +157,12 @@ none`). Sin color por defecto — el stroke se bindea por instancia al token sem
 corresponda (`color-icon-secondary`, `color-icon-brand`, `color-text-inverse`, etc.).
 
 **Inventario actual**: Plus, Home, Map, ArrowLeft, ChevronDown, Search, Close, Sparkle,
-Trash, Spinner.
+Trash, Spinner, User.
+
+**Nota — extensión Tripflow v0**: `User` se agregó para el destino de navegación "Cuenta"
+(spec `001-tripflow-v0`, FR-055/FR-056: eliminar cuenta): ningún ícono del inventario
+original representa a la persona/cuenta. Sigue la misma construcción (grilla 16×16, trazo
+1.5px, sin relleno) que el resto del set.
 
 **Do's**: usar INSTANCE_SWAP dentro de Button/Nav Item (nunca hardcodear un vector nuevo);
 bindear color a un token semántico; mantener grilla 16×16 y trazo 1.5px en iconos nuevos;
@@ -246,6 +251,13 @@ contextos densos autoexplicativos (search bar).
 **Don'ts**: no mostrar Error y Disabled a la vez; no depender solo del anillo rojo (siempre
 Helper Text); no usar Select para menos de 2 opciones; no hardcodear el prefijo "$" — es
 default de Tripflow (MXN), debe parametrizarse por moneda.
+
+**Nota — extensión Tripflow v0 (`Type: Date`)**: el catálogo solo documenta Text/Number/Select;
+los campos de fecha de "Crear/editar viaje" y "Registrar gasto" (fecha de salida, regreso,
+fecha del gasto) necesitan el selector nativo del navegador (accesible, funciona offline, sin
+reinventar un calendario). Se implementó como un cuarto valor de `Type` que reutiliza
+exactamente el mismo chrome visual (fondo, sombra, radio, tokens de foco/error) que
+Text/Number — mismo componente, sin solución visual aislada.
 
 ---
 
@@ -399,6 +411,21 @@ subtitle apilados) + `amount` (texto alineado a la derecha).
 `color-text-secondary`, tipografía `Body/Small` (Geist Regular 12px/16px); gaps
 `size-12`/`size-14`.
 
+**Estados interactivos (inferidos, extensión Tripflow v0)**: como el componente no tiene
+página de documentación en Figma, esta implementación define los estados necesarios para
+usarlo en filas accionables (editar gasto — spec `001-tripflow-v0` FR-018/FR-069; gestionar
+categorías — FR-076/FR-077):
+
+- **Tappable**: cuando la fila navega o abre una acción al tocarla (p. ej. abrir un gasto
+  para editarlo), el área de `icon-box` + `text-group` + `amount` se envuelve en un elemento
+  interactivo propio — nunca la fila completa, para poder convivir con una acción
+  secundaria (ver Trailing action).
+- **Pressed**: mismo fondo que Card — Style: Subtle (`color-surface-secondary`) aplicado
+  solo al área tappable mientras se mantiene presionada.
+- **Trailing action**: una fila puede exponer una acción secundaria (p. ej. borrar) como un
+  ícono al final, fuera del área tappable principal — implementado como un elemento
+  interactivo hermano, no anidado, para evitar controles interactivos uno dentro de otro.
+
 ---
 
 ### Progress Bar
@@ -419,9 +446,19 @@ manualmente para representar el valor, y queda recortado (`clip`) para nunca exc
 |---|---|
 | `Warning` | Seguimiento de presupuesto/gasto |
 | `Brand` | Progreso informativo neutro (p. ej. días de viaje transcurridos) |
+| `Success` | Estado de salud del presupuesto "Vas bien" (extensión Tripflow v0, ver abajo) |
+| `Error` | Estado de salud del presupuesto "Te pasaste del presupuesto" (extensión Tripflow v0, ver abajo) |
 
 **Tokens confirmados**: `Warning` → `color-status-warning`; `Brand` → `color-action-primary-default`;
-fondo del Track → `color-surface-secondary` / `color-surface-selected` según contexto.
+`Success` → `color-status-success-strong`; `Error` → `color-status-error-strong`; fondo del
+Track → `color-surface-secondary` / `color-surface-selected` según contexto.
+
+**Nota — extensión Tripflow v0**: `Success` y `Error` fueron agregadas para el indicador de
+salud del presupuesto (spec `001-tripflow-v0`, FR-035/FR-038), que necesita un tratamiento
+visual inequívoco de éxito y de error además del ya existente `Warning`. Ambas reutilizan
+tokens semánticos ya documentados en Fundamentos › Color (`color-status-success-strong`,
+`color-status-error-strong`) — no se creó ningún token nuevo. Siguen exactamente la misma
+anatomía y las mismas reglas fijas (altura 4px, `Fill` topado al 100%) que `Warning`/`Brand`.
 
 **Reglas fijas**: altura de 4px constante en toda instancia — no debe modificarse por
 instancia individual.

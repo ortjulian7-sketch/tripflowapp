@@ -55,6 +55,11 @@ implementación — para el esquema de datos ver `data-model.md` y `contracts/`.
    estado anterior pero texto distinto (FR-035).
 4. Hacer que el disponible llegue a 0 o menos → **verificar** estado "Te pasaste del
    presupuesto" con tratamiento de error inequívoco (FR-038).
+5. Crear (o usar) un viaje cuya fecha de salida sea futura → **verificar**: el resumen muestra el
+   presupuesto diario planeado, sin mostrar ninguno de los cuatro estados de salud (FR-037).
+6. Crear (o usar) un viaje cuya fecha de regreso ya pasó → **verificar**: el resumen muestra el
+   resultado final (gastado frente a presupuesto total) en lugar de una proyección de ritmo, sin
+   presupuesto diario restante (FR-037).
 
 ## Escenario 5 — Desglose y listado por día (US5, P2)
 
