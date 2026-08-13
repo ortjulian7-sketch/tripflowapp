@@ -36,6 +36,11 @@
 
 **Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
+**UI Components**: [Si la feature tiene UI, listar cada componente reutilizado de
+`.specify/memory/design-system.md` con su variante (p. ej. "Progress Bar — Style: Warning").
+Si la feature necesita un componente que no está documentado ahí todavía, extraerlo de
+Figma y agregarlo al catálogo ANTES de continuar. Si la feature no tiene UI, usar N/A.]
+
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
