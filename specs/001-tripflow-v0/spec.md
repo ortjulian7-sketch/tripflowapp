@@ -22,6 +22,17 @@ LATAM.
 deudas, ya resuelto por otros), viajeros de negocio (dolor de reembolso/compliance), familias
 (evidencia insuficiente).
 
+## Clarifications
+
+### Session 2026-08-13
+
+- Q: ¿Debe la aplicación permitir registrar y consultar gastos sin conexión a internet? → A: Offline completo (offline-first): registrar, editar, eliminar y consultar funcionan sin conexión, con sincronización automática al recuperarla.
+- Q: ¿Cómo debe deducirse la categoría a partir de la descripción del gasto? → A: Diccionario local de palabras clave que además aprende de las correcciones de la persona; sin dependencia de servicios externos ni de conexión.
+- Q: ¿Se pueden agregar o editar gastos en un viaje cuya fecha de regreso ya pasó? → A: Sí, siempre editable y sin límite de tiempo; el viaje nunca se cierra ni se bloquea automáticamente.
+- Q: ¿Debe la persona poder eliminar su cuenta y todos sus datos desde la aplicación? → A: Sí, desde la app y con confirmación explícita, con borrado permanente e inmediato de todos sus datos.
+- Q: ¿Con qué nombres y con cuántos niveles visuales debe comunicarse el estado de salud del presupuesto? → A: Cuatro estados canónicos ("Vas bien", "Ojo con el ritmo", "Vas acelerado", "Te pasaste del presupuesto") sobre los tres tratamientos de estado del sistema de diseño; los dos intermedios se distinguen por el texto, no por el color.
+- Q: ¿Debe poder eliminarse un viaje individual? (planteado a partir de la asimetría detectada: se podía borrar la cuenta entera pero no un solo viaje) → A: Sí, con confirmación previa explícita; la eliminación es permanente y arrastra todos los gastos del viaje.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Crear mi primer viaje con presupuesto (Priority: P1)
@@ -129,15 +140,17 @@ salud y el presupuesto diario restante cambien de forma coherente al agregar gas
    gastados, **When** la persona abre el resumen, **Then** ve que puede gastar $3.750 por día en
    los 7 días restantes, y que ese margen es menor al que tenía planeado ($4.500 por día).
 2. **Given** un viaje donde el margen diario restante es igual o mayor al planeado inicialmente,
-   **When** la persona abre el resumen, **Then** el mensaje de salud es positivo.
-3. **Given** un viaje donde el margen diario restante cayó por debajo del 70% del planeado,
-   **When** la persona abre el resumen, **Then** el mensaje de salud advierte que va acelerada.
-4. **Given** un viaje que aún no comenzó, **When** la persona abre el resumen, **Then** se le
+   **When** la persona abre el resumen, **Then** el estado mostrado es "Vas bien".
+3. **Given** un viaje donde el margen diario restante quedó entre el 70% y el 100% del planeado,
+   **When** la persona abre el resumen, **Then** el estado mostrado es "Ojo con el ritmo".
+4. **Given** un viaje donde el margen diario restante cayó por debajo del 70% del planeado,
+   **When** la persona abre el resumen, **Then** el estado mostrado es "Vas acelerado".
+5. **Given** un viaje que aún no comenzó, **When** la persona abre el resumen, **Then** se le
    muestra cuánto puede gastar por día según el plan original, sin evaluar ritmo real.
-5. **Given** un viaje abierto (sin fecha de regreso), **When** la persona abre el resumen,
+6. **Given** un viaje abierto (sin fecha de regreso), **When** la persona abre el resumen,
    **Then** no se muestra alerta de ritmo ni presupuesto diario, porque no hay horizonte contra
    el cual calcularlos.
-6. **Given** un viaje ya terminado, **When** la persona lo consulta, **Then** ve el resultado
+7. **Given** un viaje ya terminado, **When** la persona lo consulta, **Then** ve el resultado
    final del viaje en lugar de una proyección de ritmo.
 
 ---
@@ -273,10 +286,11 @@ registrar un gasto, y se intenta eliminar una categoría que ya tiene gastos aso
 
 ---
 
-### User Story 10 - Consultar mis viajes anteriores (Priority: P3)
+### User Story 10 - Consultar y depurar mis viajes anteriores (Priority: P3)
 
 La persona terminó un viaje y meses después crea otro. Quiere poder alternar entre su viaje
-actual y los anteriores para consultar cómo le fue.
+actual y los anteriores para consultar cómo le fue, y también deshacerse de un viaje que ya no
+le interesa conservar o que creó por error.
 
 **Why this priority**: Solo aplica a partir del segundo viaje, que para el perfil objetivo (1 a 3
 viajes al año) ocurre meses después del primero.
@@ -292,6 +306,13 @@ uno muestre exclusivamente sus propios gastos y presupuesto.
    gastos corresponden exclusivamente a ese viaje.
 3. **Given** un viaje seleccionado, **When** la persona registra un gasto, **Then** el gasto se
    asocia a ese viaje y no a ningún otro.
+4. **Given** un viaje con gastos registrados, **When** la persona elige eliminarlo, **Then** el
+   sistema pide confirmación explícita, le indica cuántos gastos va a perder y le advierte que la
+   acción es permanente.
+5. **Given** la confirmación de eliminación aceptada, **When** se completa, **Then** el viaje y
+   todos sus gastos desaparecen, y las categorías de la cuenta permanecen intactas.
+6. **Given** que la persona elimina el único viaje que le quedaba, **When** se completa, **Then**
+   ve el estado vacío que la invita a crear un viaje nuevo.
 
 ---
 
@@ -304,7 +325,8 @@ uno muestre exclusivamente sus propios gastos y presupuesto.
   evaluar. Se muestra el presupuesto diario planeado.
 - **Último día del viaje**: el presupuesto diario restante equivale a todo el disponible.
 - **Viaje ya terminado**: no quedan días restantes; se presenta el resultado final del viaje en
-  lugar de una proyección de ritmo. Evitar cualquier división por cero.
+  lugar de una proyección de ritmo. Evitar cualquier división por cero. El viaje sigue siendo
+  editable sin límite de tiempo: se pueden agregar, editar y eliminar gastos rezagados.
 - **Presupuesto excedido**: el disponible llega a cero o menos. La condición de exceso debe ser
   inequívoca en pantalla, no un número negativo sin contexto.
 - **Cambio de fecha de regreso con el viaje en curso**: está permitido, y recalcula
@@ -312,11 +334,26 @@ uno muestre exclusivamente sus propios gastos y presupuesto.
 - **Cierre de un viaje abierto**: la persona puede agregar la fecha de regreso más adelante; a
   partir de ese momento aparecen días restantes y alerta de ritmo.
 - **Eliminar un gasto**: es permanente y no se puede recuperar.
+- **Eliminar un viaje**: arrastra permanentemente todos sus gastos. Las categorías de la cuenta no
+  se ven afectadas, aunque queden sin ningún gasto asociado.
+- **Eliminar el viaje que se está mostrando**: al completarse, se pasa a mostrar el viaje que
+  corresponda según la regla por defecto; si no queda ninguno, se muestra el estado vacío que
+  invita a crear un viaje.
 - **Eliminar una categoría en uso**: se impide y se explica el motivo.
 - **Gasto con fecha fuera del rango del viaje**: se permite registrarlo; el viaje es el
   contenedor del gasto, no la fecha.
 - **Descripción no interpretable**: nunca bloquea el guardado; la categoría cae en "Otro".
+- **Corrección contradictoria de una misma palabra**: si la persona asocia el mismo término a
+  categorías distintas en momentos distintos, prevalece la corrección más reciente.
+- **Categoría eliminada con asociaciones aprendidas**: al eliminar una categoría, las asociaciones
+  aprendidas que apuntaban a ella se descartan y esos términos vuelven a resolverse desde cero.
 - **Moneda de un viaje**: no se puede cambiar una vez creado el viaje.
+- **Sin conexión**: registrar, editar, eliminar y consultar siguen funcionando con normalidad; los
+  cambios quedan marcados como pendientes y se sincronizan solos al recuperar la conexión.
+- **Cierre de la aplicación con cambios sin sincronizar**: los cambios sobreviven y se sincronizan
+  la próxima vez que haya conexión.
+- **Mismo usuario editando en dos dispositivos sin conexión**: al sincronizar, prevalece el cambio
+  con la marca de tiempo más reciente sobre el mismo gasto o viaje.
 
 ## Requirements *(mandatory)*
 
@@ -372,8 +409,11 @@ uno muestre exclusivamente sus propios gastos y presupuesto.
 **Categorización automática**
 
 - **FR-021**: El sistema DEBE proponer y preseleccionar una categoría a partir del texto de la
-  descripción del gasto.
-- **FR-022**: Los usuarios DEBEN poder cambiar la categoría preseleccionada antes de guardar.
+  descripción del gasto, resolviéndola en el propio dispositivo, sin conexión a internet y sin
+  depender de ningún servicio externo.
+- **FR-022**: Los usuarios DEBEN poder cambiar la categoría preseleccionada antes de guardar, y el
+  sistema DEBE recordar esa corrección para acertar en futuras descripciones equivalentes de esa
+  misma cuenta.
 - **FR-023**: El sistema DEBE preseleccionar la categoría "Otro" cuando no logre deducir una
   categoría de la descripción, de modo que guardar nunca quede bloqueado.
 - **FR-024**: El sistema DEBE dejar de actualizar la preselección automática una vez que la
@@ -403,9 +443,18 @@ uno muestre exclusivamente sus propios gastos y presupuesto.
 - **FR-034**: El sistema DEBE comparar el presupuesto diario restante contra el presupuesto diario
   planeado (presupuesto total dividido por los días totales del viaje) para determinar el estado
   de salud del viaje.
-- **FR-035**: El sistema DEBE distinguir cuatro estados de salud: margen igual o mayor al planeado;
-  margen entre el 70% y el 100% del planeado; margen por debajo del 70% del planeado; y
-  presupuesto excedido.
+- **FR-035**: El sistema DEBE distinguir cuatro estados de salud, identificados con estos nombres
+  canónicos:
+  - **Vas bien**: el presupuesto diario restante es igual o mayor al planeado. Tratamiento visual
+    de éxito.
+  - **Ojo con el ritmo**: el presupuesto diario restante está entre el 70% y el 100% del planeado.
+    Tratamiento visual de advertencia.
+  - **Vas acelerado**: el presupuesto diario restante está por debajo del 70% del planeado.
+    Tratamiento visual de advertencia.
+  - **Te pasaste del presupuesto**: el disponible es cero o menor. Tratamiento visual de error.
+
+  Los dos estados intermedios comparten tratamiento visual y DEBEN distinguirse entre sí por el
+  texto del mensaje, no por el color.
 - **FR-036**: El sistema DEBE comunicar el estado de salud con un mensaje en lenguaje natural que
   incluya el monto que la persona puede gastar por día de aquí en adelante.
 - **FR-037**: El sistema DEBE omitir días restantes, presupuesto diario y estado de salud en
@@ -427,6 +476,40 @@ uno muestre exclusivamente sus propios gastos y presupuesto.
 - **FR-044**: El sistema DEBE mostrar estados vacíos explicativos cuando un viaje no tenga gastos
   o cuando una búsqueda no arroje resultados.
 
+**Conectividad y sincronización**
+
+- **FR-045**: El sistema DEBE permitir crear viajes y registrar, editar, eliminar y consultar
+  gastos sin conexión a internet, con la misma experiencia que estando en línea.
+- **FR-046**: El sistema DEBE calcular y mostrar sin conexión todas las métricas del viaje: total
+  gastado, disponible, porcentaje, desglose por categoría, días restantes y estado de salud.
+- **FR-047**: El sistema DEBE sincronizar automáticamente los cambios hechos sin conexión en
+  cuanto se restablezca la conexión, sin que la persona deba iniciar la sincronización.
+- **FR-048**: El sistema DEBE indicar de forma visible cuándo existen cambios pendientes de
+  sincronizar y cuándo la sincronización se completó.
+- **FR-049**: El sistema NO DEBE perder ningún dato registrado sin conexión, incluso si la
+  aplicación se cierra antes de recuperar la conexión.
+
+**Ciclo de vida del viaje**
+
+- **FR-050**: El sistema DEBE permitir agregar, editar y eliminar gastos en un viaje sin límite de
+  tiempo, incluso después de que su fecha de regreso haya pasado.
+- **FR-051**: El sistema NO DEBE cerrar, archivar ni bloquear un viaje automáticamente por el paso
+  del tiempo. La fecha de regreso solo determina cómo se presenta el resumen, nunca si el viaje
+  admite cambios.
+- **FR-052**: Los usuarios DEBEN poder eliminar un viaje completo.
+- **FR-053**: El sistema DEBE exigir una confirmación explícita antes de eliminar un viaje, que
+  indique cuántos gastos se van a perder y advierta que la acción es permanente.
+- **FR-054**: Al eliminar un viaje, el sistema DEBE borrar de forma permanente todos sus gastos.
+  Las categorías de la cuenta NO DEBEN verse afectadas, porque pertenecen al usuario y no al viaje.
+
+**Privacidad y control de datos**
+
+- **FR-055**: Los usuarios DEBEN poder eliminar su cuenta desde la aplicación, con una confirmación
+  explícita que advierta que la acción es permanente e irreversible.
+- **FR-056**: Al eliminar la cuenta, el sistema DEBE borrar de forma permanente todos los viajes,
+  gastos, categorías y asociaciones aprendidas de esa persona, tanto en el dispositivo como en la
+  copia sincronizada.
+
 ### Key Entities
 
 - **Usuario**: la persona dueña de la cuenta. Contiene sus viajes y su set de categorías.
@@ -438,6 +521,9 @@ uno muestre exclusivamente sus propios gastos y presupuesto.
 - **Categoría**: etiqueta de clasificación del gasto. Atributos: nombre y emoji representativo.
   Pertenece al usuario y se comparte entre todos sus viajes. No puede eliminarse si tiene gastos
   asociados.
+- **Asociación aprendida**: vínculo entre un término usado en las descripciones y la categoría que
+  la persona eligió para él. Pertenece a la cuenta del usuario, se crea o refuerza cuando corrige
+  una categoría sugerida, y alimenta las preselecciones futuras.
 
 ## Success Criteria *(mandatory)*
 
@@ -459,6 +545,10 @@ uno muestre exclusivamente sus propios gastos y presupuesto.
   la suma de los gastos registrados, en el 100% de las verificaciones.
 - **SC-009**: Al menos 7 de cada 10 personas que registran su primer gasto siguen registrando
   gastos al tercer día del viaje.
+- **SC-010**: Una persona sin conexión completa el registro de un gasto y ve el resumen
+  actualizado, sin diferencias respecto de hacerlo en línea.
+- **SC-011**: El 100% de los gastos registrados sin conexión aparecen sincronizados al recuperar
+  internet, sin que la persona haya realizado ninguna acción adicional.
 
 ## Out of Scope
 
@@ -472,7 +562,6 @@ Las siguientes capacidades quedan explícitamente fuera de Tripflow v0:
 - Subcategorías.
 - Presupuestos o topes por categoría (el presupuesto es un único total por viaje).
 - Registro de gastos en una moneda distinta a la del viaje, y conversión entre monedas.
-- Eliminación de viajes.
 
 ## Assumptions
 
@@ -487,7 +576,13 @@ Las siguientes capacidades quedan explícitamente fuera de Tripflow v0:
   Salud, Telecom y Otro, según el diseño de referencia.
 - **"Otro" es permanente**: la categoría "Otro" no puede eliminarse, porque es la garantía de que
   ningún gasto quede sin categoría.
-- **Umbral del 70%**: el corte entre "atención" y "vas acelerada" se fija en el 70% del
+- **Diccionario base**: el producto parte de un diccionario de palabras clave en español LATAM que
+  cubre el vocabulario habitual de viaje de las categorías generales. Su cobertura inicial se
+  amplía con el uso mediante las asociaciones aprendidas, por lo que SC-003 se mide sobre una
+  cuenta con historial, no sobre el primer gasto.
+- **Alcance del aprendizaje**: las asociaciones aprendidas pertenecen a la cuenta del usuario y no
+  se comparten entre cuentas.
+- **Umbral del 70%**: el corte entre "Ojo con el ritmo" y "Vas acelerado" se fija en el 70% del
   presupuesto diario planeado. Es un valor de producto ajustable tras las primeras pruebas con
   usuarios.
 - **Días restantes**: se cuentan desde hoy hasta la fecha de regreso inclusive.
@@ -498,6 +593,13 @@ Las siguientes capacidades quedan explícitamente fuera de Tripflow v0:
 - **Viaje mostrado por defecto**: el viaje cuyo rango de fechas contiene el día de hoy; si no hay
   ninguno, el último viaje creado.
 - **Método de autenticación**: registro estándar con correo y contraseña.
+- **Resolución de conflictos al sincronizar**: prevalece el cambio más reciente sobre el mismo
+  gasto o viaje. Es un supuesto de bajo riesgo porque cada cuenta pertenece a una sola persona y
+  la edición simultánea desde dos dispositivos es excepcional.
+- **Registro e inicio de sesión sin conexión**: crear la cuenta o iniciar sesión por primera vez sí
+  requiere conexión; a partir de ahí la aplicación funciona sin ella.
+- **Eliminación de cuenta sin conexión**: requiere conexión, para poder borrar también la copia
+  sincronizada y no dejar datos huérfanos en el servidor.
 - **Monedas disponibles**: catálogo acotado que cubre las monedas de LATAM más USD y EUR.
 - **Idioma**: todo el contenido visible está en español LATAM, conforme al Principio II de la
   constitución del proyecto.
