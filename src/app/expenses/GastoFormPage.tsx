@@ -8,7 +8,7 @@ import { db } from '@/lib/db'
 import { getCurrency } from '@/lib/currencies'
 import { toDateOnlyString, today } from '@/lib/dates'
 import { parseAmountInput, toEditableAmountString } from '@/lib/money'
-import { useAuth } from '@/features/auth/AuthProvider'
+import { useIdentity } from '@/features/identity/IdentityProvider'
 import { useSelectedTrip } from '@/features/trips/useSelectedTrip'
 import { useCategories } from '@/features/categories/useCategories'
 import { useLearnedAssociations } from '@/features/categorization/useLearnedAssociations'
@@ -26,11 +26,11 @@ interface FormErrors {
 export function GastoFormPage() {
   const { id } = useParams<{ id: string }>()
   const isEditing = !!id
-  const { session } = useAuth()
+  const { userId } = useIdentity()
   const navigate = useNavigate()
 
   const gastoExistente = useLiveQuery(() => (id ? db.gastos.get(id) : undefined), [id])
-  const { viaje: viajeSeleccionado } = useSelectedTrip(session?.user.id)
+  const { viaje: viajeSeleccionado } = useSelectedTrip(userId)
   const tripIdDelGasto = gastoExistente?.trip_id
   const viajeDelGasto = useLiveQuery(
     () => (tripIdDelGasto ? db.viajes.get(tripIdDelGasto) : undefined),
@@ -38,8 +38,8 @@ export function GastoFormPage() {
   )
   const viaje = isEditing ? viajeDelGasto : viajeSeleccionado
 
-  const categorias = useCategories(session?.user.id)
-  const asociaciones = useLearnedAssociations(session?.user.id)
+  const categorias = useCategories(userId)
+  const asociaciones = useLearnedAssociations(userId)
 
   const [monto, setMonto] = useState('')
   const [descripcion, setDescripcion] = useState('')
@@ -88,7 +88,7 @@ export function GastoFormPage() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
-    if (!viaje || !session) return
+    if (!viaje) return
 
     const nextErrors: FormErrors = {}
     const montoMinorUnits = parseAmountInput(monto, currency.decimalDigits)
@@ -123,7 +123,7 @@ export function GastoFormPage() {
         })
       }
       if (categoriaElegidaManualmente) {
-        await registrarCorreccion(session.user.id, descripcion, categoriaId!)
+        await registrarCorreccion(userId, descripcion, categoriaId!)
       }
       navigate('/', { replace: true })
     } finally {

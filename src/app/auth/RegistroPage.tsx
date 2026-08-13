@@ -1,30 +1,102 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
+import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { Input } from '@/components/Input'
+import { db } from '@/lib/db'
 import { useAuth } from '@/features/auth/AuthProvider'
+import { useIdentity } from '@/features/identity/IdentityProvider'
+import { setActiveIdentity } from '@/features/identity/activeIdentity'
 import { seedCategoriasIniciales } from '@/features/categories/seed'
+import {
+  contarViajesLocales,
+  descartarDatosLocales,
+  incluirDatosLocales,
+} from '@/features/identity/linkGuestData'
 
-/** Sin pantallas de valor previas (FR-002): registro es el primer paso del camino dorado. */
+interface VinculacionPendiente {
+  identidadAnterior: string
+  nuevoUserId: string
+  cantidadViajes: number
+}
+
+/**
+ * Una cuenta recién registrada nunca tiene categorías remotas propias
+ * todavía, así que sembrar acá (si la vinculación no trajo ninguna) no
+ * compite con ningún `pull` — a diferencia del bootstrap de rutas, que evita
+ * sembrar con sesión por esa misma razón.
+ */
+async function asegurarCategorias(userId: string): Promise<void> {
+  const cantidad = await db.categorias.where('user_id').equals(userId).count()
+  if (cantidad === 0) await seedCategoriasIniciales(userId)
+}
+
+/** Cuenta opcional (FR-002, FR-004): un paso voluntario para respaldar lo que ya se creó como invitado, no la entrada a la app. */
 export function RegistroPage() {
   const { signUp } = useAuth()
+  const { userId: identidadActiva } = useIdentity()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [vinculacionPendiente, setVinculacionPendiente] = useState<VinculacionPendiente | null>(
+    null,
+  )
+  const [vinculando, setVinculando] = useState(false)
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
     setError(null)
+
+    if (!navigator.onLine) {
+      setError('Este paso requiere conexión a internet.')
+      return
+    }
+
     setLoading(true)
-    const { error: signUpError, userId } = await signUp(email, password)
-    if (signUpError || !userId) {
+    const identidadAnterior = identidadActiva
+    const { error: signUpError, userId: nuevoUserId } = await signUp(email, password)
+    if (signUpError || !nuevoUserId) {
       setError(signUpError ?? 'No pudimos crear tu cuenta. Intentá de nuevo.')
       setLoading(false)
       return
     }
-    await seedCategoriasIniciales(userId)
+
+    if (identidadAnterior === nuevoUserId) {
+      await asegurarCategorias(nuevoUserId)
+      navigate('/onboarding/categorias', { replace: true })
+      return
+    }
+
+    const cantidadViajes = await contarViajesLocales(identidadAnterior)
+    if (cantidadViajes === 0) {
+      await incluirDatosLocales(identidadAnterior, nuevoUserId)
+      await asegurarCategorias(nuevoUserId)
+      setActiveIdentity(nuevoUserId)
+      navigate('/onboarding/categorias', { replace: true })
+      return
+    }
+
+    setLoading(false)
+    setVinculacionPendiente({ identidadAnterior, nuevoUserId, cantidadViajes })
+  }
+
+  async function confirmarIncluir() {
+    if (!vinculacionPendiente) return
+    setVinculando(true)
+    await incluirDatosLocales(vinculacionPendiente.identidadAnterior, vinculacionPendiente.nuevoUserId)
+    await asegurarCategorias(vinculacionPendiente.nuevoUserId)
+    setActiveIdentity(vinculacionPendiente.nuevoUserId)
+    navigate('/onboarding/categorias', { replace: true })
+  }
+
+  async function confirmarDescartar() {
+    if (!vinculacionPendiente) return
+    setVinculando(true)
+    await descartarDatosLocales(vinculacionPendiente.identidadAnterior)
+    await asegurarCategorias(vinculacionPendiente.nuevoUserId)
+    setActiveIdentity(vinculacionPendiente.nuevoUserId)
     navigate('/onboarding/categorias', { replace: true })
   }
 
@@ -32,7 +104,9 @@ export function RegistroPage() {
     <div className="flex min-h-screen items-center justify-center bg-surface-background px-4">
       <div className="w-full max-w-sm">
         <h1 className="mb-1 text-center text-2xl font-semibold text-text-primary">Tripflow</h1>
-        <p className="mb-6 text-center text-text-secondary">Creá tu cuenta para empezar</p>
+        <p className="mb-6 text-center text-text-secondary">
+          Creá tu cuenta para respaldar tus viajes
+        </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <Input
@@ -71,6 +145,18 @@ export function RegistroPage() {
           </Link>
         </p>
       </div>
+
+      <ConfirmDialog
+        open={vinculacionPendiente !== null}
+        tone="neutral"
+        title="Viajes guardados en este dispositivo"
+        description={`Tenés ${vinculacionPendiente?.cantidadViajes ?? 0} ${vinculacionPendiente?.cantidadViajes === 1 ? 'viaje guardado' : 'viajes guardados'} en este dispositivo. ¿Querés incluirlos en tu cuenta nueva?`}
+        confirmLabel="Incluir"
+        cancelLabel="Descartar"
+        onConfirm={confirmarIncluir}
+        onCancel={confirmarDescartar}
+        loading={vinculando}
+      />
     </div>
   )
 }

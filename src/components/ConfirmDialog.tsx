@@ -9,9 +9,11 @@ interface ConfirmDialogProps {
   onConfirm: () => void
   onCancel: () => void
   loading?: boolean
+  /** 'danger' (default) para acciones destructivas; 'neutral' para decisiones no destructivas (research.md §6). */
+  tone?: 'danger' | 'neutral'
 }
 
-/** Confirmación destructiva reutilizable — Button Danger + advertencia en color-status-error. */
+/** Confirmación de dos botones reutilizable — tono 'danger' (Button Danger, texto de advertencia) o 'neutral' (Button Primary, texto secundario). */
 export function ConfirmDialog({
   open,
   title,
@@ -21,6 +23,7 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
   loading = false,
+  tone = 'danger',
 }: ConfirmDialogProps) {
   if (!open) return null
 
@@ -35,7 +38,9 @@ export function ConfirmDialog({
         <h2 id="confirm-dialog-title" className="mb-1.5 text-lg font-semibold text-text-primary">
           {title}
         </h2>
-        <p className="mb-5 text-sm text-status-error">{description}</p>
+        <p className={`mb-5 text-sm ${tone === 'neutral' ? 'text-text-secondary' : 'text-status-error'}`}>
+          {description}
+        </p>
         <div className="flex gap-3">
           <Button
             type="button"
@@ -46,7 +51,13 @@ export function ConfirmDialog({
           >
             {cancelLabel}
           </Button>
-          <Button type="button" variant="danger" size="large" onClick={onConfirm} loading={loading}>
+          <Button
+            type="button"
+            variant={tone === 'neutral' ? 'primary' : 'danger'}
+            size="large"
+            onClick={onConfirm}
+            loading={loading}
+          >
             {confirmLabel}
           </Button>
         </div>

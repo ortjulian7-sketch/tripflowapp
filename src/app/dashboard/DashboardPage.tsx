@@ -5,7 +5,7 @@ import { IconButton } from '@/components/IconButton'
 import { formatDateShort, parseDateOnly } from '@/lib/dates'
 import { getCurrency } from '@/lib/currencies'
 import { formatMoney } from '@/lib/money'
-import { useAuth } from '@/features/auth/AuthProvider'
+import { useIdentity } from '@/features/identity/IdentityProvider'
 import { useSelectedTrip } from '@/features/trips/useSelectedTrip'
 import { useCategories } from '@/features/categories/useCategories'
 import { useExpenses } from '@/features/expenses/useExpenses'
@@ -17,10 +17,10 @@ import { HealthMessage } from './HealthMessage'
 import { TripSwitcher } from './TripSwitcher'
 
 export function DashboardPage() {
-  const { session } = useAuth()
+  const { userId } = useIdentity()
   const navigate = useNavigate()
-  const { viaje, trips, selectTrip } = useSelectedTrip(session?.user.id)
-  const categorias = useCategories(session?.user.id)
+  const { viaje, trips, selectTrip } = useSelectedTrip(userId)
+  const categorias = useCategories(userId)
   const gastos = useExpenses(viaje?.id)
 
   if (viaje === undefined) {

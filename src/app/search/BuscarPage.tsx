@@ -5,16 +5,16 @@ import { ListItem } from '@/components/ListItem'
 import { getCurrency } from '@/lib/currencies'
 import { formatDateShort, parseDateOnly } from '@/lib/dates'
 import { formatMoney } from '@/lib/money'
-import { useAuth } from '@/features/auth/AuthProvider'
+import { useIdentity } from '@/features/identity/IdentityProvider'
 import { useSelectedTrip } from '@/features/trips/useSelectedTrip'
 import { useCategories } from '@/features/categories/useCategories'
 import { useExpenses } from '@/features/expenses/useExpenses'
 import { filtrarPorRangoFechas, filtrarPorTexto } from '@/features/expenses/search'
 
 export function BuscarPage() {
-  const { session } = useAuth()
-  const { viaje } = useSelectedTrip(session?.user.id)
-  const categorias = useCategories(session?.user.id)
+  const { userId } = useIdentity()
+  const { viaje } = useSelectedTrip(userId)
+  const categorias = useCategories(userId)
   const gastos = useExpenses(viaje?.id)
 
   const [texto, setTexto] = useState('')

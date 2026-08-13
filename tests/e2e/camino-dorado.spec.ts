@@ -47,3 +47,56 @@ test('camino dorado: crear cuenta → crear viaje → registrar gasto → ver re
   await expect(page.getByText('$18.750,00 · 42%')).toBeVisible()
   await expect(page.getByText(/Disponible/)).toContainText('$26.250,00')
 })
+
+/**
+ * Camino dorado sin cuenta (US1, quickstart.md Escenario 1): abrir la app →
+ * categorías → crear viaje → registrar gasto, sin pasar por /registro ni
+ * /login. Cada test de Playwright arranca con un contexto de navegador
+ * aislado (sin sesión ni localStorage previo), así que "abrir la app" acá ya
+ * equivale a un dispositivo nuevo sin cuenta.
+ */
+test('camino dorado sin cuenta: categorías → crear viaje → registrar gasto, sin /registro ni /login', async ({
+  page,
+}) => {
+  await page.goto('/')
+
+  // Llega directo a categorías, nunca a una pantalla de cuenta (FR-002).
+  await expect(page.getByRole('heading', { name: 'Tus categorías' })).toBeVisible()
+  expect(page.url()).not.toContain('/registro')
+  expect(page.url()).not.toContain('/login')
+  await page.getByRole('button', { name: 'Continuar' }).click()
+
+  // Crear el primer viaje, igual que con cuenta.
+  await expect(page.getByRole('heading', { name: 'Tu primer viaje' })).toBeVisible()
+  await page.getByLabel('Nombre del viaje').fill('Fin de semana sin cuenta')
+  await page.getByLabel('Destino').fill('Mendoza')
+  await page.getByLabel('Fecha de salida').fill('2026-10-01')
+  await page.getByLabel('Moneda').selectOption('ARS')
+  await page.getByLabel('Presupuesto total').fill('20000')
+  await page.getByRole('button', { name: 'Crear viaje' }).click()
+
+  await expect(page.getByRole('heading', { name: 'Fin de semana sin cuenta' })).toBeVisible()
+
+  // Registrar un gasto sin cuenta (FR-001, FR-003).
+  await page.getByRole('button', { name: 'Nuevo gasto' }).click()
+  await page.getByLabel('Monto').fill('5000')
+  await page.getByLabel('Descripción').fill('Nafta')
+  await page.getByRole('button', { name: /Transporte/ }).click()
+  await page.getByRole('button', { name: 'Guardar' }).click()
+
+  await expect(page.getByText('Mendoza')).toBeVisible()
+
+  // Cerrar y reabrir: el viaje y el gasto siguen ahí sin haber iniciado sesión.
+  await page.reload()
+  await expect(page.getByRole('heading', { name: 'Fin de semana sin cuenta' })).toBeVisible()
+  await expect(page.getByText('Mendoza')).toBeVisible()
+  expect(page.url()).not.toContain('/registro')
+  expect(page.url()).not.toContain('/login')
+
+  // "Crear cuenta o iniciar sesión" existe en un lugar fijo (FR-004), pero
+  // nunca se mostró como paso obligatorio en todo el recorrido anterior.
+  await page.getByRole('link', { name: 'Cuenta' }).click()
+  await expect(
+    page.getByRole('button', { name: 'Crear cuenta o iniciar sesión' }),
+  ).toBeVisible()
+})

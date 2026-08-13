@@ -4,7 +4,7 @@ import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { CURRENCIES, getCurrency } from '@/lib/currencies'
 import { parseAmountInput } from '@/lib/money'
-import { useAuth } from '@/features/auth/AuthProvider'
+import { useIdentity } from '@/features/identity/IdentityProvider'
 import { crearViaje } from '@/features/trips/tripRepository'
 
 const MONEDA_OPTIONS = CURRENCIES.map((currency) => ({
@@ -21,7 +21,7 @@ interface FormErrors {
 }
 
 export function NuevoViajePage() {
-  const { session } = useAuth()
+  const { userId } = useIdentity()
   const navigate = useNavigate()
 
   const [nombre, setNombre] = useState('')
@@ -38,7 +38,6 @@ export function NuevoViajePage() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
-    if (!session) return
 
     const nextErrors: FormErrors = {}
     if (!nombre.trim()) nextErrors.nombre = 'Ponele un nombre al viaje.'
@@ -59,7 +58,7 @@ export function NuevoViajePage() {
     setSaving(true)
     try {
       await crearViaje({
-        userId: session.user.id,
+        userId,
         nombre: nombre.trim(),
         destino: destino.trim(),
         fechaSalida,

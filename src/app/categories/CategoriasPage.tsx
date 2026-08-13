@@ -4,15 +4,15 @@ import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { Input } from '@/components/Input'
 import { ListItem } from '@/components/ListItem'
 import type { Categoria } from '@/lib/db'
-import { useAuth } from '@/features/auth/AuthProvider'
+import { useIdentity } from '@/features/identity/IdentityProvider'
 import { useCategories } from '@/features/categories/useCategories'
 import { crearCategoria, eliminarCategoria, renombrarCategoria } from '@/features/categories/categoryRepository'
 
 const EMOJI_POR_DEFECTO = '🏷️'
 
 export function CategoriasPage() {
-  const { session } = useAuth()
-  const categorias = useCategories(session?.user.id)
+  const { userId } = useIdentity()
+  const categorias = useCategories(userId)
 
   const [nuevoNombre, setNuevoNombre] = useState('')
   const [errorCrear, setErrorCrear] = useState<string | null>(null)
@@ -29,11 +29,10 @@ export function CategoriasPage() {
 
   async function handleCrear(event: FormEvent) {
     event.preventDefault()
-    if (!session) return
     setErrorCrear(null)
     setCreando(true)
     try {
-      await crearCategoria(session.user.id, nuevoNombre, EMOJI_POR_DEFECTO)
+      await crearCategoria(userId, nuevoNombre, EMOJI_POR_DEFECTO)
       setNuevoNombre('')
     } catch (error) {
       setErrorCrear(error instanceof Error ? error.message : 'No pudimos crear la categoría.')

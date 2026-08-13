@@ -3,20 +3,19 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { Chip } from '@/components/Chip'
 import { db } from '@/lib/db'
-import { useAuth } from '@/features/auth/AuthProvider'
+import { useIdentity } from '@/features/identity/IdentityProvider'
 
 /**
  * Onboarding reducido a una sola pantalla saltable con todo preseleccionado
- * (FR-003): las categorías ya se sembraron en el registro, acá solo se
+ * (FR-003): las categorías ya se sembraron al arrancar, acá solo se
  * confirman y se avanza — "Continuar" no requiere ningún cambio.
  */
 export function CategoriasOnboardingPage() {
-  const { session } = useAuth()
+  const { userId } = useIdentity()
   const navigate = useNavigate()
-  const userId = session?.user.id
 
   const categorias = useLiveQuery(
-    () => (userId ? db.categorias.where('user_id').equals(userId).toArray() : []),
+    () => db.categorias.where('user_id').equals(userId).toArray(),
     [userId],
     [],
   )
