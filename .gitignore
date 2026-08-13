@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+
+# Dependencies (added ahead of time; harmless if unused yet)
+node_modules/
+
+# Local Claude Code settings (machine-specific)
+.claude/settings.local.json
