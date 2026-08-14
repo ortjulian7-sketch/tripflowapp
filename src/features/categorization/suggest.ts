@@ -1,6 +1,6 @@
 import type { AsociacionAprendida, Categoria } from '@/lib/db'
 import { DICCIONARIO_BASE } from './dictionary'
-import { normalizarTexto, tokenizar } from './normalize'
+import { normalizarTexto, tokenizar, variantesPlural } from './normalize'
 
 function buscarPorNombre(categorias: Categoria[], nombre: string): Categoria | null {
   return categorias.find((categoria) => categoria.nombre === nombre) ?? null
@@ -27,7 +27,10 @@ export function sugerirCategoria(
 
   const tokens = tokenizar(descripcion)
   for (const [nombreCategoria, palabrasClave] of Object.entries(DICCIONARIO_BASE)) {
-    if (tokens.some((token) => palabrasClave.includes(token))) {
+    const coincide = tokens.some((token) =>
+      variantesPlural(token).some((variante) => palabrasClave.includes(variante)),
+    )
+    if (coincide) {
       const categoria = buscarPorNombre(categorias, nombreCategoria)
       if (categoria) return categoria
     }

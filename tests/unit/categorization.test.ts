@@ -26,6 +26,8 @@ const CATEGORIAS: Categoria[] = [
   categoria('Otro'),
 ]
 
+const CATEGORIAS_CON_LICOR: Categoria[] = [...CATEGORIAS, categoria('Licor')]
+
 function asociacion(termino: string, categoriaId: string): AsociacionAprendida {
   return {
     id: crypto.randomUUID(),
@@ -81,5 +83,25 @@ describe('sugerirCategoria', () => {
     const asociaciones = [asociacion('entrada museo', 'salud')]
     const sugerida = sugerirCategoria('entrada museo', CATEGORIAS, asociaciones)
     expect(sugerida?.nombre).toBe('Salud')
+  })
+
+  it('"me compre una arepa" sugiere Comida', () => {
+    const sugerida = sugerirCategoria('me compre una arepa', CATEGORIAS, [])
+    expect(sugerida?.nombre).toBe('Comida')
+  })
+
+  it('"me compre una cerveza" sugiere Licor cuando la cuenta ya la tiene creada', () => {
+    const sugerida = sugerirCategoria('me compre una cerveza', CATEGORIAS_CON_LICOR, [])
+    expect(sugerida?.nombre).toBe('Licor')
+  })
+
+  it('"me compre unas cervezas" (plural) también sugiere Licor', () => {
+    const sugerida = sugerirCategoria('me compre unas cervezas', CATEGORIAS_CON_LICOR, [])
+    expect(sugerida?.nombre).toBe('Licor')
+  })
+
+  it('sin categoría "Licor" creada, "cerveza" cae de vuelta a Comida', () => {
+    const sugerida = sugerirCategoria('me compre una cerveza', CATEGORIAS, [])
+    expect(sugerida?.nombre).toBe('Comida')
   })
 })

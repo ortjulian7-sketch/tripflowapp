@@ -16,6 +16,8 @@ export type IconName =
   | 'trash'
   | 'spinner'
   | 'user'
+  | 'pin'
+  | 'card'
 
 const paths: Record<IconName, React.ReactNode> = {
   plus: <path d="M8 3v10M3 8h10" />,
@@ -46,6 +48,19 @@ const paths: Record<IconName, React.ReactNode> = {
     <>
       <circle cx="8" cy="5.5" r="2.5" />
       <path d="M3 13.5c0-2.5 2.2-4.5 5-4.5s5 2 5 4.5" />
+    </>
+  ),
+  pin: (
+    <>
+      <path d="M8 14s-5-4.5-5-8a5 5 0 0 1 10 0c0 3.5-5 8-5 8Z" />
+      <circle cx="8" cy="6" r="1.6" />
+    </>
+  ),
+  card: (
+    <>
+      <rect x="2" y="3.5" width="12" height="9" rx="1.8" />
+      <path d="M2 6.2h12" />
+      <path d="M4.5 8.7h1.7M4.5 10.2h3" opacity="0.5" />
     </>
   ),
 }

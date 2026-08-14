@@ -157,12 +157,20 @@ none`). Sin color por defecto — el stroke se bindea por instancia al token sem
 corresponda (`color-icon-secondary`, `color-icon-brand`, `color-text-inverse`, etc.).
 
 **Inventario actual**: Plus, Home, Map, ArrowLeft, ChevronDown, Search, Close, Sparkle,
-Trash, Spinner, User.
+Trash, Spinner, User, Pin, Card.
 
 **Nota — extensión Tripflow v0**: `User` se agregó para el destino de navegación "Cuenta"
 (spec `001-tripflow-v0`, FR-055/FR-056: eliminar cuenta): ningún ícono del inventario
 original representa a la persona/cuenta. Sigue la misma construcción (grilla 16×16, trazo
 1.5px, sin relleno) que el resto del set.
+
+**Nota — empty states**: `Pin` y `Card` se agregaron para los estados vacíos de Dashboard
+(Figma node-ids 213:2149 "EmptyNoTrip" y 213:2445 "EmptyNoExpenses"): ningún ícono del
+inventario original representa "ubicación de viaje" ni "gasto/tarjeta". El estado vacío de
+"sin resultados de búsqueda" (213:2740) reutiliza `Search` sin agregar un ícono nuevo, ya
+que la única diferencia con el glyph existente es un acento decorativo interno. Ambos
+íconos nuevos siguen la misma construcción (grilla 16×16, trazo 1.5px, sin relleno) que el
+resto del set.
 
 **Do's**: usar INSTANCE_SWAP dentro de Button/Nav Item (nunca hardcodear un vector nuevo);
 bindear color a un token semántico; mantener grilla 16×16 y trazo 1.5px en iconos nuevos;

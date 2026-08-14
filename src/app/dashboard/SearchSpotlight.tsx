@@ -8,6 +8,7 @@ import type { Currency } from '@/lib/currencies'
 import { formatDateShort, parseDateOnly } from '@/lib/dates'
 import { formatMoney } from '@/lib/money'
 import { filtrarPorTexto } from '@/features/expenses/search'
+import { EmptySearchResults } from './EmptySearchResults'
 
 interface SearchSpotlightProps {
   open: boolean
@@ -94,9 +95,7 @@ export function SearchSpotlight({
               Todavía no registraste ningún gasto de este viaje.
             </p>
           ) : resultados.length === 0 ? (
-            <p className="px-2 py-6 text-center text-sm text-text-secondary">
-              No encontramos gastos con esos filtros.
-            </p>
+            <EmptySearchResults query={texto} />
           ) : (
             resultados.map((gasto) => {
               const categoria = categoriaPorId.get(gasto.categoria_id)

@@ -13,6 +13,7 @@ import { useExpenses } from '@/features/expenses/useExpenses'
 import { BudgetSummary } from './BudgetSummary'
 import { CategoryBreakdown } from './CategoryBreakdown'
 import { EmptyExpenses } from './EmptyExpenses'
+import { EmptyTrips } from './EmptyTrips'
 import { ExpenseList } from './ExpenseList'
 import { HealthMessage } from './HealthMessage'
 import { SearchSpotlight } from './SearchSpotlight'
@@ -28,9 +29,8 @@ export function DashboardPage() {
 
   if (viaje === undefined) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 text-center">
-        <p className="text-text-secondary">Todavía no creaste ningún viaje.</p>
-        <Button onClick={() => navigate('/viajes/nuevo')}>Crear mi primer viaje</Button>
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <EmptyTrips />
       </div>
     )
   }

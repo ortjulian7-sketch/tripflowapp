@@ -6,6 +6,7 @@ import { writeAndQueue } from '@/features/sync/queue'
 export const CATEGORIAS_CANDIDATAS: { nombre: string; emoji: string }[] = [
   { nombre: 'Alojamiento', emoji: '🏨' },
   { nombre: 'Comida', emoji: '🍔' },
+  { nombre: 'Licor', emoji: '🍺' },
   { nombre: 'Transporte', emoji: '🚗' },
   { nombre: 'Actividades', emoji: '🎟️' },
   { nombre: 'Compras', emoji: '🛍️' },
