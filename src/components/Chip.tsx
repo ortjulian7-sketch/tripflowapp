@@ -14,7 +14,7 @@ export function Chip({ emoji, label, selected = false, className, ...props }: Ch
       className={`flex w-full flex-col items-center gap-1 rounded-input px-2 py-3 text-center transition-colors ${
         selected
           ? 'border border-border-brand bg-surface-selected text-text-brand'
-          : 'border border-transparent bg-surface-elevated text-text-secondary shadow-sm'
+          : 'border border-transparent bg-surface-elevated text-text-secondary shadow-sm hover:bg-surface-secondary'
       } ${className ?? ''}`}
       {...props}
     >

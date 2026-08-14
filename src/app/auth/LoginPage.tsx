@@ -21,7 +21,7 @@ interface VinculacionPendiente {
 
 export function LoginPage() {
   const { signIn } = useAuth()
-  const { userId: identidadActiva } = useIdentity()
+  const { userId: identidadActiva, establecerInvitado } = useIdentity()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -85,6 +85,11 @@ export function LoginPage() {
     navigate('/', { replace: true })
   }
 
+  function handleContinuarComoInvitado() {
+    establecerInvitado()
+    navigate('/onboarding/categorias', { replace: true })
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-surface-background px-4">
       <div className="w-full max-w-sm">
@@ -123,9 +128,18 @@ export function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-text-secondary">
           ¿No tenés cuenta?{' '}
-          <Link to="/registro" className="font-semibold text-text-brand">
+          <Link to="/registro" className="font-semibold text-text-brand transition-opacity hover:opacity-80">
             Crear cuenta
           </Link>
+        </p>
+        <p className="mt-2 text-center text-sm text-text-secondary">
+          <button
+            type="button"
+            onClick={handleContinuarComoInvitado}
+            className="font-semibold text-text-brand transition-opacity hover:opacity-80"
+          >
+            Continuar como invitado
+          </button>
         </p>
       </div>
 

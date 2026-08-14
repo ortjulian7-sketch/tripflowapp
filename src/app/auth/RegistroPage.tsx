@@ -21,7 +21,7 @@ interface VinculacionPendiente {
 /** Cuenta opcional (FR-002, FR-004): un paso voluntario para respaldar lo que ya se creó como invitado, no la entrada a la app. */
 export function RegistroPage() {
   const { signUp } = useAuth()
-  const { userId: identidadActiva } = useIdentity()
+  const { userId: identidadActiva, establecerInvitado } = useIdentity()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -83,6 +83,11 @@ export function RegistroPage() {
     navigate('/onboarding/categorias', { replace: true, state: { cuentaNueva: true } })
   }
 
+  function handleContinuarComoInvitado() {
+    establecerInvitado()
+    navigate('/onboarding/categorias', { replace: true })
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-surface-background px-4">
       <div className="w-full max-w-sm">
@@ -123,9 +128,18 @@ export function RegistroPage() {
 
         <p className="mt-6 text-center text-sm text-text-secondary">
           ¿Ya tenés cuenta?{' '}
-          <Link to="/login" className="font-semibold text-text-brand">
+          <Link to="/login" className="font-semibold text-text-brand transition-opacity hover:opacity-80">
             Iniciar sesión
           </Link>
+        </p>
+        <p className="mt-2 text-center text-sm text-text-secondary">
+          <button
+            type="button"
+            onClick={handleContinuarComoInvitado}
+            className="font-semibold text-text-brand transition-opacity hover:opacity-80"
+          >
+            Continuar como invitado
+          </button>
         </p>
       </div>
 

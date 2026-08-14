@@ -13,8 +13,8 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const styleClasses: Record<IconButtonStyle, string> = {
   primary:
-    'bg-action-primary-default text-text-inverse shadow-brand-glow disabled:bg-action-primary-disabled disabled:shadow-none',
-  secondary: 'bg-surface-elevated text-icon-secondary shadow-md',
+    'bg-action-primary-default text-text-inverse shadow-brand-glow hover:opacity-90 disabled:opacity-100 disabled:bg-action-primary-disabled disabled:shadow-none',
+  secondary: 'bg-surface-elevated text-icon-secondary shadow-md hover:bg-surface-secondary',
 }
 
 const sizeClasses: Record<IconButtonSize, string> = {

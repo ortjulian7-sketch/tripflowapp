@@ -81,9 +81,9 @@ export function DashboardPage() {
           <button
             type="button"
             onClick={() => navigate(`/viajes/${viaje.id}/editar`)}
-            className="shrink-0 font-semibold text-text-brand"
+            className="shrink-0 font-semibold text-text-brand transition-opacity hover:opacity-80"
           >
-            Editar
+            Editar viaje
           </button>
         </div>
 

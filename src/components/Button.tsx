@@ -13,9 +13,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const styleClasses: Record<ButtonStyle, string> = {
   primary:
-    'bg-action-primary-default text-text-inverse shadow-sm disabled:bg-action-primary-disabled disabled:text-text-placeholder disabled:shadow-none',
+    'bg-action-primary-default text-text-inverse shadow-sm hover:opacity-90 disabled:opacity-100 disabled:bg-action-primary-disabled disabled:text-text-placeholder disabled:shadow-none',
   secondary:
-    'bg-surface-elevated text-text-brand border border-border-brand disabled:text-text-placeholder disabled:border-text-placeholder',
+    'bg-surface-elevated text-text-brand border border-border-brand hover:bg-surface-secondary disabled:text-text-placeholder disabled:border-text-placeholder disabled:hover:bg-surface-elevated',
   danger:
     'bg-status-error-strong text-status-error-on-strong shadow-sm hover:bg-status-error-strong-hover disabled:bg-action-primary-disabled disabled:text-text-placeholder disabled:shadow-none',
 }

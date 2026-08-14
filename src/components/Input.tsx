@@ -120,8 +120,18 @@ export function Input(props: InputProps) {
     )
   }
 
-  const { label, error, helperText, leadingIcon, leadingText, secure, className, type, ...inputProps } =
-    props
+  const {
+    label,
+    showLabel: _showLabel,
+    error,
+    helperText,
+    leadingIcon,
+    leadingText,
+    secure,
+    className,
+    type,
+    ...inputProps
+  } = props
   const leadingWidthClass = leadingIcon || leadingText ? 'pl-10' : 'pl-4'
 
   return (

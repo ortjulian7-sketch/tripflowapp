@@ -16,6 +16,10 @@ export async function crearCategoria(
   if (!nombreLimpio) {
     throw new Error('El nombre no puede estar vacío.')
   }
+  const emojiLimpio = emoji.trim()
+  if (!emojiLimpio) {
+    throw new Error('El emoji no puede estar vacío.')
+  }
   if (await nombreYaExiste(userId, nombreLimpio)) {
     throw new Error('Ya existe una categoría con ese nombre.')
   }
@@ -25,7 +29,7 @@ export async function crearCategoria(
     id: newId(),
     user_id: userId,
     nombre: nombreLimpio,
-    emoji,
+    emoji: emojiLimpio,
     protegida: false,
     created_at: ahora,
     updated_at: ahora,
@@ -39,7 +43,11 @@ export async function crearCategoria(
   return categoria
 }
 
-export async function renombrarCategoria(categoriaId: string, nuevoNombre: string): Promise<Categoria> {
+export async function editarCategoria(
+  categoriaId: string,
+  nuevoNombre: string,
+  nuevoEmoji: string,
+): Promise<Categoria> {
   const categoria = await db.categorias.get(categoriaId)
   if (!categoria) {
     throw new Error('La categoría no existe.')
@@ -49,6 +57,10 @@ export async function renombrarCategoria(categoriaId: string, nuevoNombre: strin
   if (!nombreLimpio) {
     throw new Error('El nombre no puede estar vacío.')
   }
+  const emojiLimpio = nuevoEmoji.trim()
+  if (!emojiLimpio) {
+    throw new Error('El emoji no puede estar vacío.')
+  }
   if (await nombreYaExiste(categoria.user_id, nombreLimpio, categoriaId)) {
     throw new Error('Ya existe una categoría con ese nombre.')
   }
@@ -56,6 +68,7 @@ export async function renombrarCategoria(categoriaId: string, nuevoNombre: strin
   const actualizada: Categoria = {
     ...categoria,
     nombre: nombreLimpio,
+    emoji: emojiLimpio,
     updated_at: new Date().toISOString(),
   }
   await writeAndQueue({

@@ -6,6 +6,7 @@ import { CURRENCIES, getCurrency } from '@/lib/currencies'
 import { parseAmountInput } from '@/lib/money'
 import { useIdentity } from '@/features/identity/IdentityProvider'
 import { crearViaje } from '@/features/trips/tripRepository'
+import { useTrips } from '@/features/trips/useTrips'
 
 const MONEDA_OPTIONS = CURRENCIES.map((currency) => ({
   value: currency.code,
@@ -23,6 +24,8 @@ interface FormErrors {
 export function NuevoViajePage() {
   const { userId } = useIdentity()
   const navigate = useNavigate()
+  const viajes = useTrips(userId ?? undefined)
+  const esPrimerViaje = viajes?.length === 0
 
   const [nombre, setNombre] = useState('')
   const [destino, setDestino] = useState('')
@@ -75,7 +78,9 @@ export function NuevoViajePage() {
   return (
     <div className="mx-auto flex w-full max-w-sm flex-col gap-6 py-6">
       <div>
-        <h1 className="mb-1 text-xl font-semibold text-text-primary">Tu primer viaje</h1>
+        <h1 className="mb-1 text-xl font-semibold text-text-primary">
+          {esPrimerViaje ? 'Tu primer viaje' : 'Nuevo viaje'}
+        </h1>
         <p className="text-text-secondary">
           Con presupuesto y moneda ya podés empezar a registrar gastos.
         </p>

@@ -18,13 +18,15 @@ export function NavItem({ to, icon, label, layout, end }: NavItemProps) {
       end={end}
       className={({ isActive }) =>
         layout === 'horizontal'
-          ? `flex items-center gap-3 rounded-button px-4 py-2.5 transition-colors ${
+          ? `group flex items-center gap-3 rounded-button px-4 py-2.5 transition-colors ${
               isActive
                 ? 'bg-surface-secondary font-semibold text-text-brand'
-                : 'text-text-secondary'
+                : 'text-text-secondary hover:bg-surface-secondary hover:text-text-brand'
             }`
-          : `flex flex-1 flex-col items-center gap-1 py-2 transition-colors ${
-              isActive ? 'font-semibold text-text-brand' : 'text-text-secondary'
+          : `group flex flex-1 flex-col items-center gap-1 py-2 transition-colors ${
+              isActive
+                ? 'font-semibold text-text-brand'
+                : 'text-text-secondary hover:text-text-brand'
             }`
       }
     >
@@ -33,7 +35,7 @@ export function NavItem({ to, icon, label, layout, end }: NavItemProps) {
           <Icon
             name={icon}
             size={20}
-            className={isActive ? 'text-text-brand' : 'text-icon-secondary'}
+            className={isActive ? 'text-text-brand' : 'text-icon-secondary group-hover:text-text-brand'}
           />
           <span className={layout === 'horizontal' ? 'text-sm' : 'text-[10px]'}>{label}</span>
         </>

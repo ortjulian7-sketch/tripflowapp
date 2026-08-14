@@ -53,7 +53,7 @@ export function ListItem({
         <button
           type="button"
           onClick={onClick}
-          className="flex min-w-0 flex-1 items-center gap-3.5 rounded-input px-2 py-1.5 text-left transition-colors active:bg-surface-secondary"
+          className="flex min-w-0 flex-1 items-center gap-3.5 rounded-input px-2 py-1.5 text-left transition-colors hover:bg-surface-secondary active:bg-surface-secondary"
         >
           {content}
         </button>

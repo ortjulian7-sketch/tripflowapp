@@ -59,7 +59,7 @@ export function ExpenseList({ gastos, categorias, currency }: ExpenseListProps) 
                 key={gasto.id}
                 emoji={categoria?.emoji ?? '🗂️'}
                 title={gasto.descripcion}
-                subtitle={FORMATO_HORA.format(new Date(gasto.momento_registro))}
+                subtitle={`${categoria?.nombre ?? 'Otro'} · ${FORMATO_HORA.format(new Date(gasto.momento_registro))}`}
                 amount={formatMoney(gasto.monto, currency)}
                 onClick={() => navigate(`/gastos/${gasto.id}/editar`)}
                 trailingIcon="trash"

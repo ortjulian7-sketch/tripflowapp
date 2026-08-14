@@ -179,7 +179,7 @@ export function GastoFormPage() {
             Cancelar
           </Button>
           <Button type="submit" size="large" loading={saving}>
-            Guardar
+            {isEditing ? 'Actualizar gasto' : 'Crear gasto'}
           </Button>
         </div>
       </form>
