@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { getCurrency } from '@/lib/currencies'
-import { formatMoney, parseAmountInput, percentage, sum } from '@/lib/money'
+import { formatCompactAmount, formatMoney, parseAmountInput, percentage, sum } from '@/lib/money'
 
 describe('sum', () => {
   it('suma montos enteros sin error de redondeo (SC-008)', () => {
@@ -52,8 +52,8 @@ describe('parseAmountInput', () => {
 })
 
 describe('formatMoney', () => {
-  it('formatea con el símbolo del catálogo, nunca hardcodeado', () => {
-    expect(formatMoney(4500000, getCurrency('MXN'))).toBe('$45.000,00')
+  it('formatea con el símbolo del catálogo, nunca hardcodeado, siempre como entero', () => {
+    expect(formatMoney(4500000, getCurrency('MXN'))).toBe('$45.000')
   })
 
   it('formatea monedas sin decimales sin mostrar centavos', () => {
@@ -61,7 +61,33 @@ describe('formatMoney', () => {
   })
 
   it('usa el símbolo distintivo de cada moneda', () => {
-    expect(formatMoney(100000, getCurrency('USD'))).toBe('US$1.000,00')
-    expect(formatMoney(100000, getCurrency('BRL'))).toBe('R$1.000,00')
+    expect(formatMoney(100000, getCurrency('USD'))).toBe('US$1.000')
+    expect(formatMoney(100000, getCurrency('BRL'))).toBe('R$1.000')
+  })
+
+  it('redondea al entero más cercano, nunca muestra decimales', () => {
+    expect(formatMoney(187550, getCurrency('MXN'))).toBe('$1.876')
+  })
+})
+
+describe('formatCompactAmount', () => {
+  it('no abrevia por debajo de 1000 — siempre entero', () => {
+    expect(formatCompactAmount(95000, getCurrency('MXN'))).toBe('$950')
+  })
+
+  it('abrevia en miles (K) a partir de 1000, redondeado sin decimales', () => {
+    expect(formatCompactAmount(1875000, getCurrency('MXN'))).toBe('$19K')
+  })
+
+  it('abrevia en millones (M) a partir de 1.000.000', () => {
+    expect(formatCompactAmount(150000000, getCurrency('MXN'))).toBe('$2M')
+  })
+
+  it('en monedas sin decimales (p. ej. CLP), funciona igual por debajo de 1000', () => {
+    expect(formatCompactAmount(500, getCurrency('CLP'))).toBe('$500')
+  })
+
+  it('en monedas sin decimales, abrevia igual en miles', () => {
+    expect(formatCompactAmount(45000, getCurrency('CLP'))).toBe('$45K')
   })
 })

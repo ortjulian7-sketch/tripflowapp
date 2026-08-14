@@ -1,6 +1,6 @@
 import type { Categoria, Gasto } from '@/lib/db'
 import type { Currency } from '@/lib/currencies'
-import { formatMoney } from '@/lib/money'
+import { formatCompactAmount } from '@/lib/money'
 import { acumuladoPorCategoria } from '@/features/expenses/breakdown'
 
 interface CategoryBreakdownProps {
@@ -27,9 +27,9 @@ export function CategoryBreakdown({ gastos, categorias, currency }: CategoryBrea
         const categoria = categoriaPorId.get(categoriaId)
         const barHeight = maxTotal > 0 ? Math.max(4, (total / maxTotal) * BAR_HEIGHT_MAX) : 4
         return (
-          <div key={categoriaId} className="flex min-w-[64px] flex-1 flex-col items-center gap-[7px]">
+          <div key={categoriaId} className="flex min-w-[62px] flex-1 flex-col items-center gap-[7px]">
             <span className="whitespace-nowrap text-xs font-medium text-text-primary">
-              {formatMoney(total, currency)}
+              {formatCompactAmount(total, currency)}
             </span>
             <div className="flex h-[110px] w-full items-end overflow-hidden rounded-lg bg-surface-secondary">
               <div

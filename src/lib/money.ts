@@ -37,14 +37,36 @@ export function percentage(part: number, total: number): number {
 /**
  * El símbolo viene siempre del catálogo de `currencies.ts` (`Currency.symbol`),
  * nunca hardcodeado — Input/Design System Do's & Don'ts.
+ *
+ * Todo el sistema muestra montos como enteros — nunca centavos — sin importar
+ * los `decimalDigits` de la moneda (que siguen existiendo para el ingreso de
+ * datos, no para la visualización).
  */
 export function formatMoney(minorUnits: number, currency: Currency): string {
   // 'es-AR' agrupa por miles de forma consistente (incluso 4 dígitos) con el
   // separador de punto/coma estándar en español LATAM (a diferencia del
   // locale genérico 'es', que no agrupa números de 4 dígitos).
   const amount = new Intl.NumberFormat('es-AR', {
-    minimumFractionDigits: currency.decimalDigits,
-    maximumFractionDigits: currency.decimalDigits,
+    maximumFractionDigits: 0,
   }).format(toMajorUnits(minorUnits, currency.decimalDigits))
   return `${currency.symbol}${amount}`
+}
+
+/**
+ * Monto compacto para etiquetas de espacio reducido (mini-chart de
+ * categorías): siempre entero, la parte numérica nunca supera 3 dígitos — a
+ * partir de 1000 se abrevia en miles/millones (redondeado, sin decimales).
+ */
+export function formatCompactAmount(minorUnits: number, currency: Currency): string {
+  const major = toMajorUnits(minorUnits, currency.decimalDigits)
+  const abs = Math.abs(major)
+
+  if (abs < 1000) {
+    const amount = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 }).format(major)
+    return `${currency.symbol}${amount}`
+  }
+
+  const suffix = abs < 1_000_000 ? 'K' : 'M'
+  const escala = suffix === 'K' ? 1_000 : 1_000_000
+  return `${currency.symbol}${Math.round(major / escala)}${suffix}`
 }

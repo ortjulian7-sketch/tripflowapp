@@ -50,9 +50,9 @@ test('camino dorado: bienvenida → crear cuenta → crear viaje → registrar g
   await page.getByRole('button', { name: 'Guardar' }).click()
 
   // Resumen actualizado con los números correctos (SC-006 a SC-008).
-  await expect(page.getByText('$18.750,00 ARS')).toBeVisible()
+  await expect(page.getByText('$18.750 ARS')).toBeVisible()
   await expect(page.getByText('42% del presupuesto gastado')).toBeVisible()
-  await expect(page.getByText('$26.250,00')).toBeVisible()
+  await expect(page.getByText('$26.250')).toBeVisible()
 })
 
 /**
