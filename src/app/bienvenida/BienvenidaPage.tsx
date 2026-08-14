@@ -10,7 +10,7 @@ export function BienvenidaPage() {
 
   function handleContinuarComoInvitado() {
     establecerInvitado()
-    navigate('/onboarding/categorias', { replace: true })
+    navigate('/onboarding/intro', { replace: true })
   }
 
   return (

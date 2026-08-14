@@ -532,6 +532,81 @@ cambiar la altura de 4px.
 
 ---
 
+### Onboarding Illustration
+
+**Node**: [215:3068](https://www.figma.com/design/y4MkvZsFG6K6P5uvjFeLR3/tripflow?node-id=215-3068),
+[215:3349](https://www.figma.com/design/y4MkvZsFG6K6P5uvjFeLR3/tripflow?node-id=215-3349),
+[215:3639](https://www.figma.com/design/y4MkvZsFG6K6P5uvjFeLR3/tripflow?node-id=215-3639),
+[215:3921](https://www.figma.com/design/y4MkvZsFG6K6P5uvjFeLR3/tripflow?node-id=215-3921)
+
+**Uso**: Gráfico decorativo de 140×140 centrado en cada paso de la introducción explicativa
+(`005-onboarding-intro`). Uno por paso, sin significado interactivo — solo apoyo visual del
+título/subtítulo de ese paso.
+
+**Anatomía**: asset SVG plano de 140×140, sin slots ni composición en vivo (a diferencia de
+`Icon`, no es un set de línea de 16×16 reusable — cada ilustración es única a su paso).
+
+**Tokens confirmados**: paso 2 ("Ve exactamente dónde va tu dinero") reconstruido a mano como SVG
+plano a partir de las primitivas `Blue` ya documentadas en Fundamentos › Color
+(`#0500FE`/`#4247FF`/`#7B7FFF`/`#A5A8FF` = pasos 500/400/300/200), en vez de 5 assets superpuestos
++ 4 `<p>` de emoji como exportó Figma — mismo resultado visual, un solo archivo. Los demás 3 pasos
+se exportaron tal cual (SVG plano de Figma, sin reconstrucción).
+
+**Assets**: `public/icons/onboarding-plan.svg` (paso 1), `public/icons/onboarding-categories.svg`
+(paso 2), `public/icons/onboarding-insights.svg` (paso 3), `public/icons/onboarding-ready.svg`
+(paso 4) — mismo patrón de `public/icons/*.svg` + `<img>` ya usado por `Logo`.
+
+**Do's**: un solo asset estático por paso, referenciado con `<img>` (nunca inline `<svg>` a mano
+salvo el caso ya documentado arriba); mantener 140×140 en cualquier paso nuevo que se agregue.
+
+**Don'ts**: no recolorear por instancia (los assets ya traen su color bakeado, igual que `Logo`);
+no reutilizar una ilustración de onboarding fuera de ese contexto (no es un ícono genérico del
+inventario de `Icon`).
+
+**Nota — extensión spec `005-onboarding-intro`**: no existía ningún componente de ilustración
+decorativa antes de esta feature — el inventario de `Icon` es exclusivamente línea 16×16 para
+navegación/acciones. Se agrega este componente separado en vez de forzar las ilustraciones dentro
+del sistema de `Icon`, porque su propósito (apoyo visual de un paso explicativo) y su anatomía
+(asset plano de 140×140 sin bindeo de color por instancia) son distintos.
+
+---
+
+### Step Indicator
+
+**Node**: visible en [215:3068](https://www.figma.com/design/y4MkvZsFG6K6P5uvjFeLR3/tripflow?node-id=215-3068)
+y las otras 3 pantallas de onboarding — sin página de documentación propia en Figma (mismo caso que
+`List Item`).
+
+**Uso**: Indica en qué paso de una secuencia de pantallas está la persona (introducción de
+onboarding, 4 pasos). Puramente informativo, no interactivo (no se toca para saltar de paso).
+
+**Anatomía**: fila de puntos — uno por paso — donde el punto activo se estira a una píldora
+horizontal (20×6px) y el resto quedan como círculos pequeños (6×6px).
+
+**Propiedades**:
+
+| Propiedad | Valores |
+|---|---|
+| Cantidad de pasos | entero (4 en `005-onboarding-intro`) |
+| Paso activo | índice 0-based |
+
+**Tokens confirmados**: punto/píldora activa `color-icon-brand`; puntos inactivos
+`color-surface-selected`; radio `full` (999px, mismo token que Icon Button) en ambos.
+
+**Do's**: exactamente un punto activo a la vez, en el índice del paso visible; mantener el tamaño
+fijo (6px de alto) en cualquier cantidad de pasos.
+
+**Don'ts**: no usarlo como control interactivo (no reemplaza al CTA ni a "Saltar" para navegar
+entre pasos); no mezclar con Progress Bar (ese es para una métrica continua, este es para una
+posición discreta en una secuencia).
+
+**Nota — extensión spec `005-onboarding-intro`**: no existía ningún indicador de pasos antes de
+esta feature. Se documenta acá porque reaparece en las 4 pantallas de la introducción y podría
+reutilizarse en cualquier futura secuencia de pasos (p. ej. un wizard), a diferencia de las
+Onboarding Illustration de arriba, que son contenido único por pantalla.
+
+---
+
 ## Cómo agregar un componente nuevo a este catálogo
 
 1. Abrir la página de documentación del componente en Figma (patrón `↳ NombreComponente`).

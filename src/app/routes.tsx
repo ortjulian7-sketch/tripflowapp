@@ -7,6 +7,7 @@ import { AppShell } from './AppShell'
 import { BienvenidaPage } from './bienvenida/BienvenidaPage'
 import { RegistroPage } from './auth/RegistroPage'
 import { LoginPage } from './auth/LoginPage'
+import { IntroOnboardingPage } from './onboarding/IntroOnboardingPage'
 import { CategoriasOnboardingPage } from './onboarding/CategoriasOnboardingPage'
 import { NuevoViajePage } from './trips/NuevoViajePage'
 import { EditarViajePage } from './trips/EditarViajePage'
@@ -48,10 +49,10 @@ function Bootstrap() {
     categorias.length === 0 && (isGuest || Boolean(location.state?.cuentaNueva))
 
   if (necesitaOnboarding) {
-    if (location.pathname === '/onboarding/categorias') return <Outlet />
-    return (
-      <Navigate to="/onboarding/categorias" replace state={{ cuentaNueva: !isGuest }} />
-    )
+    if (location.pathname === '/onboarding/intro' || location.pathname === '/onboarding/categorias') {
+      return <Outlet />
+    }
+    return <Navigate to="/onboarding/intro" replace state={{ cuentaNueva: !isGuest }} />
   }
   // Conteo en cero sin necesitar onboarding: cuenta preexistente con un
   // `pull` todavía en curso — esperar en vez de redirigir.
@@ -90,6 +91,7 @@ export function AppRoutes() {
 
       <Route element={<EntradaGate />}>
         <Route element={<Bootstrap />}>
+          <Route path="/onboarding/intro" element={<IntroOnboardingPage />} />
           <Route path="/onboarding/categorias" element={<CategoriasOnboardingPage />} />
 
           <Route element={<AppShell />}>

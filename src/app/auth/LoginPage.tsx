@@ -87,7 +87,7 @@ export function LoginPage() {
 
   function handleContinuarComoInvitado() {
     establecerInvitado()
-    navigate('/onboarding/categorias', { replace: true })
+    navigate('/onboarding/intro', { replace: true })
   }
 
   return (

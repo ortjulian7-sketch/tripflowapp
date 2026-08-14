@@ -51,7 +51,7 @@ export function RegistroPage() {
     }
 
     if (identidadAnterior === nuevoUserId) {
-      navigate('/onboarding/categorias', { replace: true, state: { cuentaNueva: true } })
+      navigate('/onboarding/intro', { replace: true, state: { cuentaNueva: true } })
       return
     }
 
@@ -59,7 +59,7 @@ export function RegistroPage() {
     if (cantidadViajes === 0) {
       if (identidadAnterior) await incluirDatosLocales(identidadAnterior, nuevoUserId)
       setActiveIdentity(nuevoUserId)
-      navigate('/onboarding/categorias', { replace: true, state: { cuentaNueva: true } })
+      navigate('/onboarding/intro', { replace: true, state: { cuentaNueva: true } })
       return
     }
 
@@ -72,7 +72,7 @@ export function RegistroPage() {
     setVinculando(true)
     await incluirDatosLocales(vinculacionPendiente.identidadAnterior, vinculacionPendiente.nuevoUserId)
     setActiveIdentity(vinculacionPendiente.nuevoUserId)
-    navigate('/onboarding/categorias', { replace: true, state: { cuentaNueva: true } })
+    navigate('/onboarding/intro', { replace: true, state: { cuentaNueva: true } })
   }
 
   async function confirmarDescartar() {
@@ -80,12 +80,12 @@ export function RegistroPage() {
     setVinculando(true)
     await descartarDatosLocales(vinculacionPendiente.identidadAnterior)
     setActiveIdentity(vinculacionPendiente.nuevoUserId)
-    navigate('/onboarding/categorias', { replace: true, state: { cuentaNueva: true } })
+    navigate('/onboarding/intro', { replace: true, state: { cuentaNueva: true } })
   }
 
   function handleContinuarComoInvitado() {
     establecerInvitado()
-    navigate('/onboarding/categorias', { replace: true })
+    navigate('/onboarding/intro', { replace: true })
   }
 
   return (

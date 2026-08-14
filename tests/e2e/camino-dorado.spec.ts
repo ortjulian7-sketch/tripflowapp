@@ -23,6 +23,12 @@ test('camino dorado: bienvenida → crear cuenta → crear viaje → registrar g
   await page.getByLabel('Contraseña').fill(password)
   await page.getByRole('button', { name: 'Crear cuenta' }).click()
 
+  // Introducción del onboarding: los 4 pasos, recorridos enteros (FR-001, FR-005).
+  await page.getByRole('button', { name: 'Empezar' }).click()
+  await page.getByRole('button', { name: 'Siguiente' }).click()
+  await page.getByRole('button', { name: 'Siguiente' }).click()
+  await page.getByRole('button', { name: 'Seleccionar mis categorías' }).click()
+
   // Onboarding de categorías: nada preseleccionado, se eligen a mano (FR-012, FR-013).
   await expect(page.getByRole('heading', { name: 'Tus categorías' })).toBeVisible()
   await page.getByRole('button', { name: /Comida/ }).click()
@@ -73,6 +79,9 @@ test('camino dorado sin cuenta: bienvenida → categorías → crear viaje → r
   expect(page.url()).not.toContain('/registro')
   expect(page.url()).not.toContain('/login')
   await page.getByRole('button', { name: 'Continuar como invitado' }).click()
+
+  // Introducción del onboarding: saltada desde el paso 1 (FR-003, quickstart.md Escenario 2).
+  await page.getByRole('button', { name: 'Saltar' }).click()
 
   // Categorías: nada preseleccionado, se elige a mano (FR-012, FR-013).
   await expect(page.getByRole('heading', { name: 'Tus categorías' })).toBeVisible()
