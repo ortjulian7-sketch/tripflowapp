@@ -8,7 +8,7 @@ interface ProgressBarProps {
 }
 
 const fillClasses: Record<ProgressBarStyle, string> = {
-  warning: 'bg-status-warning',
+  warning: 'bg-status-warning-strong',
   brand: 'bg-action-primary-default',
   success: 'bg-status-success-strong',
   error: 'bg-status-error-strong',

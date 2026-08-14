@@ -1,4 +1,4 @@
-import { ProgressBar } from '@/components/ProgressBar'
+import { Icon } from '@/components/Icon'
 import type { Viaje } from '@/lib/db'
 import type { Currency } from '@/lib/currencies'
 import { estadoViaje, parseDateOnly, remainingDays, totalDays } from '@/lib/dates'
@@ -6,26 +6,40 @@ import { formatMoney } from '@/lib/money'
 import { calcularSalud, type EstadoSalud } from '@/features/budget-health/health'
 import { calcularTotales } from '@/features/budget-health/totals'
 
-const MENSAJES: Record<EstadoSalud, (monto: string) => string> = {
-  vas_bien: (monto) => `Vas bien: te alcanzan ${monto} por día para sostener el presupuesto.`,
-  ojo_con_el_ritmo: (monto) => `Ojo con el ritmo: te quedan ${monto} por día si querés sostenerlo.`,
-  vas_acelerado: (monto) => `Vas acelerado: solo te quedan ${monto} por día — bajá el ritmo.`,
-  te_pasaste_del_presupuesto: () => 'Te pasaste del presupuesto de este viaje.',
+const TITULOS: Record<EstadoSalud, string> = {
+  vas_bien: 'Vas bien por ahora',
+  ojo_con_el_ritmo: 'Ojo con el ritmo',
+  vas_acelerado: 'Vas acelerado',
+  te_pasaste_del_presupuesto: 'Te pasaste del presupuesto',
 }
 
-const VARIANTE_BARRA: Record<EstadoSalud, 'success' | 'warning' | 'error'> = {
-  vas_bien: 'success',
+const MENSAJES: Record<EstadoSalud, (monto: string) => string> = {
+  vas_bien: (monto) => `Te alcanzan ${monto} por día para sostener el presupuesto.`,
+  ojo_con_el_ritmo: (monto) => `Te quedan ${monto} por día si querés sostenerlo.`,
+  vas_acelerado: (monto) => `Solo te quedan ${monto} por día — bajá el ritmo.`,
+  te_pasaste_del_presupuesto: () => 'Ajustá el resto del viaje para compensarlo.',
+}
+
+// Los dos estados intermedios comparten tono — se distinguen por texto, no por color (FR-036).
+type Tono = 'brand' | 'warning' | 'error'
+
+const TONO_SALUD: Record<EstadoSalud, Tono> = {
+  vas_bien: 'brand',
   ojo_con_el_ritmo: 'warning',
   vas_acelerado: 'warning',
   te_pasaste_del_presupuesto: 'error',
 }
 
-// Los dos estados intermedios comparten color — se distinguen por texto, no por color (FR-036).
-const COLOR_TEXTO: Record<EstadoSalud, string> = {
-  vas_bien: 'text-status-success',
-  ojo_con_el_ritmo: 'text-status-warning',
-  vas_acelerado: 'text-status-warning',
-  te_pasaste_del_presupuesto: 'text-status-error',
+const TITLE_CLASSES: Record<Tono, string> = {
+  brand: 'text-text-brand',
+  warning: 'text-status-warning-strong',
+  error: 'text-status-error',
+}
+
+const ICON_CLASSES: Record<Tono, string> = {
+  brand: 'text-icon-brand',
+  warning: 'text-status-warning-strong',
+  error: 'text-status-error',
 }
 
 interface HealthMessageProps {
@@ -35,9 +49,10 @@ interface HealthMessageProps {
 }
 
 /**
- * Decide entre los tres casos especiales de FR-037 (viaje abierto, no
- * comenzado, terminado) y el mensaje de salud canónico (viaje cerrado en
- * curso), reutilizando siempre el mismo cálculo puro de health.ts.
+ * Callout "AIInsight" (Figma node 204:1525): ícono sparkle + título corto +
+ * detalle, siempre sobre superficie tintada — mismo contenedor para los tres
+ * casos especiales de FR-037 (viaje abierto, no comenzado, terminado) y el
+ * mensaje de salud canónico (viaje en curso).
  */
 export function HealthMessage({ viaje, montosGastos, currency }: HealthMessageProps) {
   if (!viaje.fecha_regreso) {
@@ -54,19 +69,27 @@ export function HealthMessage({ viaje, montosGastos, currency }: HealthMessagePr
 
   if (estado === 'no_comenzado') {
     return (
-      <p className="text-sm text-text-secondary">
-        Planeás gastar {formatMoney(Math.round(diarioPlaneado), currency)} por día.
-      </p>
+      <InsightCard
+        tono="brand"
+        title="Antes de salir"
+        body={`Planeás gastar ${formatMoney(Math.round(diarioPlaneado), currency)} por día.`}
+      />
     )
   }
 
   if (estado === 'terminado') {
-    const estadoFinal: EstadoSalud = disponible <= 0 ? 'te_pasaste_del_presupuesto' : 'vas_bien'
-    const mensaje =
-      estadoFinal === 'te_pasaste_del_presupuesto'
-        ? `Te pasaste del presupuesto por ${formatMoney(Math.abs(disponible), currency)}.`
-        : 'Terminaste el viaje gastando dentro del presupuesto.'
-    return <p className={`text-sm font-semibold ${COLOR_TEXTO[estadoFinal]}`}>{mensaje}</p>
+    const excedido = disponible <= 0
+    return (
+      <InsightCard
+        tono={excedido ? 'error' : 'brand'}
+        title={excedido ? 'Te pasaste del presupuesto' : 'Viaje terminado'}
+        body={
+          excedido
+            ? `Fue por ${formatMoney(Math.abs(disponible), currency)}.`
+            : 'Terminaste el viaje gastando dentro del presupuesto.'
+        }
+      />
+    )
   }
 
   const salud = calcularSalud({
@@ -77,19 +100,24 @@ export function HealthMessage({ viaje, montosGastos, currency }: HealthMessagePr
   })
 
   const monto = formatMoney(Math.round(salud.diarioRestante ?? salud.diarioPlaneado), currency)
-  const ratio =
-    salud.diarioRestante !== null && salud.diarioPlaneado > 0
-      ? (salud.diarioRestante / salud.diarioPlaneado) * 100
-      : salud.estado === 'te_pasaste_del_presupuesto'
-        ? 0
-        : 100
 
   return (
-    <div className="flex flex-col gap-1.5">
-      <p className={`text-sm font-semibold ${COLOR_TEXTO[salud.estado]}`}>
-        {MENSAJES[salud.estado](monto)}
-      </p>
-      <ProgressBar percent={ratio} variant={VARIANTE_BARRA[salud.estado]} />
+    <InsightCard
+      tono={TONO_SALUD[salud.estado]}
+      title={TITULOS[salud.estado]}
+      body={MENSAJES[salud.estado](monto)}
+    />
+  )
+}
+
+function InsightCard({ tono, title, body }: { tono: Tono; title: string; body: string }) {
+  return (
+    <div className="flex gap-2.5 rounded-card border border-[rgba(5,0,254,0.09)] bg-surface-secondary p-card-padding dark:border-[rgba(165,168,255,0.09)]">
+      <Icon name="sparkle" size={14} className={`mt-0.5 shrink-0 ${ICON_CLASSES[tono]}`} />
+      <div className="flex flex-col gap-0.5">
+        <p className={`font-brand text-[15px] font-semibold ${TITLE_CLASSES[tono]}`}>{title}</p>
+        <p className="text-sm text-text-primary">{body}</p>
+      </div>
     </div>
   )
 }

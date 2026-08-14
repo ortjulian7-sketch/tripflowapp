@@ -15,3 +15,8 @@ export function getOrCreateActiveIdentity(): string {
 export function setActiveIdentity(id: string): void {
   localStorage.setItem(STORAGE_KEY, id)
 }
+
+/** Lee la identidad de invitado sin crearla (contracts/entrada-gate-contract.md): nunca escribe `localStorage`. */
+export function peekActiveIdentity(): string | null {
+  return localStorage.getItem(STORAGE_KEY)
+}

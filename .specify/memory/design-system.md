@@ -119,7 +119,7 @@ en Button, Input, Card, Icon Button, Chip, Nav Item, List Item): `4, 6, 8, 10, 1
 
 ### Typography
 
-Dos familias: **Geist** (toda la UI) y **Catamaran** (un único uso de marca: `Brand/Display`).
+Dos familias: **Geist** (toda la UI) y **Catamaran** (uso de marca: `Brand/Display`).
 
 | Estilo | Fuente · tamaño · line-height · tracking |
 |---|---|
@@ -170,6 +170,46 @@ pedir un icono nuevo solo si ninguno existente cubre el significado.
 
 **Don'ts**: no mezclar estilos filled/outlined; no escalar de forma no uniforme; no bakear
 un color fijo; no duplicar un icono existente bajo otro nombre.
+
+---
+
+### Logo
+
+**Sin node de Figma propio** — no es un componente del archivo de diseño original; se extrajo de
+los assets de marca ya existentes en el código (ver Nota de extensión abajo).
+
+**Uso**: Identifica la marca Tripflow. Aparece en la bienvenida (tamaño grande, junto a las
+opciones de entrada) y en la navegación principal (sidebar de escritorio y header de la barra
+inferior en móvil), siempre en el mismo tamaño reducido que ya usaba el wordmark del sidebar.
+
+**Anatomía**: ícono de marca (`public/icons/icon.svg`, ya usado como favicon/PWA) + wordmark
+"Tripflow" en una sola línea, ícono a la izquierda del texto.
+
+**Propiedades**:
+
+| Propiedad | Valores |
+|---|---|
+| Size | Small (nav: sidebar y header móvil) · Large (bienvenida) |
+
+**Tokens confirmados**: wordmark tipografía `Brand/Display` (Catamaran SemiBold 15px/18px), color
+`color-text-brand`; ícono el asset SVG existente tal cual (ya trae su propio color de marca
+bakeado — es un logo, no un ícono de línea que deba bindear `stroke` a un token semántico como el
+set de `Icon`).
+
+**Do's**: mantener siempre ícono + wordmark juntos (nunca el ícono solo como sustituto del wordmark
+en navegación); usar Small en cualquier contexto de navegación recurrente, Large solo para momentos
+de mayor protagonismo de marca (bienvenida).
+
+**Don'ts**: no recolorear el ícono por instancia; no separar el wordmark del ícono en layouts
+donde ambos caben; no introducir una tipografía, paleta o ícono de marca distintos a los ya
+documentados en Fundamentos.
+
+**Nota — extensión spec `003-landing-nav-redesign`**: antes de esta feature no existía un
+componente de logo — el ícono (`public/icons/icon.svg`) solo se usaba como favicon/PWA, y el
+wordmark "Tripflow" era texto plano únicamente en el sidebar de escritorio (ausente en móvil y en
+cualquier pantalla de entrada). Se agrega este componente reutilizando exactamente esos dos assets
+ya existentes (ícono + tipografía `Brand/Display`/Catamaran + `color-text-brand`), sin diseñar una
+identidad visual nueva (spec `003-landing-nav-redesign`, FR-016 a FR-018).
 
 ---
 
@@ -325,6 +365,16 @@ plana/tintada por diseño); no usarlo para un solo botón o icono; no agregar es
 foco/interactivo (es un contenedor estático — si el contenido debe ser tappable, envolverlo
 en Button o usar List Item/Nav Item).
 
+**Nota — instancia "AIInsight" (Dashboard, nodes 204:1525 / 205:1756)**: variante puntual de
+Card usada para el callout de salud del presupuesto — fondo `color-surface-secondary` (como
+Subtle) pero con borde `rgba(5,0,254,0.09)` (marca al 9%, más tenue que `color-border-brand`
+de Outlined). Contenido fijo: ícono `sparkle` (`color-icon-brand`, 14px) + título corto en
+**Catamaran SemiBold 15px** (`color-text-brand` — segundo uso de marca además del wordmark del
+Logo) + cuerpo en `Body/Medium` (`color-text-primary`). El tono del título/ícono puede
+cambiar a `color-status-warning-strong`/`color-status-error` cuando el mensaje de salud lo
+amerita (FR-036 del spec `001-tripflow-v0`: los estados intermedios comparten tono, se
+distinguen por texto).
+
 ---
 
 ### Nav Item
@@ -449,9 +499,11 @@ manualmente para representar el valor, y queda recortado (`clip`) para nunca exc
 | `Success` | Estado de salud del presupuesto "Vas bien" (extensión Tripflow v0, ver abajo) |
 | `Error` | Estado de salud del presupuesto "Te pasaste del presupuesto" (extensión Tripflow v0, ver abajo) |
 
-**Tokens confirmados**: `Warning` → `color-status-warning`; `Brand` → `color-action-primary-default`;
-`Success` → `color-status-success-strong`; `Error` → `color-status-error-strong`; fondo del
-Track → `color-surface-secondary` / `color-surface-selected` según contexto.
+**Tokens confirmados**: `Warning` → `color-status-warning-strong` (corregido tras inspeccionar
+el Dashboard real, node 204:1499 — el pixel exportado usa `-strong`, no la base `color-status-warning`);
+`Brand` → `color-action-primary-default`; `Success` → `color-status-success-strong`; `Error` →
+`color-status-error-strong`; fondo del Track → `color-surface-secondary` / `color-surface-selected`
+según contexto.
 
 **Nota — extensión Tripflow v0**: `Success` y `Error` fueron agregadas para el indicador de
 salud del presupuesto (spec `001-tripflow-v0`, FR-035/FR-038), que necesita un tratamiento

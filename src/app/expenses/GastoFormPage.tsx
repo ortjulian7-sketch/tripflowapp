@@ -30,7 +30,7 @@ export function GastoFormPage() {
   const navigate = useNavigate()
 
   const gastoExistente = useLiveQuery(() => (id ? db.gastos.get(id) : undefined), [id])
-  const { viaje: viajeSeleccionado } = useSelectedTrip(userId)
+  const { viaje: viajeSeleccionado } = useSelectedTrip(userId!)
   const tripIdDelGasto = gastoExistente?.trip_id
   const viajeDelGasto = useLiveQuery(
     () => (tripIdDelGasto ? db.viajes.get(tripIdDelGasto) : undefined),
@@ -38,8 +38,8 @@ export function GastoFormPage() {
   )
   const viaje = isEditing ? viajeDelGasto : viajeSeleccionado
 
-  const categorias = useCategories(userId)
-  const asociaciones = useLearnedAssociations(userId)
+  const categorias = useCategories(userId!)
+  const asociaciones = useLearnedAssociations(userId!)
 
   const [monto, setMonto] = useState('')
   const [descripcion, setDescripcion] = useState('')
@@ -123,7 +123,7 @@ export function GastoFormPage() {
         })
       }
       if (categoriaElegidaManualmente) {
-        await registrarCorreccion(userId, descripcion, categoriaId!)
+        await registrarCorreccion(userId!, descripcion, categoriaId!)
       }
       navigate('/', { replace: true })
     } finally {

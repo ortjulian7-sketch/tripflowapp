@@ -12,7 +12,7 @@ const EMOJI_POR_DEFECTO = '🏷️'
 
 export function CategoriasPage() {
   const { userId } = useIdentity()
-  const categorias = useCategories(userId)
+  const categorias = useCategories(userId!)
 
   const [nuevoNombre, setNuevoNombre] = useState('')
   const [errorCrear, setErrorCrear] = useState<string | null>(null)
@@ -32,7 +32,7 @@ export function CategoriasPage() {
     setErrorCrear(null)
     setCreando(true)
     try {
-      await crearCategoria(userId, nuevoNombre, EMOJI_POR_DEFECTO)
+      await crearCategoria(userId!, nuevoNombre, EMOJI_POR_DEFECTO)
       setNuevoNombre('')
     } catch (error) {
       setErrorCrear(error instanceof Error ? error.message : 'No pudimos crear la categoría.')

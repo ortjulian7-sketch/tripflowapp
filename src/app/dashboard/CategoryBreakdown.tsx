@@ -1,7 +1,6 @@
-import { ProgressBar } from '@/components/ProgressBar'
 import type { Categoria, Gasto } from '@/lib/db'
 import type { Currency } from '@/lib/currencies'
-import { formatMoney, sum } from '@/lib/money'
+import { formatMoney } from '@/lib/money'
 import { acumuladoPorCategoria } from '@/features/expenses/breakdown'
 
 interface CategoryBreakdownProps {
@@ -10,30 +9,40 @@ interface CategoryBreakdownProps {
   currency: Currency
 }
 
+const BAR_HEIGHT_MAX = 110
+// Gradiente de marca (Blue 500 → 100) para distinguir el ranking de categorías,
+// igual que el mini-chart del Dashboard en Figma (node 204:1539).
+const BAR_COLORS = ['#0500fe', '#4247ff', '#7b7fff', '#a5a8ff', '#c8caff']
+
 export function CategoryBreakdown({ gastos, categorias, currency }: CategoryBreakdownProps) {
   const acumulados = acumuladoPorCategoria(gastos)
   if (acumulados.length === 0) return null
 
-  const totalGastado = sum(gastos.map((gasto) => gasto.monto))
   const categoriaPorId = new Map(categorias.map((categoria) => [categoria.id, categoria]))
+  const maxTotal = acumulados[0].total
 
   return (
-    <div className="flex flex-col gap-3">
-      <h2 className="text-sm font-semibold text-text-secondary">Por categoría</h2>
-      {acumulados.map(({ categoriaId, total }) => {
+    <div className="flex items-end gap-2.5 overflow-x-auto pb-1">
+      {acumulados.map(({ categoriaId, total }, index) => {
         const categoria = categoriaPorId.get(categoriaId)
-        const percent = totalGastado > 0 ? (total / totalGastado) * 100 : 0
+        const barHeight = maxTotal > 0 ? Math.max(4, (total / maxTotal) * BAR_HEIGHT_MAX) : 4
         return (
-          <div key={categoriaId} className="flex flex-col gap-1">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-text-primary">
-                {categoria?.emoji ?? '🗂️'} {categoria?.nombre ?? 'Otro'}
-              </span>
-              <span className="font-semibold text-text-primary">
-                {formatMoney(total, currency)}
-              </span>
+          <div key={categoriaId} className="flex min-w-[64px] flex-1 flex-col items-center gap-[7px]">
+            <span className="whitespace-nowrap text-xs font-medium text-text-primary">
+              {formatMoney(total, currency)}
+            </span>
+            <div className="flex h-[110px] w-full items-end overflow-hidden rounded-lg bg-surface-secondary">
+              <div
+                className="w-full rounded-lg"
+                style={{
+                  height: `${barHeight}px`,
+                  backgroundColor: BAR_COLORS[Math.min(index, BAR_COLORS.length - 1)],
+                }}
+              />
             </div>
-            <ProgressBar percent={percent} variant="brand" />
+            <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[9px] bg-surface-secondary text-base">
+              {categoria?.emoji ?? '🗂️'}
+            </span>
           </div>
         )
       })}

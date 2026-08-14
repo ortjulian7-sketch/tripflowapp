@@ -73,3 +73,11 @@ const FORMATO_FECHA_CORTA = new Intl.DateTimeFormat('es', { day: 'numeric', mont
 export function formatDateShort(date: Date): string {
   return FORMATO_FECHA_CORTA.format(date)
 }
+
+/** Encabezado de grupo de gastos: "Hoy" / "Ayer" / fecha corta para el resto. */
+export function formatDayLabel(date: Date, hoy: Date = today()): string {
+  const diff = diffInDays(date, hoy)
+  if (diff === 0) return 'Hoy'
+  if (diff === 1) return 'Ayer'
+  return formatDateShort(date)
+}

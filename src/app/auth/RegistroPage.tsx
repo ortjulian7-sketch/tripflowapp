@@ -3,11 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { Input } from '@/components/Input'
-import { db } from '@/lib/db'
 import { useAuth } from '@/features/auth/AuthProvider'
 import { useIdentity } from '@/features/identity/IdentityProvider'
 import { setActiveIdentity } from '@/features/identity/activeIdentity'
-import { seedCategoriasIniciales } from '@/features/categories/seed'
 import {
   contarViajesLocales,
   descartarDatosLocales,
@@ -18,17 +16,6 @@ interface VinculacionPendiente {
   identidadAnterior: string
   nuevoUserId: string
   cantidadViajes: number
-}
-
-/**
- * Una cuenta recién registrada nunca tiene categorías remotas propias
- * todavía, así que sembrar acá (si la vinculación no trajo ninguna) no
- * compite con ningún `pull` — a diferencia del bootstrap de rutas, que evita
- * sembrar con sesión por esa misma razón.
- */
-async function asegurarCategorias(userId: string): Promise<void> {
-  const cantidad = await db.categorias.where('user_id').equals(userId).count()
-  if (cantidad === 0) await seedCategoriasIniciales(userId)
 }
 
 /** Cuenta opcional (FR-002, FR-004): un paso voluntario para respaldar lo que ya se creó como invitado, no la entrada a la app. */
@@ -64,40 +51,36 @@ export function RegistroPage() {
     }
 
     if (identidadAnterior === nuevoUserId) {
-      await asegurarCategorias(nuevoUserId)
-      navigate('/onboarding/categorias', { replace: true })
+      navigate('/onboarding/categorias', { replace: true, state: { cuentaNueva: true } })
       return
     }
 
-    const cantidadViajes = await contarViajesLocales(identidadAnterior)
+    const cantidadViajes = identidadAnterior ? await contarViajesLocales(identidadAnterior) : 0
     if (cantidadViajes === 0) {
-      await incluirDatosLocales(identidadAnterior, nuevoUserId)
-      await asegurarCategorias(nuevoUserId)
+      if (identidadAnterior) await incluirDatosLocales(identidadAnterior, nuevoUserId)
       setActiveIdentity(nuevoUserId)
-      navigate('/onboarding/categorias', { replace: true })
+      navigate('/onboarding/categorias', { replace: true, state: { cuentaNueva: true } })
       return
     }
 
     setLoading(false)
-    setVinculacionPendiente({ identidadAnterior, nuevoUserId, cantidadViajes })
+    setVinculacionPendiente({ identidadAnterior: identidadAnterior!, nuevoUserId, cantidadViajes })
   }
 
   async function confirmarIncluir() {
     if (!vinculacionPendiente) return
     setVinculando(true)
     await incluirDatosLocales(vinculacionPendiente.identidadAnterior, vinculacionPendiente.nuevoUserId)
-    await asegurarCategorias(vinculacionPendiente.nuevoUserId)
     setActiveIdentity(vinculacionPendiente.nuevoUserId)
-    navigate('/onboarding/categorias', { replace: true })
+    navigate('/onboarding/categorias', { replace: true, state: { cuentaNueva: true } })
   }
 
   async function confirmarDescartar() {
     if (!vinculacionPendiente) return
     setVinculando(true)
     await descartarDatosLocales(vinculacionPendiente.identidadAnterior)
-    await asegurarCategorias(vinculacionPendiente.nuevoUserId)
     setActiveIdentity(vinculacionPendiente.nuevoUserId)
-    navigate('/onboarding/categorias', { replace: true })
+    navigate('/onboarding/categorias', { replace: true, state: { cuentaNueva: true } })
   }
 
   return (

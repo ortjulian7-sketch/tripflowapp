@@ -4,7 +4,7 @@ import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { ListItem } from '@/components/ListItem'
 import type { Categoria, Gasto } from '@/lib/db'
 import type { Currency } from '@/lib/currencies'
-import { formatDateShort, parseDateOnly } from '@/lib/dates'
+import { formatDayLabel, parseDateOnly } from '@/lib/dates'
 import { formatMoney } from '@/lib/money'
 import { agruparPorDia } from '@/features/expenses/breakdown'
 import { eliminarGasto } from '@/features/expenses/expenseRepository'
@@ -38,12 +38,15 @@ export function ExpenseList({ gastos, categorias, currency }: ExpenseListProps) 
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col">
       {grupos.map((grupo) => (
-        <div key={grupo.fecha} className="flex flex-col gap-1">
-          <div className="flex items-baseline justify-between px-2">
-            <span className="text-xs font-semibold uppercase text-text-secondary">
-              {formatDateShort(parseDateOnly(grupo.fecha))}
+        <div
+          key={grupo.fecha}
+          className="flex flex-col divide-y divide-black/[0.06] dark:divide-white/[0.06]"
+        >
+          <div className="flex items-baseline justify-between pb-2 pt-4">
+            <span className="text-xs font-semibold text-text-secondary">
+              {formatDayLabel(parseDateOnly(grupo.fecha))}
             </span>
             <span className="text-xs text-text-secondary">
               {formatMoney(grupo.subtotal, currency)}
@@ -56,7 +59,7 @@ export function ExpenseList({ gastos, categorias, currency }: ExpenseListProps) 
                 key={gasto.id}
                 emoji={categoria?.emoji ?? '🗂️'}
                 title={gasto.descripcion}
-                subtitle={`${categoria?.nombre ?? 'Otro'} · ${FORMATO_HORA.format(new Date(gasto.momento_registro))}`}
+                subtitle={FORMATO_HORA.format(new Date(gasto.momento_registro))}
                 amount={formatMoney(gasto.monto, currency)}
                 onClick={() => navigate(`/gastos/${gasto.id}/editar`)}
                 trailingIcon="trash"

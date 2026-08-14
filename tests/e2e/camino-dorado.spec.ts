@@ -8,19 +8,25 @@ import { expect, test } from '@playwright/test'
  * confirmación de correo desactivada (para que `signUp` devuelva sesión de
  * inmediato) — mismo prerrequisito que quickstart.md.
  */
-test('camino dorado: crear cuenta → crear viaje → registrar gasto → ver resumen', async ({
+test('camino dorado: bienvenida → crear cuenta → crear viaje → registrar gasto → ver resumen', async ({
   page,
 }) => {
   const email = `tripflow-e2e-${Date.now()}@example.com`
   const password = 'contrasena-segura-123'
 
-  await page.goto('/registro')
+  // Bienvenida: primera pantalla en un dispositivo sin identidad (FR-001).
+  await page.goto('/')
+  await expect(page.getByRole('button', { name: 'Registrarse' })).toBeVisible()
+  await page.getByRole('button', { name: 'Registrarse' }).click()
+
   await page.getByLabel('Correo').fill(email)
   await page.getByLabel('Contraseña').fill(password)
   await page.getByRole('button', { name: 'Crear cuenta' }).click()
 
-  // Onboarding de categorías: todo preseleccionado, solo continuar (FR-003).
+  // Onboarding de categorías: nada preseleccionado, se eligen a mano (FR-012, FR-013).
   await expect(page.getByRole('heading', { name: 'Tus categorías' })).toBeVisible()
+  await page.getByRole('button', { name: /Comida/ }).click()
+  await page.getByRole('button', { name: /Transporte/ }).click()
   await page.getByRole('button', { name: 'Continuar' }).click()
 
   // Crear el primer viaje.
@@ -37,33 +43,40 @@ test('camino dorado: crear cuenta → crear viaje → registrar gasto → ver re
   await expect(page.getByText('Bariloche')).toBeVisible()
 
   // Registrar un gasto.
-  await page.getByRole('button', { name: 'Nuevo gasto' }).click()
+  await page.getByRole('button', { name: 'Registrar gasto' }).click()
   await page.getByLabel('Monto').fill('18750')
   await page.getByLabel('Descripción').fill('Almuerzo')
   await page.getByRole('button', { name: /Comida/ }).click()
   await page.getByRole('button', { name: 'Guardar' }).click()
 
   // Resumen actualizado con los números correctos (SC-006 a SC-008).
-  await expect(page.getByText('$18.750,00 · 42%')).toBeVisible()
-  await expect(page.getByText(/Disponible/)).toContainText('$26.250,00')
+  await expect(page.getByText('$18.750,00 ARS')).toBeVisible()
+  await expect(page.getByText('42% del presupuesto gastado')).toBeVisible()
+  await expect(page.getByText('$26.250,00')).toBeVisible()
 })
 
 /**
  * Camino dorado sin cuenta (US1, quickstart.md Escenario 1): abrir la app →
- * categorías → crear viaje → registrar gasto, sin pasar por /registro ni
- * /login. Cada test de Playwright arranca con un contexto de navegador
- * aislado (sin sesión ni localStorage previo), así que "abrir la app" acá ya
- * equivale a un dispositivo nuevo sin cuenta.
+ * bienvenida → "Continuar como invitado" → categorías → crear viaje →
+ * registrar gasto, sin pasar por /registro ni /login. Cada test de
+ * Playwright arranca con un contexto de navegador aislado (sin sesión ni
+ * localStorage previo), así que "abrir la app" acá ya equivale a un
+ * dispositivo nuevo sin ninguna identidad establecida.
  */
-test('camino dorado sin cuenta: categorías → crear viaje → registrar gasto, sin /registro ni /login', async ({
+test('camino dorado sin cuenta: bienvenida → categorías → crear viaje → registrar gasto, sin /registro ni /login', async ({
   page,
 }) => {
   await page.goto('/')
 
-  // Llega directo a categorías, nunca a una pantalla de cuenta (FR-002).
-  await expect(page.getByRole('heading', { name: 'Tus categorías' })).toBeVisible()
+  // Bienvenida: nunca una pantalla de cuenta obligatoria (FR-001, FR-002).
+  await expect(page.getByRole('button', { name: 'Continuar como invitado' })).toBeVisible()
   expect(page.url()).not.toContain('/registro')
   expect(page.url()).not.toContain('/login')
+  await page.getByRole('button', { name: 'Continuar como invitado' }).click()
+
+  // Categorías: nada preseleccionado, se elige a mano (FR-012, FR-013).
+  await expect(page.getByRole('heading', { name: 'Tus categorías' })).toBeVisible()
+  await page.getByRole('button', { name: /Transporte/ }).click()
   await page.getByRole('button', { name: 'Continuar' }).click()
 
   // Crear el primer viaje, igual que con cuenta.
@@ -78,7 +91,7 @@ test('camino dorado sin cuenta: categorías → crear viaje → registrar gasto,
   await expect(page.getByRole('heading', { name: 'Fin de semana sin cuenta' })).toBeVisible()
 
   // Registrar un gasto sin cuenta (FR-001, FR-003).
-  await page.getByRole('button', { name: 'Nuevo gasto' }).click()
+  await page.getByRole('button', { name: 'Registrar gasto' }).click()
   await page.getByLabel('Monto').fill('5000')
   await page.getByLabel('Descripción').fill('Nafta')
   await page.getByRole('button', { name: /Transporte/ }).click()

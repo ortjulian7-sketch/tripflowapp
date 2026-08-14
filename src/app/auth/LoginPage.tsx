@@ -57,16 +57,16 @@ export function LoginPage() {
       return
     }
 
-    const cantidadViajes = await contarViajesLocales(identidadAnterior)
+    const cantidadViajes = identidadAnterior ? await contarViajesLocales(identidadAnterior) : 0
     if (cantidadViajes === 0) {
-      await incluirDatosLocales(identidadAnterior, nuevoUserId)
+      if (identidadAnterior) await incluirDatosLocales(identidadAnterior, nuevoUserId)
       setActiveIdentity(nuevoUserId)
       navigate('/', { replace: true })
       return
     }
 
     setLoading(false)
-    setVinculacionPendiente({ identidadAnterior, nuevoUserId, cantidadViajes })
+    setVinculacionPendiente({ identidadAnterior: identidadAnterior!, nuevoUserId, cantidadViajes })
   }
 
   async function confirmarIncluir() {

@@ -1,24 +1,35 @@
-import { useLiveQuery } from 'dexie-react-hooks'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { Chip } from '@/components/Chip'
-import { db } from '@/lib/db'
 import { useIdentity } from '@/features/identity/IdentityProvider'
+import { CATEGORIAS_CANDIDATAS, guardarSeleccionInicial } from '@/features/categories/seed'
 
 /**
- * Onboarding reducido a una sola pantalla saltable con todo preseleccionado
- * (FR-003): las categorías ya se sembraron al arrancar, acá solo se
- * confirman y se avanza — "Continuar" no requiere ningún cambio.
+ * Selección deliberada del onboarding (FR-012 a FR-014): catálogo candidato
+ * en memoria, nada seleccionado por defecto, cada toque solo cambia estado
+ * local hasta que "Continuar" persiste la elección.
  */
 export function CategoriasOnboardingPage() {
   const { userId } = useIdentity()
   const navigate = useNavigate()
+  const [seleccion, setSeleccion] = useState<Set<string>>(new Set())
+  const [guardando, setGuardando] = useState(false)
 
-  const categorias = useLiveQuery(
-    () => db.categorias.where('user_id').equals(userId).toArray(),
-    [userId],
-    [],
-  )
+  function alternarSeleccion(nombre: string) {
+    setSeleccion((actual) => {
+      const siguiente = new Set(actual)
+      if (siguiente.has(nombre)) siguiente.delete(nombre)
+      else siguiente.add(nombre)
+      return siguiente
+    })
+  }
+
+  async function handleContinuar() {
+    setGuardando(true)
+    await guardarSeleccionInicial(userId!, seleccion)
+    navigate('/viajes/nuevo', { replace: true })
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-surface-background px-4 py-10">
@@ -27,23 +38,22 @@ export function CategoriasOnboardingPage() {
           Tus categorías
         </h1>
         <p className="mb-6 text-center text-text-secondary">
-          Empezamos con estas — después podés editarlas cuando quieras.
+          Elegí las que quieras usar — después podés crear más desde Cuenta.
         </p>
 
         <div className="mb-8 grid grid-cols-4 gap-2">
-          {categorias?.map((categoria) => (
+          {CATEGORIAS_CANDIDATAS.map((categoria) => (
             <Chip
-              key={categoria.id}
+              key={categoria.nombre}
               emoji={categoria.emoji}
               label={categoria.nombre}
-              selected
-              tabIndex={-1}
-              className="cursor-default"
+              selected={seleccion.has(categoria.nombre)}
+              onClick={() => alternarSeleccion(categoria.nombre)}
             />
           ))}
         </div>
 
-        <Button size="large" onClick={() => navigate('/viajes/nuevo', { replace: true })}>
+        <Button size="large" loading={guardando} onClick={handleContinuar}>
           Continuar
         </Button>
       </div>

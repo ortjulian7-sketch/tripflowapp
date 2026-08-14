@@ -58,7 +58,7 @@ export function NuevoViajePage() {
     setSaving(true)
     try {
       await crearViaje({
-        userId,
+        userId: userId!,
         nombre: nombre.trim(),
         destino: destino.trim(),
         fechaSalida,
@@ -73,71 +73,69 @@ export function NuevoViajePage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-surface-background px-4 py-10">
-      <div className="w-full max-w-sm">
-        <h1 className="mb-1 text-center text-2xl font-semibold text-text-primary">
-          Tu primer viaje
-        </h1>
-        <p className="mb-6 text-center text-text-secondary">
+    <div className="mx-auto flex w-full max-w-sm flex-col gap-6 py-6">
+      <div>
+        <h1 className="mb-1 text-xl font-semibold text-text-primary">Tu primer viaje</h1>
+        <p className="text-text-secondary">
           Con presupuesto y moneda ya podés empezar a registrar gastos.
         </p>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <Input
-            type="text"
-            label="Nombre del viaje"
-            placeholder="Vacaciones de verano"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            error={errors.nombre}
-          />
-          <Input
-            type="text"
-            label="Destino"
-            placeholder="Bariloche"
-            value={destino}
-            onChange={(e) => setDestino(e.target.value)}
-            error={errors.destino}
-          />
-          <div className="grid grid-cols-2 gap-3">
-            <Input
-              type="date"
-              label="Fecha de salida"
-              value={fechaSalida}
-              onChange={(e) => setFechaSalida(e.target.value)}
-              error={errors.fechaSalida}
-            />
-            <Input
-              type="date"
-              label="Fecha de regreso"
-              helperText="Opcional: dejalo vacío si todavía no lo sabés"
-              value={fechaRegreso}
-              onChange={(e) => setFechaRegreso(e.target.value)}
-            />
-          </div>
-          <Input
-            type="select"
-            label="Moneda"
-            placeholder="Elegí una moneda"
-            options={MONEDA_OPTIONS}
-            value={moneda}
-            onChange={setMoneda}
-            error={errors.moneda}
-          />
-          <Input
-            type="number"
-            label="Presupuesto total"
-            placeholder="0"
-            leadingText={simbolo}
-            value={presupuesto}
-            onChange={(e) => setPresupuesto(e.target.value)}
-            error={errors.presupuesto}
-          />
-          <Button type="submit" size="large" loading={saving}>
-            Crear viaje
-          </Button>
-        </form>
       </div>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <Input
+          type="text"
+          label="Nombre del viaje"
+          placeholder="Vacaciones de verano"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          error={errors.nombre}
+        />
+        <Input
+          type="text"
+          label="Destino"
+          placeholder="Bariloche"
+          value={destino}
+          onChange={(e) => setDestino(e.target.value)}
+          error={errors.destino}
+        />
+        <div className="grid grid-cols-2 gap-3">
+          <Input
+            type="date"
+            label="Fecha de salida"
+            value={fechaSalida}
+            onChange={(e) => setFechaSalida(e.target.value)}
+            error={errors.fechaSalida}
+          />
+          <Input
+            type="date"
+            label="Fecha de regreso"
+            helperText="Opcional: dejalo vacío si todavía no lo sabés"
+            value={fechaRegreso}
+            onChange={(e) => setFechaRegreso(e.target.value)}
+          />
+        </div>
+        <Input
+          type="select"
+          label="Moneda"
+          placeholder="Elegí una moneda"
+          options={MONEDA_OPTIONS}
+          value={moneda}
+          onChange={setMoneda}
+          error={errors.moneda}
+        />
+        <Input
+          type="number"
+          label="Presupuesto total"
+          placeholder="0"
+          leadingText={simbolo}
+          value={presupuesto}
+          onChange={(e) => setPresupuesto(e.target.value)}
+          error={errors.presupuesto}
+        />
+        <Button type="submit" size="large" loading={saving}>
+          Crear viaje
+        </Button>
+      </form>
     </div>
   )
 }

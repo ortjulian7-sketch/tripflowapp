@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { Card } from '@/components/Card'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
+import { ListItem } from '@/components/ListItem'
 import { db } from '@/lib/db'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/features/auth/AuthProvider'
@@ -40,7 +41,7 @@ export function CuentaPage() {
 
   /** Congela la identidad activa en la cuenta antes de cerrar sesión: el dispositivo sigue usándose como invitado con los mismos datos (FR-015). */
   async function handleCerrarSesion() {
-    setActiveIdentity(userId)
+    setActiveIdentity(userId!)
     await signOut()
   }
 
@@ -56,6 +57,8 @@ export function CuentaPage() {
           </p>
           <Button onClick={() => navigate('/registro')}>Crear cuenta o iniciar sesión</Button>
         </Card>
+
+        <ListItem emoji="🗂️" title="Categorías" onClick={() => navigate('/categorias')} />
       </div>
     )
   }
@@ -64,6 +67,8 @@ export function CuentaPage() {
     <div className="mx-auto flex w-full max-w-sm flex-col gap-6 py-6">
       <h1 className="text-xl font-semibold text-text-primary">Cuenta</h1>
       <p className="text-sm text-text-secondary">{session?.user.email}</p>
+
+      <ListItem emoji="🗂️" title="Categorías" onClick={() => navigate('/categorias')} />
 
       <Button variant="secondary" onClick={handleCerrarSesion}>
         Cerrar sesión
