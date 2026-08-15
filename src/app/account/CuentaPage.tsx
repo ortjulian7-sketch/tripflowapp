@@ -4,6 +4,7 @@ import { Button } from '@/components/Button'
 import { Card } from '@/components/Card'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { ListItem } from '@/components/ListItem'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import { db } from '@/lib/db'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/features/auth/AuthProvider'
@@ -59,6 +60,7 @@ export function CuentaPage() {
         </Card>
 
         <ListItem emoji="🗂️" title="Categorías" onClick={() => navigate('/categorias')} />
+        <ThemeToggle />
       </div>
     )
   }
@@ -69,6 +71,7 @@ export function CuentaPage() {
       <p className="text-sm text-text-secondary">{session?.user.email}</p>
 
       <ListItem emoji="🗂️" title="Categorías" onClick={() => navigate('/categorias')} />
+      <ThemeToggle />
 
       <Button variant="secondary" onClick={handleCerrarSesion}>
         Cerrar sesión

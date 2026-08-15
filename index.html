@@ -8,6 +8,20 @@
     <meta name="theme-color" content="#0500fe" />
     <meta name="description" content="Tripflow — controlá el presupuesto de tu viaje" />
     <title>Tripflow</title>
+    <script>
+      // Resuelve el tema antes del primer paint (evita flash del tema incorrecto).
+      // Debe reflejar exactamente la lógica de THEME_STORAGE_KEY en src/features/theme/ThemeProvider.tsx.
+      ;(function () {
+        var stored = localStorage.getItem('tripflow_theme')
+        var theme =
+          stored === 'light' || stored === 'dark'
+            ? stored
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+        document.documentElement.setAttribute('data-theme', theme)
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

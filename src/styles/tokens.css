@@ -72,46 +72,51 @@
   --size-full: 999px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-surface-background: #050510;
-    --color-surface-elevated: #09091a;
-    --color-surface-secondary: #272735;
-    --color-surface-selected: #010047;
+/*
+ * El tema activo se resuelve en JS (localStorage, o system-preference como
+ * fallback la primera vez) y se refleja acá como `data-theme` en <html> —
+ * ver src/features/theme/ThemeProvider.tsx. Nunca depender de
+ * `prefers-color-scheme` directamente: la persona puede elegir un tema
+ * explícito que difiera del de su sistema operativo.
+ */
+:root[data-theme='dark'] {
+  --color-surface-background: #050510;
+  --color-surface-elevated: #09091a;
+  --color-surface-secondary: #272735;
+  --color-surface-selected: #010047;
 
-    --color-text-primary: #ffffff;
-    --color-text-secondary: #8a8aa0;
-    --color-text-brand: #a5a8ff;
-    --color-text-inverse: #ffffff;
-    --color-text-placeholder: #ffffff80;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #8a8aa0;
+  --color-text-brand: #a5a8ff;
+  --color-text-inverse: #ffffff;
+  --color-text-placeholder: #ffffff80;
 
-    --color-icon-brand: #a5a8ff;
-    --color-icon-secondary: #8a8aa0;
+  --color-icon-brand: #a5a8ff;
+  --color-icon-secondary: #8a8aa0;
 
-    --color-border-brand: #a5a8ff;
+  --color-border-brand: #a5a8ff;
 
-    --color-action-primary-default: #4247ff;
-    --color-action-primary-disabled: #272735;
+  --color-action-primary-default: #4247ff;
+  --color-action-primary-disabled: #272735;
 
-    --color-status-success: #49b772;
-    --color-status-success-subtle: #041d0d;
-    --color-status-success-border: #16a34a;
-    --color-status-success-strong: #16a34a;
-    --color-status-success-strong-hover: #49b772;
-    --color-status-success-on-strong: #ffffff;
+  --color-status-success: #49b772;
+  --color-status-success-subtle: #041d0d;
+  --color-status-success-border: #16a34a;
+  --color-status-success-strong: #16a34a;
+  --color-status-success-strong-hover: #49b772;
+  --color-status-success-on-strong: #ffffff;
 
-    --color-status-warning: #e7a336;
-    --color-status-warning-subtle: #281900;
-    --color-status-warning-border: #e08a00;
-    --color-status-warning-strong: #e08a00;
-    --color-status-warning-strong-hover: #e7a336;
-    --color-status-warning-on-strong: #ffffff;
+  --color-status-warning: #e7a336;
+  --color-status-warning-subtle: #281900;
+  --color-status-warning-border: #e08a00;
+  --color-status-warning-strong: #e08a00;
+  --color-status-warning-strong-hover: #e7a336;
+  --color-status-warning-on-strong: #ffffff;
 
-    --color-status-error: #e45656;
-    --color-status-error-subtle: #280707;
-    --color-status-error-border: #dc2626;
-    --color-status-error-strong: #dc2626;
-    --color-status-error-strong-hover: #e45656;
-    --color-status-error-on-strong: #ffffff;
-  }
+  --color-status-error: #e45656;
+  --color-status-error-subtle: #280707;
+  --color-status-error-border: #dc2626;
+  --color-status-error-strong: #dc2626;
+  --color-status-error-strong-hover: #e45656;
+  --color-status-error-on-strong: #ffffff;
 }

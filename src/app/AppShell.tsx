@@ -18,7 +18,7 @@ const NAV_ITEMS: { to: string; icon: IconName; label: string; end?: boolean }[] 
 export function AppShell() {
   return (
     <div className="min-h-screen bg-surface-background md:flex">
-      <nav className="hidden shrink-0 flex-col gap-1 border-r border-surface-secondary p-4 md:flex md:w-56">
+      <nav className="hidden shrink-0 flex-col gap-1 border-r border-surface-secondary bg-surface-elevated p-4 md:flex md:w-56">
         <div className="mb-4 px-2">
           <Logo size="small" />
         </div>

@@ -8,4 +8,14 @@
   body {
     @apply bg-surface-background text-text-primary;
   }
+
+  /* El ícono nativo del selector de fecha sigue `color-scheme`, no nuestros
+     tokens — sin esto queda oscuro-sobre-oscuro en dark mode (mal contraste). */
+  input[type='date'] {
+    color-scheme: light;
+  }
+
+  :root[data-theme='dark'] input[type='date'] {
+    color-scheme: dark;
+  }
 }
