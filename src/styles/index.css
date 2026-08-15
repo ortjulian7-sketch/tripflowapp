@@ -9,9 +9,16 @@
     @apply bg-surface-background text-text-primary;
   }
 
-  /* El ícono nativo del selector de fecha sigue `color-scheme`, no nuestros
+  /* Sin resetear el chrome nativo, Safari sigue imponiendo su propio ancho
+     mínimo de contenido para el control de fecha por encima del `width`
+     declarado — se ve más ancho que los demás inputs aunque todos compartan
+     `w-full` (no reproducible en Chrome, que sí cede el layout a nuestro
+     CSS). `appearance: none` le entrega el control de la caja por completo.
+     El ícono nativo del selector sigue además `color-scheme`, no nuestros
      tokens — sin esto queda oscuro-sobre-oscuro en dark mode (mal contraste). */
   input[type='date'] {
+    -webkit-appearance: none;
+    appearance: none;
     color-scheme: light;
   }
 
