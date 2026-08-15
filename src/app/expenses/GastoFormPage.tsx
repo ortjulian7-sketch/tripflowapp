@@ -5,6 +5,7 @@ import { AmountInput } from '@/components/AmountInput'
 import { Button } from '@/components/Button'
 import { Chip } from '@/components/Chip'
 import { Input } from '@/components/Input'
+import { useToast } from '@/components/Toast'
 import { db } from '@/lib/db'
 import { getCurrency } from '@/lib/currencies'
 import { toDateOnlyString, today } from '@/lib/dates'
@@ -30,6 +31,7 @@ export function GastoFormPage() {
   const isEditing = !!id
   const { userId } = useIdentity()
   const navigate = useNavigate()
+  const { showToast } = useToast()
 
   const gastoExistente = useLiveQuery(() => (id ? db.gastos.get(id) : undefined), [id])
   const { viaje: viajeSeleccionado } = useSelectedTrip(userId!)
@@ -129,6 +131,9 @@ export function GastoFormPage() {
         await registrarCorreccion(userId!, descripcion, categoriaId!)
       }
       navigate('/', { replace: true })
+      showToast(isEditing ? 'Gasto actualizado.' : 'Gasto agregado.')
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'No pudimos guardar el gasto.', 'error')
     } finally {
       setSaving(false)
     }

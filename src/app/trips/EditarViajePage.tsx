@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { AmountInput } from '@/components/AmountInput'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
+import { useToast } from '@/components/Toast'
 import { db } from '@/lib/db'
 import { getCurrency } from '@/lib/currencies'
 import { parseAmountInput, toEditableAmountString } from '@/lib/money'
@@ -20,6 +21,7 @@ interface FormErrors {
 export function EditarViajePage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { showToast } = useToast()
   const viaje = useLiveQuery(() => (id ? db.viajes.get(id) : undefined), [id])
 
   const [nombre, setNombre] = useState('')
@@ -88,6 +90,9 @@ export function EditarViajePage() {
         presupuestoTotal: montoMinorUnits!,
       })
       navigate('/', { replace: true })
+      showToast('Cambios guardados.')
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'No pudimos guardar los cambios.', 'error')
     } finally {
       setSaving(false)
     }

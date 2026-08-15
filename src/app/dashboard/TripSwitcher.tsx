@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { Icon } from '@/components/Icon'
 import { IconButton } from '@/components/IconButton'
+import { useToast } from '@/components/Toast'
 import { db, type Viaje } from '@/lib/db'
 import { eliminarViaje } from '@/features/trips/tripRepository'
 
@@ -24,6 +25,7 @@ interface TripSwitcherProps {
  */
 export function TripSwitcher({ viaje, trips, onSelect, onDeleted }: TripSwitcherProps) {
   const navigate = useNavigate()
+  const { showToast } = useToast()
   const [confirmando, setConfirmando] = useState(false)
   const [eliminando, setEliminando] = useState(false)
 
@@ -38,6 +40,9 @@ export function TripSwitcher({ viaje, trips, onSelect, onDeleted }: TripSwitcher
       await eliminarViaje(viaje.id)
       setConfirmando(false)
       onDeleted()
+      showToast('Viaje eliminado.')
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'No pudimos eliminar el viaje.', 'error')
     } finally {
       setEliminando(false)
     }

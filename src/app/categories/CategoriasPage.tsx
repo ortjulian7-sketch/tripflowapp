@@ -5,6 +5,7 @@ import { EmojiPicker } from '@/components/EmojiPicker'
 import { Input } from '@/components/Input'
 import { ListItem } from '@/components/ListItem'
 import { Modal } from '@/components/Modal'
+import { useToast } from '@/components/Toast'
 import type { Categoria } from '@/lib/db'
 import { useIdentity } from '@/features/identity/IdentityProvider'
 import { useCategories } from '@/features/categories/useCategories'
@@ -15,6 +16,7 @@ const EMOJI_POR_DEFECTO = '🏷️'
 export function CategoriasPage() {
   const { userId } = useIdentity()
   const categorias = useCategories(userId!)
+  const { showToast } = useToast()
 
   const [modalAbierto, setModalAbierto] = useState(false)
   const [editandoId, setEditandoId] = useState<string | null>(null)
@@ -50,8 +52,10 @@ export function CategoriasPage() {
     try {
       if (editandoId) {
         await editarCategoria(editandoId, nombre, emoji)
+        showToast('Cambios guardados.')
       } else {
         await crearCategoria(userId!, nombre, emoji)
+        showToast('Categoría creada.')
       }
       setModalAbierto(false)
     } catch (error) {
@@ -68,6 +72,7 @@ export function CategoriasPage() {
     try {
       await eliminarCategoria(categoriaAEliminar.id)
       setCategoriaAEliminar(null)
+      showToast('Categoría eliminada.')
     } catch (error) {
       // El diálogo permanece abierto mostrando el motivo del bloqueo (FR-028).
       setErrorEliminar(

@@ -3,6 +3,7 @@ import { Button } from '@/components/Button'
 import { EmojiPicker } from '@/components/EmojiPicker'
 import { Input } from '@/components/Input'
 import { Modal } from '@/components/Modal'
+import { useToast } from '@/components/Toast'
 import type { Categoria } from '@/lib/db'
 import { crearCategoria } from '@/features/categories/categoryRepository'
 
@@ -17,6 +18,7 @@ interface NuevaCategoriaModalProps {
 
 /** Crear una categoría sin salir del formulario de gasto (reduce fricción). */
 export function NuevaCategoriaModal({ open, userId, onClose, onCreada }: NuevaCategoriaModalProps) {
+  const { showToast } = useToast()
   const [nombre, setNombre] = useState('')
   const [emoji, setEmoji] = useState(EMOJI_POR_DEFECTO)
   const [error, setError] = useState<string | null>(null)
@@ -38,6 +40,7 @@ export function NuevaCategoriaModal({ open, userId, onClose, onCreada }: NuevaCa
       setNombre('')
       setEmoji(EMOJI_POR_DEFECTO)
       onCreada(categoria)
+      showToast('Categoría creada.')
     } catch (error) {
       setError(error instanceof Error ? error.message : 'No pudimos crear la categoría.')
     } finally {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { AmountInput } from '@/components/AmountInput'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
+import { useToast } from '@/components/Toast'
 import { CURRENCIES, getCurrency } from '@/lib/currencies'
 import { parseAmountInput } from '@/lib/money'
 import { useIdentity } from '@/features/identity/IdentityProvider'
@@ -27,6 +28,7 @@ interface FormErrors {
 export function NuevoViajePage() {
   const { userId } = useIdentity()
   const navigate = useNavigate()
+  const { showToast } = useToast()
   const viajes = useTrips(userId ?? undefined)
   const esPrimerViaje = viajes?.length === 0
 
@@ -89,6 +91,9 @@ export function NuevoViajePage() {
       // viaje recién creado").
       setSelectedTripId(viaje.id)
       navigate('/', { replace: true })
+      showToast('Viaje creado.')
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'No pudimos crear el viaje.', 'error')
     } finally {
       setSaving(false)
     }

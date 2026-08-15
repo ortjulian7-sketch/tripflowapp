@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { ListItem } from '@/components/ListItem'
+import { useToast } from '@/components/Toast'
 import type { Categoria, Gasto } from '@/lib/db'
 import type { Currency } from '@/lib/currencies'
 import { formatDayLabel, parseDateOnly } from '@/lib/dates'
@@ -20,6 +21,7 @@ interface ExpenseListProps {
 /** Listado agrupado por día, con encabezado de fecha y subtotal diario (FR-041). */
 export function ExpenseList({ gastos, categorias, currency }: ExpenseListProps) {
   const navigate = useNavigate()
+  const { showToast } = useToast()
   const categoriaPorId = new Map(categorias.map((categoria) => [categoria.id, categoria]))
   const grupos = agruparPorDia(gastos)
 
@@ -32,6 +34,9 @@ export function ExpenseList({ gastos, categorias, currency }: ExpenseListProps) 
     try {
       await eliminarGasto(gastoAEliminar.id)
       setGastoAEliminar(null)
+      showToast('Gasto eliminado.')
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'No pudimos eliminar el gasto.', 'error')
     } finally {
       setEliminando(false)
     }
