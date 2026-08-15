@@ -34,15 +34,23 @@ async function crearCategoria(userId: string, nombre: string, emoji: string, pro
 /**
  * Confirmación del onboarding (contracts/onboarding-categorias-contract.md):
  * persiste las candidatas elegidas más siempre "Otro", en una sola pasada.
+ * Omite cualquier nombre que la identidad ya tenga (p. ej. si el onboarding
+ * se repitió tras migrar categorías de invitado a una cuenta) para no
+ * duplicarlas.
  */
 export async function guardarSeleccionInicial(
   userId: string,
   nombresSeleccionados: Set<string>,
 ): Promise<void> {
+  const existentes = await db.categorias.where('user_id').equals(userId).toArray()
+  const nombresExistentes = new Set(existentes.map((categoria) => categoria.nombre))
+
   for (const candidata of CATEGORIAS_CANDIDATAS) {
-    if (nombresSeleccionados.has(candidata.nombre)) {
+    if (nombresSeleccionados.has(candidata.nombre) && !nombresExistentes.has(candidata.nombre)) {
       await crearCategoria(userId, candidata.nombre, candidata.emoji, false)
     }
   }
-  await crearCategoria(userId, OTRO.nombre, OTRO.emoji, true)
+  if (!nombresExistentes.has(OTRO.nombre)) {
+    await crearCategoria(userId, OTRO.nombre, OTRO.emoji, true)
+  }
 }

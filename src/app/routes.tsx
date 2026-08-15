@@ -55,6 +55,12 @@ function Bootstrap() {
     }
     return <Navigate to="/onboarding/intro" replace state={{ cuentaNueva: !isGuest }} />
   }
+  // Ya no hace falta onboarding (p. ej. `RegistroPage` migró categorías de
+  // invitado a la cuenta nueva antes de navegar a /onboarding/intro): sacar
+  // a la persona de esas rutas en vez de dejarla re-sembrar categorías.
+  if (location.pathname === '/onboarding/intro' || location.pathname === '/onboarding/categorias') {
+    return <Navigate to="/" replace />
+  }
   // Conteo en cero sin necesitar onboarding: cuenta preexistente con un
   // `pull` todavía en curso — esperar en vez de redirigir.
   if (categorias.length === 0) return <Cargando />
