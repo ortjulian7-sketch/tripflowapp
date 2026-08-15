@@ -38,7 +38,7 @@ export function CategoriasOnboardingPage() {
           Tus categorías
         </h1>
         <p className="mb-6 text-center text-text-secondary">
-          Elegí las que quieras usar — después podés crear más desde Cuenta.
+          Elige las que quieras usar — después puedes crear más desde Cuenta.
         </p>
 
         <div className="mb-8 grid grid-cols-4 gap-2">

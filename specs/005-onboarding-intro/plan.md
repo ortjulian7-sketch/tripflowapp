@@ -85,7 +85,7 @@ viene en inglés en el archivo de Figma que compartió el usuario; los otros 3 t
 subtítulos ya están en español. Dado que el Principio II exige español LATAM sin excepción y el
 usuario no pidió explícitamente mantener ese texto en inglés (solo pidió "implementar el diseño"),
 este plan asume que es un texto de placeholder del Figma y **debe traducirse** al implementar (p.
-ej. "Planeá menos. Viajá más." o equivalente) — ver `research.md` §1 y quedará confirmado como tarea
+ej. "Planea menos. Viaja más." o equivalente) — ver `research.md` §1 y quedará confirmado como tarea
 explícita en `/speckit-tasks`.
 
 *Re-evaluación tras Phase 1 (Design & Contracts): ver al final de este documento.*

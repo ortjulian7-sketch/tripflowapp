@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { Input } from '@/components/Input'
+import { Logo } from '@/components/Logo'
 import { useAuth } from '@/features/auth/AuthProvider'
 import { useIdentity } from '@/features/identity/IdentityProvider'
 import { setActiveIdentity } from '@/features/identity/activeIdentity'
@@ -45,7 +46,7 @@ export function RegistroPage() {
     const identidadAnterior = identidadActiva
     const { error: signUpError, userId: nuevoUserId } = await signUp(email, password)
     if (signUpError || !nuevoUserId) {
-      setError(signUpError ?? 'No pudimos crear tu cuenta. Intentá de nuevo.')
+      setError(signUpError ?? 'No pudimos crear tu cuenta. Intenta de nuevo.')
       setLoading(false)
       return
     }
@@ -91,9 +92,11 @@ export function RegistroPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-surface-background px-4">
       <div className="w-full max-w-sm">
-        <h1 className="mb-1 text-center text-2xl font-semibold text-text-primary">Tripflow</h1>
+        <div className="mb-4 flex justify-center">
+          <Logo size="large" />
+        </div>
         <p className="mb-6 text-center text-text-secondary">
-          Creá tu cuenta para respaldar tus viajes
+          Crea tu cuenta para respaldar tus viajes
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -127,7 +130,7 @@ export function RegistroPage() {
         </form>
 
         <p className="mt-6 text-center text-sm text-text-secondary">
-          ¿Ya tenés cuenta?{' '}
+          ¿Ya tienes cuenta?{' '}
           <Link to="/login" className="font-semibold text-text-brand transition-opacity hover:opacity-80">
             Iniciar sesión
           </Link>
@@ -147,7 +150,7 @@ export function RegistroPage() {
         open={vinculacionPendiente !== null}
         tone="neutral"
         title="Viajes guardados en este dispositivo"
-        description={`Tenés ${vinculacionPendiente?.cantidadViajes ?? 0} ${vinculacionPendiente?.cantidadViajes === 1 ? 'viaje guardado' : 'viajes guardados'} en este dispositivo. ¿Querés incluirlos en tu cuenta nueva?`}
+        description={`Tienes ${vinculacionPendiente?.cantidadViajes ?? 0} ${vinculacionPendiente?.cantidadViajes === 1 ? 'viaje guardado' : 'viajes guardados'} en este dispositivo. ¿Quieres incluirlos en tu cuenta nueva?`}
         confirmLabel="Incluir"
         cancelLabel="Descartar"
         onConfirm={confirmarIncluir}

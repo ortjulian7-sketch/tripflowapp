@@ -201,7 +201,7 @@ invitado.
 
 **Acceptance Scenarios**:
 
-1. **Given** la pantalla Cuenta, **When** la persona seleccioná el enlace a categorías, **Then**
+1. **Given** la pantalla Cuenta, **When** la persona selecciona el enlace a categorías, **Then**
    llega a una pantalla donde puede crear una categoría nueva además de las predeterminadas.
 2. **Given** una categoría recién creada, **When** la persona registra un gasto, **Then** esa
    categoría aparece disponible para clasificarlo igual que las predeterminadas.

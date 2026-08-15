@@ -25,7 +25,7 @@ export function CuentaPage() {
     try {
       const { error: fnError } = await supabase.functions.invoke('delete-account')
       if (fnError) {
-        setError('No pudimos eliminar tu cuenta. Intentá de nuevo.')
+        setError('No pudimos eliminar tu cuenta. Intenta de nuevo.')
         setEliminando(false)
         return
       }
@@ -35,7 +35,7 @@ export function CuentaPage() {
       await signOut()
       window.location.assign('/login')
     } catch {
-      setError('No pudimos eliminar tu cuenta. Intentá de nuevo.')
+      setError('No pudimos eliminar tu cuenta. Intenta de nuevo.')
       setEliminando(false)
     }
   }
@@ -54,7 +54,7 @@ export function CuentaPage() {
         <Card variant="subtle" className="gap-3">
           <p className="text-sm text-text-secondary">
             Estás usando Tripflow sin cuenta: tus viajes y gastos se guardan en este dispositivo.
-            Creá una cuenta cuando quieras respaldarlos y acceder desde otro dispositivo.
+            Crea una cuenta cuando quieras respaldarlos y acceder desde otro dispositivo.
           </p>
           <Button onClick={() => navigate('/registro')}>Crear cuenta o iniciar sesión</Button>
         </Card>

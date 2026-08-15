@@ -97,7 +97,7 @@ export function LoginPage() {
         <div className="mb-4 flex justify-center">
           <Logo size="large" />
         </div>
-        <p className="mb-6 text-center text-text-secondary">Iniciá sesión para continuar</p>
+        <p className="mb-6 text-center text-text-secondary">Inicia sesión para continuar</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <Input
@@ -130,7 +130,7 @@ export function LoginPage() {
         </form>
 
         <p className="mt-6 text-center text-sm text-text-secondary">
-          ¿No tenés cuenta?{' '}
+          ¿No tienes cuenta?{' '}
           <Link to="/registro" className="font-semibold text-text-brand transition-opacity hover:opacity-80">
             Crear cuenta
           </Link>
@@ -150,7 +150,7 @@ export function LoginPage() {
         open={vinculacionPendiente !== null}
         tone="neutral"
         title="Viajes guardados en este dispositivo"
-        description={`Tenés ${vinculacionPendiente?.cantidadViajes ?? 0} ${vinculacionPendiente?.cantidadViajes === 1 ? 'viaje guardado' : 'viajes guardados'} en este dispositivo. ¿Querés incluirlos en tu cuenta?`}
+        description={`Tienes ${vinculacionPendiente?.cantidadViajes ?? 0} ${vinculacionPendiente?.cantidadViajes === 1 ? 'viaje guardado' : 'viajes guardados'} en este dispositivo. ¿Quieres incluirlos en tu cuenta?`}
         confirmLabel="Incluir"
         cancelLabel="Descartar"
         onConfirm={confirmarIncluir}

@@ -13,7 +13,7 @@ interface PasoOnboardingIntro {
 const PASOS: PasoOnboardingIntro[] = [
   {
     ilustracion: '/icons/onboarding-plan.svg',
-    titulo: 'Planeá menos. Viajá más.',
+    titulo: 'Planea menos. Viaja más.',
     subtitulo:
       'Tripflow te ayuda a controlar tu presupuesto en tiempo real para que solo pienses en disfrutar.',
     ctaLabel: 'Empezar',

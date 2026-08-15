@@ -1,7 +1,7 @@
 # Tripflow
 
-Controlá el presupuesto de tu viaje: creá un viaje con presupuesto, registrá gastos en
-segundos y mirá de un vistazo si vas a sostenerlo hasta el final — funciona igual en el
+Controla el presupuesto de tu viaje: crea un viaje con presupuesto, registra gastos en
+segundos y mira de un vistazo si vas a sostenerlo hasta el final — funciona igual en el
 celular y en la computadora, incluso sin conexión.
 
 Repositorio de desarrollo de TripFlow. Este proyecto usa [Spec Kit](https://github.com/github/spec-kit)
@@ -23,7 +23,7 @@ npm install
 cp .env.example .env.local
 ```
 
-Completá `.env.local` con los datos de tu proyecto de Supabase:
+Completa `.env.local` con los datos de tu proyecto de Supabase:
 
 ```bash
 VITE_SUPABASE_URL=https://tu-proyecto.supabase.co
@@ -36,17 +36,17 @@ como secreto del proyecto de Supabase, usada exclusivamente por la Edge Function
 
 ### Configurar el proyecto de Supabase
 
-1. Creá un proyecto en [supabase.com](https://supabase.com).
-2. Aplicá el esquema: pegá el contenido de `supabase/migrations/0001_schema.sql` en el SQL
-   Editor del proyecto (o usá la CLI de Supabase: `supabase db push`).
-3. Desplegá la función de borrado de cuenta:
+1. Crea un proyecto en [supabase.com](https://supabase.com).
+2. Aplica el esquema: pega el contenido de `supabase/migrations/0001_schema.sql` en el SQL
+   Editor del proyecto (o usa la CLI de Supabase: `supabase db push`).
+3. Despliega la función de borrado de cuenta:
    ```bash
    supabase functions deploy delete-account
    ```
    Esa función necesita `SUPABASE_URL`, `SUPABASE_ANON_KEY` y `SUPABASE_SERVICE_ROLE_KEY` como
    secretos del proyecto (Supabase los provee automáticamente a las Edge Functions).
-4. En Authentication → Settings, desactivá "Confirm email" para desarrollo/pruebas (si lo
-   dejás activo, `signUp` no devuelve sesión de inmediato y el flujo de registro sin fricción
+4. En Authentication → Settings, desactiva "Confirm email" para desarrollo/pruebas (si lo
+   dejas activo, `signUp` no devuelve sesión de inmediato y el flujo de registro sin fricción
    de la spec no funciona hasta confirmar el correo).
 
 ## Desarrollo
@@ -69,6 +69,6 @@ usuario directamente en la app, sin leer código (Principio IV de la constituci�
 ## Despliegue
 
 Pensado para hosting estático/edge (p. ej. [Vercel](https://vercel.com)) conectado al
-repositorio, con despliegue automático desde `main`. Configurá `VITE_SUPABASE_URL` y
+repositorio, con despliegue automático desde `main`. Configura `VITE_SUPABASE_URL` y
 `VITE_SUPABASE_ANON_KEY` como variables de entorno del proyecto en Vercel — nunca subas
 `.env.local` al repositorio (ya está en `.gitignore`).

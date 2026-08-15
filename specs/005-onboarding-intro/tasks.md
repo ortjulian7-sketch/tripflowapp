@@ -71,7 +71,7 @@ categorías (`quickstart.md` Escenarios 1 y 3).
 - [X] T002 [US1] Crear `src/app/onboarding/IntroOnboardingPage.tsx`: constante local `PASOS:
       PasoOnboardingIntro[]` con los 4 pasos de `research.md` §1 (`ilustracion`, `titulo`,
       `subtitulo`, `ctaLabel`) — paso 1 con el título traducido al español LATAM (Principio II; el
-      Figma trae "Plan less. Travel more." en inglés, p. ej. "Planeá menos. Viajá más."), pasos 2
+      Figma trae "Plan less. Travel more." en inglés, p. ej. "Planea menos. Viaja más."), pasos 2
       a 4 tal cual el Figma (ya en español); estado `useState<number>(0)` para el paso actual;
       `useLocation()` para leer `location.state?.cuentaNueva`; renderiza `StepIndicator`
       (`total={4}` `activo={paso}`), la ilustración del paso actual como `<img>` 140×140 inline

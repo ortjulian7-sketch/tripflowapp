@@ -79,7 +79,7 @@ export function GastoFormPage() {
   }
 
   if (!viaje) {
-    return <p className="text-text-secondary">Creá un viaje antes de registrar un gasto.</p>
+    return <p className="text-text-secondary">Crea un viaje antes de registrar un gasto.</p>
   }
 
   const currency = getCurrency(viaje.moneda)
@@ -95,9 +95,9 @@ export function GastoFormPage() {
 
     const nextErrors: FormErrors = {}
     const montoMinorUnits = parseAmountInput(monto, currency.decimalDigits)
-    if (montoMinorUnits === null) nextErrors.monto = 'Ingresá un monto mayor a cero.'
-    if (!descripcion.trim()) nextErrors.descripcion = 'Contanos en qué gastaste.'
-    if (!categoriaId) nextErrors.categoria = 'Elegí una categoría.'
+    if (montoMinorUnits === null) nextErrors.monto = 'Ingresa un monto mayor a cero.'
+    if (!descripcion.trim()) nextErrors.descripcion = 'Cuéntanos en qué gastaste.'
+    if (!categoriaId) nextErrors.categoria = 'Elige una categoría.'
 
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors)

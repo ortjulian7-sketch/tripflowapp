@@ -15,9 +15,9 @@ const TITULOS: Record<EstadoSalud, string> = {
 
 const MENSAJES: Record<EstadoSalud, (monto: string) => string> = {
   vas_bien: (monto) => `Te alcanzan ${monto} por día para sostener el presupuesto.`,
-  ojo_con_el_ritmo: (monto) => `Te quedan ${monto} por día si querés sostenerlo.`,
-  vas_acelerado: (monto) => `Solo te quedan ${monto} por día — bajá el ritmo.`,
-  te_pasaste_del_presupuesto: () => 'Ajustá el resto del viaje para compensarlo.',
+  ojo_con_el_ritmo: (monto) => `Te quedan ${monto} por día si quieres sostenerlo.`,
+  vas_acelerado: (monto) => `Solo te quedan ${monto} por día — baja el ritmo.`,
+  te_pasaste_del_presupuesto: () => 'Ajusta el resto del viaje para compensarlo.',
 }
 
 // Los dos estados intermedios comparten tono — se distinguen por texto, no por color (FR-036).
@@ -77,7 +77,7 @@ export function HealthMessage({ viaje, montosGastos, currency }: HealthMessagePr
       <InsightCard
         tono="brand"
         title="Antes de salir"
-        body={`Planeás gastar ${formatMoney(Math.round(diarioPlaneado), currency)} por día.`}
+        body={`Planeas gastar ${formatMoney(Math.round(diarioPlaneado), currency)} por día.`}
       />
     )
   }

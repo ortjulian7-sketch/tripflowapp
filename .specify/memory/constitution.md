@@ -1,15 +1,10 @@
 <!--
 Sync Impact Report
-- Version change: (plantilla sin versionar) → 1.0.0
-- Ratificación inicial de la constitución de Tripflow.
-- Principios establecidos:
-  I. Simplicidad ante todo (nuevo)
-  II. Idioma y mercado (nuevo)
-  III. Cero alcance fantasma (nuevo)
-  IV. Verificable por una persona no técnica (nuevo)
-  V. Datos del usuario con respeto (nuevo)
-  VI. Sistema de diseño como fuente de verdad (nuevo)
-- Secciones agregadas: Alcance del Producto, Flujo de Trabajo y Calidad, Gobernanza
+- Version change: 1.0.0 → 1.1.0
+- Principio II (Idioma y mercado): se aclara que el español LATAM neutro usa tuteo, y se
+  prohíbe explícitamente el voseo rioplatense (vos/creá/tenés/podés) en app y documentación.
+- Principios establecidos: sin cambios en la lista (I–VI); expansión material del principio II.
+- Secciones agregadas: ninguna
 - Secciones eliminadas: ninguna
 - Plantillas dependientes: .specify/templates/{plan,spec,tasks,checklist}-template.md no fueron
   modificadas (fuera del alcance de este comando); revisar en la próxima ejecución de
@@ -34,10 +29,12 @@ justificar por qué la alternativa más simple no es suficiente.
 
 ### II. Idioma y mercado
 
-Todo el producto DEBE estar en español LATAM: textos de interfaz, mensajes de error,
-notificaciones y cualquier contenido visible para la persona usuaria. La aplicación DEBE
-permitir el uso de diferentes monedas cuando sea necesario, dado que los viajes pueden
-implicar gastos en monedas distintas a la de origen.
+Todo el producto DEBE estar en español LATAM neutro con tuteo ("tú"/"crea"/"tienes"/"puedes"):
+textos de interfaz, mensajes de error, notificaciones y cualquier contenido visible para la
+persona usuaria. Queda prohibido el voseo rioplatense (formas como "vos", "creá", "tenés",
+"podés") tanto en la app como en la documentación del repositorio. La aplicación DEBE permitir
+el uso de diferentes monedas cuando sea necesario, dado que los viajes pueden implicar gastos
+en monedas distintas a la de origen.
 
 ### III. Cero alcance fantasma
 
@@ -108,4 +105,4 @@ registrados en el Sync Impact Report al inicio de este archivo.
 verificarse contra estos principios antes de avanzar a la siguiente fase del flujo de
 trabajo. Cualquier desviación debe justificarse explícitamente o corregirse.
 
-**Version**: 1.0.0 | **Ratified**: 2026-08-12 | **Last Amended**: 2026-08-12
+**Version**: 1.1.0 | **Ratified**: 2026-08-12 | **Last Amended**: 2026-08-14

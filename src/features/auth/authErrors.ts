@@ -14,7 +14,7 @@ export function traducirErrorAuth(mensaje: string): string {
     return 'Ese correo no es válido.'
   }
   if (normalizado.includes('email not confirmed')) {
-    return 'Confirmá tu correo antes de iniciar sesión.'
+    return 'Confirma tu correo antes de iniciar sesión.'
   }
-  return 'Ocurrió un error. Intentá de nuevo.'
+  return 'Ocurrió un error. Intenta de nuevo.'
 }

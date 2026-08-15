@@ -125,8 +125,8 @@ spec sin reconstruir lo que ya funciona (Principio I).
 - **Decision**: extender `ConfirmDialog` con una prop `tone?: 'danger' | 'neutral'` (default
   `'danger'`, preservando los tres usos actuales sin cambios) que en `'neutral'` usa
   `text-text-secondary` en vez de `text-status-error` y `Button variant="primary"` en vez de
-  `"danger"` para la acción de confirmar. Se reutiliza para mostrar "Tenés N viajes guardados en
-  este dispositivo. ¿Querés incluirlos en tu cuenta?" con acciones "Incluir" / "Descartar".
+  `"danger"` para la acción de confirmar. Se reutiliza para mostrar "Tienes N viajes guardados en
+  este dispositivo. ¿Quieres incluirlos en tu cuenta?" con acciones "Incluir" / "Descartar".
 - **Rationale**: la fusión es una decisión neutral/positiva, no destructiva — usar el estilo de
   peligro existente comunicaría el mensaje equivocado. Es una extensión menor de un componente ya
   interno (no forma parte del catálogo de `design-system.md`, es una composición de `Button`),
