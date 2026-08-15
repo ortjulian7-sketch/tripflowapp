@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/Button'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { Input } from '@/components/Input'
+import { Logo } from '@/components/Logo'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/features/auth/AuthProvider'
 import { useIdentity } from '@/features/identity/IdentityProvider'
@@ -93,7 +94,9 @@ export function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-surface-background px-4">
       <div className="w-full max-w-sm">
-        <h1 className="mb-1 text-center text-2xl font-semibold text-text-primary">Tripflow</h1>
+        <div className="mb-4 flex justify-center">
+          <Logo size="large" />
+        </div>
         <p className="mb-6 text-center text-text-secondary">Iniciá sesión para continuar</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

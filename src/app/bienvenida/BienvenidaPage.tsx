@@ -21,11 +21,11 @@ export function BienvenidaPage() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <Button variant="secondary" size="large" onClick={() => navigate('/login')}>
-            Iniciar sesión
-          </Button>
           <Button variant="secondary" size="large" onClick={() => navigate('/registro')}>
             Registrarse
+          </Button>
+          <Button variant="secondary" size="large" onClick={() => navigate('/login')}>
+            Iniciar sesión
           </Button>
           <Button variant="secondary" size="large" onClick={handleContinuarComoInvitado}>
             Continuar como invitado

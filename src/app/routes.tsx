@@ -67,11 +67,11 @@ function RedirectIfAuth() {
   return <Outlet />
 }
 
-/** Redirige a Bienvenida mientras no exista ninguna identidad establecida (contracts/entrada-gate-contract.md). */
+/** Redirige a Login mientras no exista ninguna identidad establecida (contracts/entrada-gate-contract.md). */
 function EntradaGate() {
   const { userId, loading } = useIdentity()
   if (loading) return <Cargando />
-  if (userId === null) return <Navigate to="/bienvenida" replace />
+  if (userId === null) return <Navigate to="/login" replace />
   return <Outlet />
 }
 
