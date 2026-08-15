@@ -145,12 +145,17 @@ salud y el presupuesto diario restante cambien de forma coherente al agregar gas
    **When** la persona abre el resumen, **Then** el estado mostrado es "Ojo con el ritmo".
 4. **Given** un viaje donde el margen diario restante cayó por debajo del 70% del planeado,
    **When** la persona abre el resumen, **Then** el estado mostrado es "Vas acelerado".
-5. **Given** un viaje que aún no comenzó, **When** la persona abre el resumen, **Then** se le
-   muestra cuánto puede gastar por día según el plan original, sin evaluar ritmo real.
-6. **Given** un viaje abierto (sin fecha de regreso), **When** la persona abre el resumen,
+5. **Given** un viaje que aún no comenzó y no tiene gastos registrados, **When** la persona abre
+   el resumen, **Then** se le muestra cuánto puede gastar por día según el plan original, sin
+   evaluar ritmo real.
+6. **Given** un viaje que aún no comenzó pero ya tiene gastos anticipados (p. ej. vuelos,
+   reservas), **When** la persona abre el resumen, **Then** se evalúa el ritmo real igual que un
+   viaje en curso, usando todos los días del viaje como restantes — si no, el resumen quedaría
+   congelado en el plan mientras el disponible ya cambió.
+7. **Given** un viaje abierto (sin fecha de regreso), **When** la persona abre el resumen,
    **Then** no se muestra alerta de ritmo ni presupuesto diario, porque no hay horizonte contra
    el cual calcularlos.
-7. **Given** un viaje ya terminado, **When** la persona lo consulta, **Then** ve el resultado
+8. **Given** un viaje ya terminado, **When** la persona lo consulta, **Then** ve el resultado
    final del viaje en lugar de una proyección de ritmo.
 
 ---
@@ -321,8 +326,11 @@ uno muestre exclusivamente sus propios gastos y presupuesto.
 - **Viaje abierto (sin fecha de regreso)**: no hay días restantes ni presupuesto diario que
   calcular. El resumen muestra gastado, porcentaje y disponible, y omite días restantes y la
   alerta de ritmo por completo.
-- **Viaje que aún no comenzó**: no hay días transcurridos, por lo tanto no hay ritmo real que
-  evaluar. Se muestra el presupuesto diario planeado.
+- **Viaje que aún no comenzó, sin gastos**: no hay días transcurridos ni disponible que se haya
+  movido, por lo tanto no hay ritmo real que evaluar. Se muestra el presupuesto diario planeado.
+- **Viaje que aún no comenzó, con gastos anticipados**: el disponible ya cambió aunque no haya
+  días transcurridos. Se evalúa el ritmo igual que un viaje en curso, tratando todos los días del
+  viaje como restantes (todavía no transcurrió ninguno).
 - **Último día del viaje**: el presupuesto diario restante equivale a todo el disponible.
 - **Viaje ya terminado**: no quedan días restantes; se presenta el resultado final del viaje en
   lugar de una proyección de ritmo. Evitar cualquier división por cero. El viaje sigue siendo
@@ -461,10 +469,15 @@ uno muestre exclusivamente sus propios gastos y presupuesto.
 - **FR-037**: El sistema DEBE presentar el resumen de forma distinta según el momento del viaje:
   - **Viaje abierto** (sin fecha de regreso): omite días restantes, presupuesto diario y estado
     de salud; muestra igualmente gastado, porcentaje y disponible.
-  - **Viaje que aún no comenzó** (hoy es anterior a la fecha de salida): muestra el presupuesto
-    diario planeado (presupuesto total ÷ días totales) sin evaluar ni mostrar ninguno de los
-    cuatro estados de salud de FR-035, porque no hay ritmo real todavía que comparar contra el
-    plan.
+  - **Viaje que aún no comenzó** (hoy es anterior a la fecha de salida) **sin gastos
+    registrados**: muestra el presupuesto diario planeado (presupuesto total ÷ días totales) sin
+    evaluar ni mostrar ninguno de los cuatro estados de salud de FR-035, porque no hay ritmo real
+    todavía que comparar contra el plan.
+  - **Viaje que aún no comenzó con gastos ya registrados** (p. ej. vuelos o reservas pagados por
+    adelantado): el disponible ya cambió aunque el viaje no haya arrancado, así que se evalúa con
+    los mismos cuatro estados de salud de FR-035 que un viaje en curso, usando todos los días del
+    viaje como restantes (todavía no transcurrió ninguno) — mostrar solo el plan original
+    escondería que ya se comprometió parte del presupuesto.
   - **Viaje ya terminado** (hoy es posterior a la fecha de regreso): omite el presupuesto diario
     restante y los cuatro estados de salud de FR-035; en su lugar muestra el resultado final del
     viaje como total gastado frente a presupuesto total, reutilizando el tratamiento visual de

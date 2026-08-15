@@ -17,6 +17,9 @@ export async function crearViaje(input: NuevoViajeInput): Promise<Viaje> {
   if (!Number.isFinite(input.presupuestoTotal) || input.presupuestoTotal <= 0) {
     throw new Error('El presupuesto debe ser mayor a cero.')
   }
+  if (input.fechaRegreso && input.fechaRegreso < input.fechaSalida) {
+    throw new Error('La fecha de regreso no puede ser anterior a la fecha de salida.')
+  }
   getCurrency(input.moneda) // lanza si la moneda no está en el catálogo acotado
 
   const ahora = new Date().toISOString()
@@ -54,6 +57,9 @@ export async function actualizarViaje(input: ActualizarViajeInput): Promise<Viaj
   }
   if (!Number.isFinite(input.presupuestoTotal) || input.presupuestoTotal <= 0) {
     throw new Error('El presupuesto debe ser mayor a cero.')
+  }
+  if (input.fechaRegreso && input.fechaRegreso < input.fechaSalida) {
+    throw new Error('La fecha de regreso no puede ser anterior a la fecha de salida.')
   }
 
   const actualizado: Viaje = {

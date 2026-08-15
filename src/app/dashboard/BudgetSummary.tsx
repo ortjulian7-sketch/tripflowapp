@@ -19,6 +19,8 @@ export function BudgetSummary({ viaje, currency, montosGastos }: BudgetSummaryPr
   // Presupuesto excedido de forma inequívoca (FR-038): nunca un número negativo
   // suelto, siempre texto explicativo con tratamiento de error.
   const excedido = disponible <= 0
+  // Aviso temprano en 80% (antes solo se alertaba al exceder el 100%).
+  const cercaDelLimite = !excedido && porcentajeConsumido >= 80
 
   const salida = parseDateOnly(viaje.fecha_salida)
   const fechaRegreso = viaje.fecha_regreso ? parseDateOnly(viaje.fecha_regreso) : null
@@ -37,13 +39,16 @@ export function BudgetSummary({ viaje, currency, montosGastos }: BudgetSummaryPr
         </p>
       </div>
 
-      <ProgressBar percent={porcentajeConsumido} variant={excedido ? 'error' : 'warning'} />
+      <ProgressBar
+        percent={porcentajeConsumido}
+        variant={excedido ? 'error' : cercaDelLimite ? 'warning' : 'brand'}
+      />
 
       <div className="flex gap-8">
         <div className="flex flex-col gap-1">
           <span className="text-xs text-text-secondary">Disponible</span>
           <span
-            className={`text-lg font-semibold ${excedido ? 'text-status-error' : 'text-status-warning-strong'}`}
+            className={`text-lg font-semibold ${excedido ? 'text-status-error' : cercaDelLimite ? 'text-status-warning-strong' : 'text-text-primary'}`}
           >
             {formatMoney(disponible, currency)}
           </span>
@@ -66,6 +71,12 @@ export function BudgetSummary({ viaje, currency, montosGastos }: BudgetSummaryPr
       {excedido && (
         <p className="rounded-input bg-status-error-subtle px-3 py-2 text-sm font-semibold text-status-error">
           Te pasaste del presupuesto por {formatMoney(Math.abs(disponible), currency)}.
+        </p>
+      )}
+
+      {cercaDelLimite && (
+        <p className="rounded-input bg-status-warning-subtle px-3 py-2 text-sm font-semibold text-status-warning-strong">
+          Ya usaste el {porcentajeConsumido}% del presupuesto — te quedan {formatMoney(disponible, currency)}.
         </p>
       )}
     </div>

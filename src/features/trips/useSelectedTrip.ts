@@ -12,6 +12,17 @@ interface UseSelectedTripResult {
 }
 
 /**
+ * Persiste la elección de viaje fuera del hook para que pantallas que no lo
+ * usan (p. ej. `NuevoViajePage`) puedan marcar como elegido el viaje recién
+ * creado antes de navegar al resumen — si no, seguiría mandando la elección
+ * previa (o ninguna) y el resumen mostraría otro viaje.
+ */
+export function setSelectedTripId(tripId: string | null): void {
+  if (tripId) localStorage.setItem(STORAGE_KEY, tripId)
+  else localStorage.removeItem(STORAGE_KEY)
+}
+
+/**
  * El viaje elegido a mano (persistido localmente) manda sobre el
  * seleccionado por defecto (useActiveTrip). Si el viaje elegido ya no existe
  * (se eliminó — US10), cae solo de nuevo al criterio por defecto.
@@ -25,8 +36,7 @@ export function useSelectedTrip(userId: string | undefined): UseSelectedTripResu
 
   function selectTrip(tripId: string | null) {
     setSelectedId(tripId)
-    if (tripId) localStorage.setItem(STORAGE_KEY, tripId)
-    else localStorage.removeItem(STORAGE_KEY)
+    setSelectedTripId(tripId)
   }
 
   const seleccionado = selectedId ? trips?.find((trip) => trip.id === selectedId) : undefined

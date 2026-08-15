@@ -67,7 +67,12 @@ export function HealthMessage({ viaje, montosGastos, currency }: HealthMessagePr
   const diarioPlaneado = diasTotales > 0 ? viaje.presupuesto_total / diasTotales : 0
   const { disponible } = calcularTotales(viaje.presupuesto_total, montosGastos)
 
-  if (estado === 'no_comenzado') {
+  // Antes de salir, sin gastos registrados todavía, no hay nada que evaluar:
+  // se muestra el plan (FR-037). Pero si ya hay gastos anticipados (vuelos,
+  // reservas), el disponible ya cambió y amerita el mismo tratamiento de
+  // ritmo que un viaje en curso — si no, esta tarjeta queda "congelada" en el
+  // plan mientras el resto del resumen (gastado, disponible) sí se actualiza.
+  if (estado === 'no_comenzado' && disponible >= viaje.presupuesto_total) {
     return (
       <InsightCard
         tono="brand"
