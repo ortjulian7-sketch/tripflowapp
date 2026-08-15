@@ -133,6 +133,7 @@ export function Input(props: InputProps) {
     ...inputProps
   } = props
   const leadingWidthClass = leadingIcon || leadingText ? 'pl-10' : 'pl-4'
+  const isEmptyDate = type === 'date' && !inputProps.value
 
   return (
     <Chrome id={id} label={label} showLabel={showLabel} error={error} helperText={helperText}>
@@ -148,12 +149,27 @@ export function Input(props: InputProps) {
           {leadingText}
         </span>
       )}
+      {isEmptyDate && (
+        <span
+          className={`pointer-events-none absolute ${leadingWidthClass === 'pl-10' ? 'left-10' : 'left-4'} top-1/2 -translate-y-1/2 text-text-placeholder`}
+        >
+          dd/mm/aaaa
+        </span>
+      )}
       <input
         id={id}
         type={type === 'text' && secure ? 'password' : type}
-        className={`${fieldChrome(!!error, leadingWidthClass)} ${className ?? ''}`}
+        className={`${fieldChrome(!!error, leadingWidthClass)} ${type === 'date' ? 'pr-10' : ''} ${className ?? ''}`}
+        style={isEmptyDate ? { color: 'transparent' } : undefined}
         {...inputProps}
       />
+      {type === 'date' && (
+        <Icon
+          name="calendar"
+          size={20}
+          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-icon-secondary"
+        />
+      )}
     </Chrome>
   )
 }

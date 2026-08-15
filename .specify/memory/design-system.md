@@ -157,7 +157,7 @@ none`). Sin color por defecto — el stroke se bindea por instancia al token sem
 corresponda (`color-icon-secondary`, `color-icon-brand`, `color-text-inverse`, etc.).
 
 **Inventario actual**: Plus, Home, Map, ArrowLeft, ChevronDown, Search, Close, Sparkle,
-Trash, Spinner, User, Pin, Card.
+Trash, Spinner, User, Pin, Card, Calendar.
 
 **Nota — extensión Tripflow v0**: `User` se agregó para el destino de navegación "Cuenta"
 (spec `001-tripflow-v0`, FR-055/FR-056: eliminar cuenta): ningún ícono del inventario
@@ -171,6 +171,13 @@ inventario original representa "ubicación de viaje" ni "gasto/tarjeta". El esta
 que la única diferencia con el glyph existente es un acento decorativo interno. Ambos
 íconos nuevos siguen la misma construcción (grilla 16×16, trazo 1.5px, sin relleno) que el
 resto del set.
+
+**Nota — fix Input Type: Date**: `Calendar` se agregó porque el picker nativo (ver nota en
+§ Input) no dibuja un ícono consistente entre navegadores — Safari/iOS no renderiza ninguno,
+y el indicador nativo de Chrome quedaba oculto/recortado en mobile. Se dibuja como elemento
+final del campo (mismo patrón que el chevron de Select) sobre el indicador nativo, que queda
+invisible pero estirado a todo el campo para no perder el tap-to-open. Misma construcción
+(grilla 16×16, trazo 1.5px, sin relleno) que el resto del set.
 
 **Do's**: usar INSTANCE_SWAP dentro de Button/Nav Item (nunca hardcodear un vector nuevo);
 bindear color a un token semántico; mantener grilla 16×16 y trazo 1.5px en iconos nuevos;
@@ -306,6 +313,14 @@ fecha del gasto) necesitan el selector nativo del navegador (accesible, funciona
 reinventar un calendario). Se implementó como un cuarto valor de `Type` que reutiliza
 exactamente el mismo chrome visual (fondo, sombra, radio, tokens de foco/error) que
 Text/Number — mismo componente, sin solución visual aislada.
+
+**Nota — fix mobile (ícono + placeholder)**: en mobile, `type="date"` vacío no mostraba
+ícono (Safari/iOS no dibuja indicador nativo) ni placeholder ("dd/mm/aaaa" es imposible vía
+el atributo `placeholder`, que la spec ignora en `input[type=date]`; Safari en su lugar
+muestra la fecha de hoy atenuada, fácil de confundir con un valor real). Se agregó el ícono
+`Calendar` (ver § Icon) como elemento final y, cuando el valor está vacío, un `<span>`
+absoluto con "dd/mm/aaaa" sobre el input con su texto en `color: transparent` — mismo patrón
+que el elemento líder de texto/ícono, sin componente nuevo.
 
 ---
 

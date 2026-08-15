@@ -18,4 +18,15 @@
   :root[data-theme='dark'] input[type='date'] {
     color-scheme: dark;
   }
+
+  /* Icon.tsx dibuja el ícono de calendario propio (chrome consistente entre
+     navegadores); el indicador nativo queda invisible pero estirado a todo el
+     campo para que el tap-to-open siga funcionando en cualquier punto. */
+  input[type='date']::-webkit-calendar-picker-indicator {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
 }

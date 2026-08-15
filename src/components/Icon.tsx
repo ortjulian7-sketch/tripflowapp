@@ -18,6 +18,7 @@ export type IconName =
   | 'user'
   | 'pin'
   | 'card'
+  | 'calendar'
 
 const paths: Record<IconName, React.ReactNode> = {
   plus: <path d="M8 3v10M3 8h10" />,
@@ -61,6 +62,12 @@ const paths: Record<IconName, React.ReactNode> = {
       <rect x="2" y="3.5" width="12" height="9" rx="1.8" />
       <path d="M2 6.2h12" />
       <path d="M4.5 8.7h1.7M4.5 10.2h3" opacity="0.5" />
+    </>
+  ),
+  calendar: (
+    <>
+      <rect x="2.5" y="3" width="11" height="10.5" rx="1.5" />
+      <path d="M2.5 6.5h11M5.5 2v2M10.5 2v2" />
     </>
   ),
 }
