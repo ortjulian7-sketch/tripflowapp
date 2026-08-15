@@ -7,28 +7,28 @@ interface LogoProps {
 
 const iconSizeClasses: Record<LogoSize, string> = {
   small: 'h-6 w-6',
-  large: 'h-10 w-10',
+  large: 'h-16 w-16',
 }
 
 const wordmarkSizeClasses: Record<LogoSize, string> = {
   small: 'text-base',
-  large: 'text-2xl',
+  large: 'text-3xl',
 }
 
 /**
  * Ícono de marca + wordmark, siempre juntos (.specify/memory/design-system.md § Logo).
- * Small: ícono + wordmark en Brand/Display lado a lado (nav). Large: el lockup
- * completo (ícono + logotipo apilados) tal como viene de marca — un solo asset,
- * sin recolorear (mismo criterio que el ícono: viene con su color bakeado).
+ * El wordmark usa `color-text-brand` (no un asset con color bakeado) para que siga
+ * siendo legible en dark mode — un SVG plano con texto negro fijo se volvía invisible
+ * sobre fondo oscuro. Small: lado a lado (nav). Large: apilado, para momentos de
+ * mayor protagonismo de marca (bienvenida, login, registro).
  */
 export function Logo({ size = 'small', className }: LogoProps) {
   if (size === 'large') {
     return (
-      <img
-        src="/icons/tripflow-lockup.svg"
-        alt="Tripflow"
-        className={`h-24 w-auto ${className ?? ''}`}
-      />
+      <div className={`flex flex-col items-center gap-3 ${className ?? ''}`}>
+        <img src="/icons/icon.svg" alt="" className={iconSizeClasses[size]} />
+        <span className={`font-brand text-text-brand ${wordmarkSizeClasses[size]}`}>Tripflow</span>
+      </div>
     )
   }
 
