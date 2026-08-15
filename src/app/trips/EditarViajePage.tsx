@@ -62,9 +62,9 @@ export function EditarViajePage() {
     if (!viaje) return
 
     const nextErrors: FormErrors = {}
-    if (!nombre.trim()) nextErrors.nombre = 'Ponele un nombre al viaje.'
-    if (!destino.trim()) nextErrors.destino = 'Decinos a dónde vas.'
-    if (!fechaSalida) nextErrors.fechaSalida = 'Elegí la fecha de salida.'
+    if (!nombre.trim()) nextErrors.nombre = 'Ponle un nombre al viaje.'
+    if (!destino.trim()) nextErrors.destino = 'Dinos a dónde vas.'
+    if (!fechaSalida) nextErrors.fechaSalida = 'Elige la fecha de salida.'
     if (fechaRegreso && fechaSalida && fechaRegreso < fechaSalida) {
       nextErrors.fechaRegreso = 'La fecha de regreso no puede ser anterior a la de salida.'
     }
@@ -98,6 +98,24 @@ export function EditarViajePage() {
       <h1 className="text-xl font-semibold text-text-primary">Editar viaje</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div className="grid grid-cols-2 gap-3">
+          <Input
+            type="date"
+            label="Fecha de salida"
+            value={fechaSalida}
+            onChange={(e) => handleFechaSalidaChange(e.target.value)}
+            error={errors.fechaSalida}
+          />
+          <Input
+            type="date"
+            label="Fecha de regreso"
+            min={fechaSalida || undefined}
+            helperText="Opcional: déjalo vacío si todavía no lo sabes"
+            value={fechaRegreso}
+            onChange={(e) => setFechaRegreso(e.target.value)}
+            error={errors.fechaRegreso}
+          />
+        </div>
         <Input
           type="text"
           label="Nombre del viaje"
@@ -112,24 +130,6 @@ export function EditarViajePage() {
           onChange={(e) => setDestino(e.target.value)}
           error={errors.destino}
         />
-        <div className="grid grid-cols-2 gap-3">
-          <Input
-            type="date"
-            label="Fecha de salida"
-            value={fechaSalida}
-            onChange={(e) => handleFechaSalidaChange(e.target.value)}
-            error={errors.fechaSalida}
-          />
-          <Input
-            type="date"
-            label="Fecha de regreso"
-            min={fechaSalida || undefined}
-            helperText="Opcional: dejalo vacío si todavía no lo sabés"
-            value={fechaRegreso}
-            onChange={(e) => setFechaRegreso(e.target.value)}
-            error={errors.fechaRegreso}
-          />
-        </div>
         <Input
           type="text"
           label="Moneda"

@@ -55,13 +55,13 @@ export function NuevoViajePage() {
     event.preventDefault()
 
     const nextErrors: FormErrors = {}
-    if (!nombre.trim()) nextErrors.nombre = 'Ponele un nombre al viaje.'
-    if (!destino.trim()) nextErrors.destino = 'Decinos a dónde vas.'
-    if (!fechaSalida) nextErrors.fechaSalida = 'Elegí la fecha de salida.'
+    if (!nombre.trim()) nextErrors.nombre = 'Ponle un nombre al viaje.'
+    if (!destino.trim()) nextErrors.destino = 'Dinos a dónde vas.'
+    if (!fechaSalida) nextErrors.fechaSalida = 'Elige la fecha de salida.'
     if (fechaRegreso && fechaSalida && fechaRegreso < fechaSalida) {
       nextErrors.fechaRegreso = 'La fecha de regreso no puede ser anterior a la de salida.'
     }
-    if (!moneda) nextErrors.moneda = 'Elegí una moneda.'
+    if (!moneda) nextErrors.moneda = 'Elige una moneda.'
 
     const montoMinorUnits = parseAmountInput(presupuesto, decimalDigits)
     if (montoMinorUnits === null) {
@@ -101,11 +101,29 @@ export function NuevoViajePage() {
           {esPrimerViaje ? 'Tu primer viaje' : 'Nuevo viaje'}
         </h1>
         <p className="text-text-secondary">
-          Con presupuesto y moneda ya podés empezar a registrar gastos.
+          Con presupuesto y moneda ya puedes empezar a registrar gastos.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div className="grid grid-cols-2 gap-3">
+          <Input
+            type="date"
+            label="Fecha de salida"
+            value={fechaSalida}
+            onChange={(e) => handleFechaSalidaChange(e.target.value)}
+            error={errors.fechaSalida}
+          />
+          <Input
+            type="date"
+            label="Fecha de regreso"
+            min={fechaSalida || undefined}
+            helperText="Opcional: déjalo vacío si todavía no lo sabes"
+            value={fechaRegreso}
+            onChange={(e) => setFechaRegreso(e.target.value)}
+            error={errors.fechaRegreso}
+          />
+        </div>
         <Input
           type="text"
           label="Nombre del viaje"
@@ -122,28 +140,10 @@ export function NuevoViajePage() {
           onChange={(e) => setDestino(e.target.value)}
           error={errors.destino}
         />
-        <div className="grid grid-cols-2 gap-3">
-          <Input
-            type="date"
-            label="Fecha de salida"
-            value={fechaSalida}
-            onChange={(e) => handleFechaSalidaChange(e.target.value)}
-            error={errors.fechaSalida}
-          />
-          <Input
-            type="date"
-            label="Fecha de regreso"
-            min={fechaSalida || undefined}
-            helperText="Opcional: dejalo vacío si todavía no lo sabés"
-            value={fechaRegreso}
-            onChange={(e) => setFechaRegreso(e.target.value)}
-            error={errors.fechaRegreso}
-          />
-        </div>
         <Input
           type="select"
           label="Moneda"
-          placeholder="Elegí una moneda"
+          placeholder="Elige una moneda"
           options={MONEDA_OPTIONS}
           value={moneda}
           onChange={setMoneda}
