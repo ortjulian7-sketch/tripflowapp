@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom'
 import { useAuth } from '@/features/auth/AuthProvider'
@@ -60,10 +61,24 @@ function Bootstrap() {
   return <Outlet />
 }
 
+/**
+ * La decisión de redirigir se toma una sola vez, al entrar a la ruta, y no se
+ * vuelve a evaluar mientras el componente sigue montado: `RegistroPage` y
+ * `LoginPage` dejan la sesión creada (vía `signUp`/`signIn`) antes de
+ * terminar su propio flujo (p. ej. el diálogo de vincular viajes de invitado)
+ * y navegar explícitamente. Si esto reaccionara a cada cambio de `session`,
+ * sacaría a la persona de la página en cuanto la sesión aparece, cortando ese
+ * diálogo a mitad de camino y dejando sus datos locales sin migrar.
+ */
 function RedirectIfAuth() {
   const { session, loading } = useAuth()
-  if (loading) return <Cargando />
-  if (session) return <Navigate to="/" replace />
+  const redirigir = useRef<boolean | null>(null)
+  if (!loading && redirigir.current === null) {
+    redirigir.current = session !== null
+  }
+
+  if (loading || redirigir.current === null) return <Cargando />
+  if (redirigir.current) return <Navigate to="/" replace />
   return <Outlet />
 }
 
