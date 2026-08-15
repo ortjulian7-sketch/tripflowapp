@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import { Button } from './Button'
 
 interface ConfirmDialogProps {
@@ -27,7 +28,11 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
   if (!open) return null
 
-  return (
+  // Portal a `document.body`: si el diálogo se renderizara donde vive el
+  // trigger, un ancestro con `backdrop-filter`/`filter`/`transform` (p. ej. el
+  // header sticky del dashboard) crearía un containing block propio y el
+  // `fixed inset-0` dejaría de cubrir el viewport completo.
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
@@ -62,6 +67,7 @@ export function ConfirmDialog({
           </Button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

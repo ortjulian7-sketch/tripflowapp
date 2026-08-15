@@ -1,4 +1,5 @@
 import { useEffect, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { IconButton } from './IconButton'
 
 interface ModalProps {
@@ -30,7 +31,11 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
 
   if (!open) return null
 
-  return (
+  // Portal a `document.body`: si el modal se renderizara donde vive el
+  // trigger, un ancestro con `backdrop-filter`/`filter`/`transform` (p. ej. el
+  // header sticky del dashboard) crearía un containing block propio y el
+  // `fixed inset-0` dejaría de cubrir el viewport completo.
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
@@ -56,6 +61,7 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
         </div>
         <div className="flex-1 overflow-y-auto p-card-padding">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

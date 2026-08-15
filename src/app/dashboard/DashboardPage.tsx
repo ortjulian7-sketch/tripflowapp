@@ -44,7 +44,7 @@ export function DashboardPage() {
       {/* Cabecera de la pantalla: identidad del viaje + acciones rápidas de
           búsqueda y registro (Figma node 204:1457 / 205:1932). En escritorio
           las acciones viven acá; en móvil quedan flotando sobre el contenido. */}
-      <div className="-mx-4 flex items-center justify-between gap-3 border-b border-black/[0.06] px-4 pb-4 md:-mx-8 md:px-8 dark:border-white/[0.06]">
+      <div className="-mx-4 flex items-center justify-between gap-3 border-b border-black/[0.06] px-4 pb-4 md:sticky md:-mx-8 md:top-0 md:z-10 md:bg-surface-background/[0.92] md:px-8 md:backdrop-blur dark:border-white/[0.06]">
         <TripSwitcher
           viaje={viaje}
           trips={trips ?? [viaje]}
