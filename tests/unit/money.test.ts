@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { getCurrency } from '@/lib/currencies'
-import { formatCompactAmount, formatMoney, parseAmountInput, percentage, sum } from '@/lib/money'
+import {
+  formatAmountForInput,
+  formatCompactAmount,
+  formatMoney,
+  groupThousands,
+  parseAmountInput,
+  percentage,
+  sum,
+} from '@/lib/money'
 
 describe('sum', () => {
   it('suma montos enteros sin error de redondeo (SC-008)', () => {
@@ -67,6 +75,35 @@ describe('formatMoney', () => {
 
   it('redondea al entero más cercano, nunca muestra decimales', () => {
     expect(formatMoney(187550, getCurrency('MXN'))).toBe('$1.876')
+  })
+})
+
+describe('groupThousands', () => {
+  it('no agrupa por debajo de 1000', () => {
+    expect(groupThousands('150')).toBe('150')
+  })
+
+  it('agrupa de a tres dígitos desde la derecha', () => {
+    expect(groupThousands('100000')).toBe('100.000')
+    expect(groupThousands('1500000')).toBe('1.500.000')
+  })
+
+  it('funciona con una cadena vacía', () => {
+    expect(groupThousands('')).toBe('')
+  })
+})
+
+describe('formatAmountForInput', () => {
+  it('formatea un entero con separador de miles (bug: mostraba "100000" en vez de "100.000")', () => {
+    expect(formatAmountForInput('100000')).toBe('100.000')
+  })
+
+  it('conserva la coma decimal sin agruparla', () => {
+    expect(formatAmountForInput('150000,5')).toBe('150.000,5')
+  })
+
+  it('deja un monto corto sin cambios', () => {
+    expect(formatAmountForInput('150')).toBe('150')
   })
 })
 

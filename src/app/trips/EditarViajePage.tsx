@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useNavigate, useParams } from 'react-router-dom'
+import { AmountInput } from '@/components/AmountInput'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { db } from '@/lib/db'
@@ -12,6 +13,7 @@ interface FormErrors {
   nombre?: string
   destino?: string
   fechaSalida?: string
+  fechaRegreso?: string
   presupuesto?: string
 }
 
@@ -46,6 +48,15 @@ export function EditarViajePage() {
 
   const currency = getCurrency(viaje.moneda)
 
+  function handleFechaSalidaChange(value: string) {
+    setFechaSalida(value)
+    // Si la nueva salida deja obsoleta la fecha de regreso ya elegida, se
+    // limpia en lugar de dejar seleccionable una combinación inconsistente.
+    if (fechaRegreso && value && fechaRegreso < value) {
+      setFechaRegreso('')
+    }
+  }
+
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
     if (!viaje) return
@@ -54,6 +65,9 @@ export function EditarViajePage() {
     if (!nombre.trim()) nextErrors.nombre = 'Ponele un nombre al viaje.'
     if (!destino.trim()) nextErrors.destino = 'Decinos a dónde vas.'
     if (!fechaSalida) nextErrors.fechaSalida = 'Elegí la fecha de salida.'
+    if (fechaRegreso && fechaSalida && fechaRegreso < fechaSalida) {
+      nextErrors.fechaRegreso = 'La fecha de regreso no puede ser anterior a la de salida.'
+    }
 
     const montoMinorUnits = parseAmountInput(presupuesto, currency.decimalDigits)
     if (montoMinorUnits === null) nextErrors.presupuesto = 'El presupuesto debe ser mayor a cero.'
@@ -103,15 +117,17 @@ export function EditarViajePage() {
             type="date"
             label="Fecha de salida"
             value={fechaSalida}
-            onChange={(e) => setFechaSalida(e.target.value)}
+            onChange={(e) => handleFechaSalidaChange(e.target.value)}
             error={errors.fechaSalida}
           />
           <Input
             type="date"
             label="Fecha de regreso"
+            min={fechaSalida || undefined}
             helperText="Opcional: dejalo vacío si todavía no lo sabés"
             value={fechaRegreso}
             onChange={(e) => setFechaRegreso(e.target.value)}
+            error={errors.fechaRegreso}
           />
         </div>
         <Input
@@ -122,12 +138,12 @@ export function EditarViajePage() {
           readOnly
           helperText="La moneda no se puede cambiar después de crear el viaje."
         />
-        <Input
-          type="number"
+        <AmountInput
           label="Presupuesto total"
           leadingText={currency.symbol}
           value={presupuesto}
-          onChange={(e) => setPresupuesto(e.target.value)}
+          onChange={setPresupuesto}
+          decimalDigits={currency.decimalDigits}
           error={errors.presupuesto}
         />
         <div className="flex gap-3">

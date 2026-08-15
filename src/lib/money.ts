@@ -24,6 +24,22 @@ export function toEditableAmountString(minorUnits: number, decimalDigits: number
   return toMajorUnits(minorUnits, decimalDigits).toFixed(decimalDigits)
 }
 
+/** Inserta "." cada tres dígitos desde la derecha (p. ej. "150000" → "150.000"). */
+export function groupThousands(integerDigits: string): string {
+  return integerDigits.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
+
+/**
+ * Formatea un monto crudo con coma decimal ("150000,5") para lectura mientras
+ * se tipea ("150.000,5") — el punto queda reservado para la agrupación de
+ * miles (input del `AmountInput`, evita la ambigüedad "100000" vs "100.000").
+ */
+export function formatAmountForInput(rawWithComma: string): string {
+  const [integerPart, fractionPart] = rawWithComma.split(',')
+  const grouped = groupThousands(integerPart ?? '')
+  return fractionPart !== undefined ? `${grouped},${fractionPart}` : grouped
+}
+
 export function sum(amounts: number[]): number {
   return amounts.reduce((total, amount) => total + amount, 0)
 }

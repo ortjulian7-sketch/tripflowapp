@@ -1,11 +1,13 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AmountInput } from '@/components/AmountInput'
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
 import { CURRENCIES, getCurrency } from '@/lib/currencies'
 import { parseAmountInput } from '@/lib/money'
 import { useIdentity } from '@/features/identity/IdentityProvider'
 import { crearViaje } from '@/features/trips/tripRepository'
+import { setSelectedTripId } from '@/features/trips/useSelectedTrip'
 import { useTrips } from '@/features/trips/useTrips'
 
 const MONEDA_OPTIONS = CURRENCIES.map((currency) => ({
@@ -17,6 +19,7 @@ interface FormErrors {
   nombre?: string
   destino?: string
   fechaSalida?: string
+  fechaRegreso?: string
   moneda?: string
   presupuesto?: string
 }
@@ -39,6 +42,15 @@ export function NuevoViajePage() {
   const decimalDigits = moneda ? getCurrency(moneda).decimalDigits : 2
   const simbolo = moneda ? getCurrency(moneda).symbol : undefined
 
+  function handleFechaSalidaChange(value: string) {
+    setFechaSalida(value)
+    // Si la nueva salida deja obsoleta la fecha de regreso ya elegida, se
+    // limpia en lugar de dejar seleccionable una combinación inconsistente.
+    if (fechaRegreso && value && fechaRegreso < value) {
+      setFechaRegreso('')
+    }
+  }
+
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
@@ -46,6 +58,9 @@ export function NuevoViajePage() {
     if (!nombre.trim()) nextErrors.nombre = 'Ponele un nombre al viaje.'
     if (!destino.trim()) nextErrors.destino = 'Decinos a dónde vas.'
     if (!fechaSalida) nextErrors.fechaSalida = 'Elegí la fecha de salida.'
+    if (fechaRegreso && fechaSalida && fechaRegreso < fechaSalida) {
+      nextErrors.fechaRegreso = 'La fecha de regreso no puede ser anterior a la de salida.'
+    }
     if (!moneda) nextErrors.moneda = 'Elegí una moneda.'
 
     const montoMinorUnits = parseAmountInput(presupuesto, decimalDigits)
@@ -60,7 +75,7 @@ export function NuevoViajePage() {
 
     setSaving(true)
     try {
-      await crearViaje({
+      const viaje = await crearViaje({
         userId: userId!,
         nombre: nombre.trim(),
         destino: destino.trim(),
@@ -69,6 +84,10 @@ export function NuevoViajePage() {
         presupuestoTotal: montoMinorUnits!,
         moneda,
       })
+      // El viaje recién creado pasa a ser el elegido a mano — si no, el
+      // resumen podría seguir mostrando la elección previa (US "mostrar el
+      // viaje recién creado").
+      setSelectedTripId(viaje.id)
       navigate('/', { replace: true })
     } finally {
       setSaving(false)
@@ -108,15 +127,17 @@ export function NuevoViajePage() {
             type="date"
             label="Fecha de salida"
             value={fechaSalida}
-            onChange={(e) => setFechaSalida(e.target.value)}
+            onChange={(e) => handleFechaSalidaChange(e.target.value)}
             error={errors.fechaSalida}
           />
           <Input
             type="date"
             label="Fecha de regreso"
+            min={fechaSalida || undefined}
             helperText="Opcional: dejalo vacío si todavía no lo sabés"
             value={fechaRegreso}
             onChange={(e) => setFechaRegreso(e.target.value)}
+            error={errors.fechaRegreso}
           />
         </div>
         <Input
@@ -128,13 +149,13 @@ export function NuevoViajePage() {
           onChange={setMoneda}
           error={errors.moneda}
         />
-        <Input
-          type="number"
+        <AmountInput
           label="Presupuesto total"
           placeholder="0"
           leadingText={simbolo}
           value={presupuesto}
-          onChange={(e) => setPresupuesto(e.target.value)}
+          onChange={setPresupuesto}
+          decimalDigits={decimalDigits}
           error={errors.presupuesto}
         />
         <Button type="submit" size="large" loading={saving}>

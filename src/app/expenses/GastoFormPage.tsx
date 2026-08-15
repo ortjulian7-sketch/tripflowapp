@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useNavigate, useParams } from 'react-router-dom'
+import { AmountInput } from '@/components/AmountInput'
 import { Button } from '@/components/Button'
 import { Chip } from '@/components/Chip'
 import { Input } from '@/components/Input'
@@ -15,6 +16,7 @@ import { useLearnedAssociations } from '@/features/categorization/useLearnedAsso
 import { sugerirCategoria } from '@/features/categorization/suggest'
 import { registrarCorreccion } from '@/features/categorization/learn'
 import { actualizarGasto, crearGasto } from '@/features/expenses/expenseRepository'
+import { NuevaCategoriaModal } from './NuevaCategoriaModal'
 
 interface FormErrors {
   monto?: string
@@ -51,6 +53,7 @@ export function GastoFormPage() {
   const [errors, setErrors] = useState<FormErrors>({})
   const [saving, setSaving] = useState(false)
   const [precargado, setPrecargado] = useState(false)
+  const [modalCategoriaAbierto, setModalCategoriaAbierto] = useState(false)
 
   useEffect(() => {
     if (!isEditing || !gastoExistente || !viajeDelGasto || precargado) return
@@ -138,13 +141,13 @@ export function GastoFormPage() {
       </h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input
-          type="number"
+        <AmountInput
           label="Monto"
           placeholder="0"
           leadingText={currency.symbol}
           value={monto}
-          onChange={(e) => setMonto(e.target.value)}
+          onChange={setMonto}
+          decimalDigits={currency.decimalDigits}
           error={errors.monto}
         />
         <Input
@@ -168,6 +171,11 @@ export function GastoFormPage() {
                 onClick={() => handleSelectCategoria(categoria.id)}
               />
             ))}
+            <Chip
+              emoji="➕"
+              label="Nueva"
+              onClick={() => setModalCategoriaAbierto(true)}
+            />
           </div>
           {errors.categoria && <p className="mt-1.5 text-xs text-status-error">{errors.categoria}</p>}
         </div>
@@ -183,6 +191,16 @@ export function GastoFormPage() {
           </Button>
         </div>
       </form>
+
+      <NuevaCategoriaModal
+        open={modalCategoriaAbierto}
+        userId={userId!}
+        onClose={() => setModalCategoriaAbierto(false)}
+        onCreada={(categoria) => {
+          handleSelectCategoria(categoria.id)
+          setModalCategoriaAbierto(false)
+        }}
+      />
     </div>
   )
 }
