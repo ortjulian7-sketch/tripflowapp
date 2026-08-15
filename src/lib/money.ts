@@ -70,8 +70,9 @@ export function formatMoney(minorUnits: number, currency: Currency): string {
 
 /**
  * Monto compacto para etiquetas de espacio reducido (mini-chart de
- * categorías): siempre entero, la parte numérica nunca supera 3 dígitos — a
- * partir de 1000 se abrevia en miles/millones (redondeado, sin decimales).
+ * categorías): a partir de 1000 se abrevia en miles/millones. Los millones
+ * llevan un decimal cuando hace falta (p. ej. "1,2M") para no perder
+ * magnitud al redondear a un solo dígito.
  */
 export function formatCompactAmount(minorUnits: number, currency: Currency): string {
   const major = toMajorUnits(minorUnits, currency.decimalDigits)
@@ -84,5 +85,8 @@ export function formatCompactAmount(minorUnits: number, currency: Currency): str
 
   const suffix = abs < 1_000_000 ? 'K' : 'M'
   const escala = suffix === 'K' ? 1_000 : 1_000_000
-  return `${currency.symbol}${Math.round(major / escala)}${suffix}`
+  const amount = new Intl.NumberFormat('es-AR', {
+    maximumFractionDigits: suffix === 'M' ? 1 : 0,
+  }).format(major / escala)
+  return `${currency.symbol}${amount}${suffix}`
 }

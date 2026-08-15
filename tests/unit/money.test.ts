@@ -116,8 +116,16 @@ describe('formatCompactAmount', () => {
     expect(formatCompactAmount(1875000, getCurrency('MXN'))).toBe('$19K')
   })
 
-  it('abrevia en millones (M) a partir de 1.000.000', () => {
-    expect(formatCompactAmount(150000000, getCurrency('MXN'))).toBe('$2M')
+  it('abrevia en millones (M) a partir de 1.000.000, con un decimal si hace falta', () => {
+    expect(formatCompactAmount(150000000, getCurrency('MXN'))).toBe('$1,5M')
+  })
+
+  it('en millones, omite el decimal cuando es exacto', () => {
+    expect(formatCompactAmount(200000000, getCurrency('MXN'))).toBe('$2M')
+  })
+
+  it('en millones, redondea el decimal al décimo más cercano', () => {
+    expect(formatCompactAmount(123456700, getCurrency('MXN'))).toBe('$1,2M')
   })
 
   it('en monedas sin decimales (p. ej. CLP), funciona igual por debajo de 1000', () => {
