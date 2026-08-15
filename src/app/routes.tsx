@@ -8,6 +8,8 @@ import { AppShell } from './AppShell'
 import { BienvenidaPage } from './bienvenida/BienvenidaPage'
 import { RegistroPage } from './auth/RegistroPage'
 import { LoginPage } from './auth/LoginPage'
+import { RecuperarContrasenaPage } from './auth/RecuperarContrasenaPage'
+import { NuevaContrasenaPage } from './auth/NuevaContrasenaPage'
 import { IntroOnboardingPage } from './onboarding/IntroOnboardingPage'
 import { CategoriasOnboardingPage } from './onboarding/CategoriasOnboardingPage'
 import { NuevoViajePage } from './trips/NuevoViajePage'
@@ -108,7 +110,13 @@ export function AppRoutes() {
         <Route path="/bienvenida" element={<BienvenidaPage />} />
         <Route path="/registro" element={<RegistroPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/recuperar-contrasena" element={<RecuperarContrasenaPage />} />
       </Route>
+
+      {/* Sesión de recuperación (evento PASSWORD_RECOVERY): fuera de RedirectIfAuth y
+          EntradaGate/Bootstrap a propósito (research.md §2) — esos guards no distinguen esta
+          sesión temporal de una sesión normal. */}
+      <Route path="/recuperar-contrasena/confirmar" element={<NuevaContrasenaPage />} />
 
       <Route element={<EntradaGate />}>
         <Route element={<Bootstrap />}>

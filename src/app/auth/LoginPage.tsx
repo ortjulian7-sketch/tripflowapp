@@ -129,6 +129,15 @@ export function LoginPage() {
           </Button>
         </form>
 
+        <p className="mt-4 text-center text-sm text-text-secondary">
+          <Link
+            to="/recuperar-contrasena"
+            className="font-semibold text-text-brand transition-opacity hover:opacity-80"
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </p>
+
         <p className="mt-6 text-center text-sm text-text-secondary">
           ¿No tienes cuenta?{' '}
           <Link to="/registro" className="font-semibold text-text-brand transition-opacity hover:opacity-80">

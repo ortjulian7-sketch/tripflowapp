@@ -16,5 +16,11 @@ export function traducirErrorAuth(mensaje: string): string {
   if (normalizado.includes('email not confirmed')) {
     return 'Confirma tu correo antes de iniciar sesión.'
   }
+  if (normalizado.includes('email rate limit') || normalizado.includes('rate limit')) {
+    return 'Ya enviamos un correo hace poco. Espera unos minutos antes de pedir otro.'
+  }
+  if (normalizado.includes('should be different from the old password')) {
+    return 'La contraseña nueva debe ser distinta de la actual.'
+  }
   return 'Ocurrió un error. Intenta de nuevo.'
 }
