@@ -103,7 +103,7 @@ export function EditarViajePage() {
       <h1 className="text-xl font-semibold text-text-primary">Editar viaje</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           <Input
             type="date"
             label="Fecha de salida"
